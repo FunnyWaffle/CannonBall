@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &73900928617355249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7142923462415387684}
+  m_Layer: 0
+  m_Name: Barrel Exit
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7142923462415387684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 73900928617355249}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.955}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7492266319270368432}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &244706523596416092
 GameObject:
   m_ObjectHideFlags: 0
@@ -2319,7 +2350,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 54
+  m_VersionIndex: 102
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2531,6 +2562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7492266319270368432}
   - component: {fileID: 7470853094991982137}
+  - component: {fileID: 4246478053662629776}
   - component: {fileID: 6905571411231806207}
   m_Layer: 0
   m_Name: Cannon
@@ -2555,6 +2587,7 @@ Transform:
   - {fileID: 3841282313633638239}
   - {fileID: 2258380421340115707}
   - {fileID: 305868771178901500}
+  - {fileID: 7142923462415387684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &7470853094991982137
@@ -2584,6 +2617,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4246478053662629776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4640295147786267176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 508a4868331b1fb4b9b5f567b9905548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.CannonShoot
+  _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
+  _projectileRadius: 0.5
+  _barrelExit: {fileID: 7142923462415387684}
 --- !u!114 &6905571411231806207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2597,7 +2645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonMover
   _motorPower: 1
-  _brakePower: 0.5
   _wheels:
   - {fileID: 178660687426394620}
   - {fileID: 9013246528036785825}
@@ -2613,7 +2660,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2258380421340115707}
   m_Layer: 0
-  m_Name: ' Carriage'
+  m_Name: Carriage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

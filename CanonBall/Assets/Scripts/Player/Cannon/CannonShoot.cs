@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Player.Cannon.Projectile;
+using Assets.Scripts.Spawn;
+using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.Player.Cannon
 {
     public class CannonShoot : MonoBehaviour
     {
-        [SerializeField] private GameObject _projectile;
-        [SerializeField] private Vector3 _projectileSpawnPosition;
+        [SerializeField] private Ball _projectile;
+        [SerializeField] private float _projectileRadius;
+        [SerializeField] private Transform _barrelExit;
+
+        [Inject] private Spawner _spawner;
 
         private void Start()
         {
@@ -16,7 +22,7 @@ namespace Assets.Scripts.Player.Cannon
 
         private void HandleAttackAction()
         {
-            Instantiate(_projectile, _projectileSpawnPosition, transform.rotation);
+            _spawner.Spawn(_projectile, _barrelExit.position + _projectileRadius * _barrelExit.forward, transform.rotation);
         }
     }
 }

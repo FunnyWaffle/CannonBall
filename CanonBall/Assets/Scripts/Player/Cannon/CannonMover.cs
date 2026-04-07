@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class CannonMover : MonoBehaviour
 {
-    [SerializeField] private float _motorPower = 1000f;
-    [SerializeField] private float _brakePower = 5000f;
+    [SerializeField] private float _motorPower = 1;
     [SerializeField] private WheelCollider[] _wheels;
 
     private void Start()

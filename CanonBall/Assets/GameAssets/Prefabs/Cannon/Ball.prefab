@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.Projectile.Ball
   _startPower: 50
+  _lifeTime: 5
   _rigidbody: {fileID: 2545269157866786992}
 --- !u!54 &2545269157866786992
 Rigidbody:
