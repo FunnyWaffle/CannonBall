@@ -23,7 +23,6 @@ namespace Assets.Scripts.Spawn
 
             @object = _objects.Dequeue();
             Register(@object);
-            @object.Activate();
             return true;
         }
 

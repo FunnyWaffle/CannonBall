@@ -1,18 +1,16 @@
 using UnityEngine;
+using Zenject;
 
 public class CannonMover : MonoBehaviour
 {
     [SerializeField] private float _motorPower = 1;
     [SerializeField] private WheelCollider[] _wheels;
 
-    private void Start()
-    {
-        PlayerInput.Enable();
-    }
+    [Inject] private PlayerInput _playerInput;
 
     private void Update()
     {
-        var movementInput = PlayerInput.Movement;
+        var movementInput = _playerInput.Movement;
 
         if (movementInput.y != 0f)
             foreach (var wheel in _wheels)

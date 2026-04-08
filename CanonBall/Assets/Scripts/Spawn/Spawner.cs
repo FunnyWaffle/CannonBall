@@ -8,7 +8,7 @@ namespace Assets.Scripts.Spawn
     {
         [Inject] private ObjectPool<Ball> _ballObjectPool;
 
-        public void Spawn(Ball prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public Ball Spawn(Ball prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             if (_ballObjectPool.TryGet(out var ball))
             {
@@ -19,6 +19,8 @@ namespace Assets.Scripts.Spawn
                 ball = Instantiate(prefab, position, rotation, parent);
                 _ballObjectPool.Register(ball);
             }
+
+            return ball;
         }
     }
 }

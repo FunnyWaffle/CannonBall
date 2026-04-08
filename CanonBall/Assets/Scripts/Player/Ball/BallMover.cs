@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 public class BallMover : MonoBehaviour
 {
@@ -6,15 +7,16 @@ public class BallMover : MonoBehaviour
     [SerializeField] private float _velocity = 100f;
     [SerializeField] private float _jumpPower = 5f;
 
+    [Inject] private PlayerInput _playerInput;
+
     private void Start()
     {
-        PlayerInput.Enable();
-        PlayerInput.JumpActionPerformed += HandleJumpAction;
+        _playerInput.JumpActionPerformed += HandleJumpAction;
     }
 
     private void FixedUpdate()
     {
-        Vector2 movementInput = PlayerInput.Movement;
+        Vector2 movementInput = _playerInput.Movement;
         _rigidbody.linearVelocity += _velocity * Time.fixedDeltaTime * new Vector3(movementInput.x, 0f, movementInput.y);
     }
 

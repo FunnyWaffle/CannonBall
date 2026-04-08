@@ -1,25 +1,20 @@
 using System;
 using UnityEngine;
 
-public static class PlayerInput
+public class PlayerInput
 {
-    private static InputSystem_Actions _actions = new();
+    private readonly InputSystem_Actions _actions = new();
 
-    private static bool _isEnabled;
+    public Vector2 Movement => _actions.Player.Move.ReadValue<Vector2>();
+    public Vector2 Look => _actions.Player.Look.ReadValue<Vector2>();
 
-    public static Vector2 Movement => _actions.Player.Move.ReadValue<Vector2>();
+    public event Action JumpActionPerformed;
+    public event Action AttackActionPerformed;
 
-    public static event Action JumpActionPerformed;
-    public static event Action AttackActionPerformed;
-
-    public static void Enable()
+    public PlayerInput()
     {
-        if (_isEnabled) return;
 
-        _actions = new InputSystem_Actions();
         _actions.Enable();
-
-        _isEnabled = true;
 
         _actions.Player.Jump.performed += (context) => { JumpActionPerformed?.Invoke(); };
         _actions.Player.Attack.performed += (context) => { AttackActionPerformed?.Invoke(); };

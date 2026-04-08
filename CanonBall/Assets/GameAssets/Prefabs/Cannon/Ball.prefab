@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2421988893061860864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3983, y: 0.4158, z: -0.4868}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252050e4552047a419056af20a1865df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.Projectile.Ball
-  _startPower: 50
+  _startPower: 10
   _lifeTime: 5
   _rigidbody: {fileID: 2545269157866786992}
 --- !u!54 &2545269157866786992
