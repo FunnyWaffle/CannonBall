@@ -9,9 +9,12 @@ namespace Assets.Scripts.Wrappers
     {
         private readonly Dictionary<TKey, TValue> _dictionary = new();
 
-        [SerializeField] private List<SerializableKeyValuePair<TKey, TValue>> _list = new();
+        [SerializeField] private List<SerializableKeyValuePair<TKey, TValue>> _list;
 
-        public Dictionary<TKey, TValue> Dictionary => _dictionary;
+        public TValue this[TKey key] => _dictionary[key];
+
+        public bool TryGetValue(TKey key, out TValue value)
+            => _dictionary.TryGetValue(key, out value);
 
         public void OnAfterDeserialize()
         {
@@ -21,7 +24,15 @@ namespace Assets.Scripts.Wrappers
                 if (keyValuePair.Key == null)
                     continue;
 
-                _dictionary[keyValuePair.Key] = keyValuePair.Value;
+                if (_dictionary.ContainsKey(keyValuePair.Key))
+                {
+                    var clearKeyValuePair = new SerializableKeyValuePair<TKey, TValue>(default, default);
+                    _dictionary[clearKeyValuePair.Key] = clearKeyValuePair.Value;
+                }
+                else
+                {
+                    _dictionary[keyValuePair.Key] = keyValuePair.Value;
+                }
             }
         }
 

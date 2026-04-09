@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using Assets.Scripts.Player;
 using Assets.Scripts.Player.Cannon;
 using Assets.Scripts.Player.Cannon.Projectile;
@@ -16,13 +17,16 @@ public class Intaller : MonoInstaller
 
         //}
 
-        Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ObjectPool<Ball>>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<Spawner>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonShoot>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonMover>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAimer>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerCamera>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ObjectPool<Ball>>().AsSingle();
+        Container.BindInterfacesAndSelfTo<Player>().AsSingle();
     }
 }
