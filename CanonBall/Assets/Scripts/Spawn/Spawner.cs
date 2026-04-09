@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Player.Cannon.Projectile;
+﻿using Assets.Scripts.Guns.Projectile;
 using UnityEngine;
 using Zenject;
 

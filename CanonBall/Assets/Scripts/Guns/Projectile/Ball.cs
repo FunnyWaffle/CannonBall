@@ -2,13 +2,12 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Player.Cannon.Projectile
+namespace Assets.Scripts.Guns.Projectile
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SphereCollider))]
     public class Ball : MonoBehaviour, IPoolableObject
     {
-        [SerializeField] private float _startPower;
         [SerializeField] private float _lifeTime;
         [SerializeField] private Rigidbody _rigidbody;
 
@@ -19,9 +18,9 @@ namespace Assets.Scripts.Player.Cannon.Projectile
 
         public event EventHandler ObjectLifeEnded;
 
-        public void MakeFly()
+        public void SetForce(float forceValue)
         {
-            _rigidbody.linearVelocity = transform.forward * _startPower;
+            _rigidbody.linearVelocity = transform.forward * forceValue;
             //_rigidbody.AddForce(new Vector3(0f, 0f, _startPower), ForceMode.Impulse);
         }
 

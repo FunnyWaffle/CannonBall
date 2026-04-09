@@ -1,8 +1,10 @@
 using Assets.Scripts;
-using Assets.Scripts.Player;
-using Assets.Scripts.Player.Cannon;
-using Assets.Scripts.Player.Cannon.Projectile;
+using Assets.Scripts.Creations;
+using Assets.Scripts.Guns;
+using Assets.Scripts.Guns.Projectile;
+using Assets.Scripts.Input;
 using Assets.Scripts.Spawn;
+using Assets.Scripts.Systems;
 using UnityEngine;
 using Zenject;
 
@@ -17,16 +19,21 @@ public class Intaller : MonoInstaller
 
         //}
 
-
         Container.BindInterfacesAndSelfTo<Spawner>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonShoot>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonMover>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonShooter>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonRotator>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAimer>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerCamera>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<FirstPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<ThirdPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<CameraSystem>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<ObjectPool<Ball>>().AsSingle();
         Container.BindInterfacesAndSelfTo<Player>().AsSingle();
+        Container.BindInterfacesAndSelfTo<Cannon>().AsSingle();
+
+        Container.Resolve<Player>();
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Creations
 {
     public class PlayerCamera : MonoBehaviour
     {
@@ -40,6 +40,14 @@ namespace Assets.Scripts.Player
 
             _cameraTransform.SetParent(cameraTransformPreset.Parent, false);
             _cameraTransform.position = cameraTransformPreset.Position;
+        }
+
+        public Vector3 GetFacedPosition()
+        {
+            if (Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out var hit, float.PositiveInfinity))
+                return hit.point;
+            else
+                return _cameraTransform.position + _cameraTransform.forward * 10f;
         }
 
         private void Awake()
