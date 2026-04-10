@@ -1,5 +1,5 @@
 using Assets.Scripts;
-using Assets.Scripts.Creations;
+using Assets.Scripts.Creations.Player;
 using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Projectile;
 using Assets.Scripts.Input;
@@ -31,9 +31,9 @@ public class Intaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<ObjectPool<Ball>>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Player>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerCore>().AsSingle();
         Container.BindInterfacesAndSelfTo<Cannon>().AsSingle();
 
-        Container.Resolve<Player>();
+        Container.Resolve<PlayerCore>();
     }
 }

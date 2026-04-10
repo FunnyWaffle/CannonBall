@@ -247,6 +247,7 @@ Transform:
   - {fileID: 6985669116092729874}
   - {fileID: 5829890366761537367}
   - {fileID: 6790716822521268627}
+  - {fileID: 2145911060950085883}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2876239466672353946
@@ -261,6 +262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 508a4868331b1fb4b9b5f567b9905548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.CannonShoot
+  _shootPower: 15
   _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
   _barrelExit: {fileID: 7102758938105071456}
 --- !u!114 &7179173075850796035
@@ -275,10 +277,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08db652415642e24fa392bc65a4135bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.Projectile.CannonRotator
-  _camera: {fileID: 0}
   _barrel: {fileID: 9033821742604084714}
   _rotationSpeed: 5
   _pitchAngleLimit: 15
+--- !u!1 &4564609427809284405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2145911060950085883}
+  - component: {fileID: 8260659327280199580}
+  m_Layer: 0
+  m_Name: Nav Mesh Obstacle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2145911060950085883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4564609427809284405}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4591967698252750561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &8260659327280199580
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4564609427809284405}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 1, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &5540511594254719840
 GameObject:
   m_ObjectHideFlags: 0

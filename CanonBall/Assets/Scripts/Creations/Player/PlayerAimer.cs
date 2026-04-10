@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.Creations
+namespace Assets.Scripts.Creations.Player
 {
     public class PlayerAimer : MonoBehaviour
     {

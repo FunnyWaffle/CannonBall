@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.Guns;
 using Assets.Scripts.Input;
 
-namespace Assets.Scripts.Creations
+namespace Assets.Scripts.Creations.Player
 {
-    public class Player
+    public class PlayerCore
     {
         private readonly PlayerAimer _aimer;
         private readonly PlayerCamera _camera;
@@ -12,7 +12,7 @@ namespace Assets.Scripts.Creations
 
         private readonly Updater _updater;
 
-        public Player(PlayerAimer playerAimer,
+        public PlayerCore(PlayerAimer playerAimer,
             PlayerCamera playerCamera,
             PlayerInput playerInput,
             Updater updater,
