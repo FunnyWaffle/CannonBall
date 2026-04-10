@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
@@ -22,8 +23,6 @@ namespace Assets.Scripts.Guns
             _thirdPersonCrosshairPreview = thirdPersonCannonCrosshairPreview;
         }
 
-        public CannonRotator Rotator => _rotator;
-
         public void Shoot()
         {
             _shooter.Shoot();
@@ -32,15 +31,26 @@ namespace Assets.Scripts.Guns
         public void RotateToPosition(Vector3 position)
         {
             var barrelExitPosition = _shooter.BarrelExitPosition;
+            float shootPower = _shooter.ShootPower;
 
-            var trajectory = CannonShootTrajectoryCalculator
-                .GetTrajectory(position, barrelExitPosition, _shooter.ShootPower, out var velocity);
-            _rotator.RotateToPosition(barrelExitPosition + velocity);
+            var velocityToTarget = CannonShootTrajectoryCalculator
+                .GetVelocity(position, barrelExitPosition, shootPower);
+            _rotator.RotateInDirection(velocityToTarget);
 
-            if (_crosshairMode == CrosshairMode.FirstPerson)
-                _firstPersonCrosshairPreview.SetPosition(_shooter.GetFacedPosition());
-            else
-                _thirdPersonCrosshairPreview.SetPosition(trajectory[^1]);
+            var trajectory = GetCurrentTrajectoryPrediction(barrelExitPosition, shootPower);
+            var hitPoint = trajectory[^1];
+            MoveCrosshair(hitPoint);
+
+            VisualizeTrajectory(trajectory);
+        }
+
+        private List<Vector3> GetCurrentTrajectoryPrediction(Vector3 barrelExitPosition, float shootPower)
+        {
+            var realVelocity = _shooter.BarrelForward * shootPower;
+
+            var currentTrajectory = CannonShootTrajectoryCalculator
+                 .GetTrajectory(barrelExitPosition, realVelocity);
+            return currentTrajectory;
         }
 
         public void SetCrosshairType(int crosshairMode)
@@ -60,10 +70,27 @@ namespace Assets.Scripts.Guns
             }
         }
 
-        public enum CrosshairMode
+        private void MoveCrosshair(Vector3 hitPoint)
         {
-            FirstPerson,
-            ThirdPerson,
+            if (_crosshairMode == CrosshairMode.FirstPerson)
+                _firstPersonCrosshairPreview.SetPosition(hitPoint);
+            else
+                _thirdPersonCrosshairPreview.SetPosition(hitPoint);
         }
+
+        private void VisualizeTrajectory(List<Vector3> trajectory)
+        {
+            for (int i = 0; i < trajectory.Count - 1; i++)
+            {
+                Debug.DrawLine(trajectory[i], trajectory[i + 1]);
+            }
+
+        }
+    }
+
+    public enum CrosshairMode
+    {
+        FirstPerson,
+        ThirdPerson,
     }
 }

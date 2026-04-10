@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Config;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns
@@ -9,14 +10,17 @@ namespace Assets.Scripts.Guns
         // Комменты оставил, чтобы понимать, что тут вообще происходит.
         // Хотя тут ещё плюс минус понятно, просто надо знать формулы.
         // На удивление даже с первого раза дало +- рабочий код.
-
-        public static List<Vector3> GetTrajectory(Vector3 targetPosition, Vector3 startPosition, float power, out Vector3 velocity)
+        public static Vector3 GetVelocity(Vector3 targetPosition, Vector3 startPosition, float power)
         {
             Vector3 direction = targetPosition - startPosition;
             Vector3 directionXZ = new Vector3(direction.x, 0, direction.z);
 
             var angle = GetAngle(direction, directionXZ, power);
-            velocity = CulculateVelocity(directionXZ, power, angle);
+            return CulculateVelocity(directionXZ, power, angle);
+        }
+
+        public static List<Vector3> GetTrajectory(Vector3 startPosition, Vector3 velocity)
+        {
             return BuildTrajectory(startPosition, velocity, Time.fixedDeltaTime);
         }
 
@@ -64,11 +68,13 @@ namespace Assets.Scripts.Guns
             {
                 float t = i * deltaTime;
                 Vector3 point = startPosition + velocity * t + 0.5f * Physics.gravity * t * t;
-                points.Add(point);
 
-                if (Physics.Linecast(previousPosition, point))
+                if (Physics.Linecast(previousPosition, point, out var hit, ~LayerIds.Projectile))
+                {
+                    points.Add(hit.point);
                     break;
-
+                }
+                points.Add(point);
                 previousPosition = point;
             }
             return points;

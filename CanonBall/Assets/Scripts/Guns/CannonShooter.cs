@@ -13,6 +13,7 @@ namespace Assets.Scripts.Guns
 
         [Inject] private Spawner _spawner;
 
+        public Vector3 BarrelForward => _barrelExit.forward;
         public Vector3 BarrelExitPosition => _barrelExit.position;
         public float ShootPower => _shootPower;
 
@@ -23,14 +24,6 @@ namespace Assets.Scripts.Guns
                 _barrelExit.rotation);
 
             ball.SetForce(_shootPower);
-        }
-
-        public Vector3 GetFacedPosition()
-        {
-            if (Physics.Raycast(_barrelExit.position, _barrelExit.forward, out var hit, float.PositiveInfinity))
-                return hit.point;
-            else
-                return _barrelExit.position + _barrelExit.forward * 10f;
         }
     }
 }

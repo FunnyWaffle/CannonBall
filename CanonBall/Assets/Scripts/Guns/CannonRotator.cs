@@ -8,20 +8,19 @@ namespace Assets.Scripts.Guns
         [SerializeField] private float _rotationSpeed = 1f;
         [SerializeField] private float _pitchAngleLimit = 15;
 
-        public void RotateToPosition(Vector3 targetPosition)
+        public void RotateInDirection(Vector3 direction)
         {
-            Quaternion targetRotationQuaternion = GetTargetDirection(targetPosition);
+            Quaternion targetRotationQuaternion = ClampDirection(direction);
 
             _barrel.localRotation = Quaternion.RotateTowards(
-                _barrel.rotation,
+                _barrel.localRotation,
                 targetRotationQuaternion,
                 _rotationSpeed * Time.deltaTime);
         }
 
-        private Quaternion GetTargetDirection(Vector3 targetPosition)
+        private Quaternion ClampDirection(Vector3 targetPosition)
         {
-            var targetDirection = Vector3.Normalize(targetPosition - _barrel.position);
-            var targetRotation = Quaternion.LookRotation(targetDirection).eulerAngles;
+            var targetRotation = Quaternion.LookRotation(targetPosition).eulerAngles;
 
             var pitch = targetRotation.x;
             if (pitch > 180f)

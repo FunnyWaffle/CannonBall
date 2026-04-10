@@ -24,7 +24,7 @@ namespace Assets.Scripts.Guns.Projectile
             //_rigidbody.AddForce(new Vector3(0f, 0f, _startPower), ForceMode.Impulse);
         }
 
-        private void Start()
+        private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
             _raduis = GetComponent<SphereCollider>().radius;
