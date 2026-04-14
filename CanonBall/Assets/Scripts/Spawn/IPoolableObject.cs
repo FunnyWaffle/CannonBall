@@ -4,6 +4,6 @@ namespace Assets.Scripts.Spawn
 {
     public interface IPoolableObject
     {
-        public event EventHandler ObjectLifeEnded;
+        public event EventHandler Disabled;
     }
 }

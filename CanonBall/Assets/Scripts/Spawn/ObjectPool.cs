@@ -3,34 +3,50 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Spawn
 {
-    public class ObjectPool<T>
-        where T : class, IPoolableObject
+    public class ObjectPool
     {
-        private readonly Queue<T> _objects = new();
+        private readonly Dictionary<Type, Queue<IPoolableObject>> _objects = new();
 
-        public void Register(T @object)
+        public void Register<T>(T @object)
+        where T : class, IPoolableObject
         {
-            @object.ObjectLifeEnded += HandleObjectLifeEnd;
+            @object.Disabled += OnObjectDisable<T>;
         }
 
-        public bool TryGet(out T @object)
+        public bool TryGet<T>(out T @object)
+        where T : class, IPoolableObject
         {
-            if (_objects.Count == 0)
+            var type = typeof(T);
+            if (!_objects.TryGetValue(type, out var queue))
+            {
+                queue = new Queue<IPoolableObject>();
+                _objects[type] = queue;
+            }
+
+            if (queue.Count == 0)
             {
                 @object = default;
                 return false;
             }
 
-            @object = _objects.Dequeue();
+            @object = (T)queue.Dequeue();
             Register(@object);
             return true;
         }
 
-        private void HandleObjectLifeEnd(object @object, EventArgs e)
+        private void OnObjectDisable<T>(object @object, EventArgs e)
+                    where T : class, IPoolableObject
         {
+            var type = typeof(T);
+            if (!_objects.TryGetValue(type, out var queue))
+            {
+                queue = new Queue<IPoolableObject>();
+                _objects[type] = queue;
+            }
+
             var typedObject = @object as T;
-            _objects.Enqueue(typedObject);
-            typedObject.ObjectLifeEnded -= HandleObjectLifeEnd;
+            queue.Enqueue(typedObject);
+            typedObject.Disabled -= OnObjectDisable<T>;
         }
     }
 }

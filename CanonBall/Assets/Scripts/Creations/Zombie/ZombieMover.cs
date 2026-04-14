@@ -8,16 +8,33 @@ namespace Assets.Scripts.Creations.Zombie
     {
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private Animator _animator;
-        [SerializeField] private Transform _model;
         [SerializeField] private Vector3 _targetPosition;
 
-        public void Stop()
+        private Transform _agentTransform;
+
+        public Vector3 Position => _agentTransform.position;
+        public bool IsAgentEnable => _agent.enabled;
+
+        public void EnableAgent()
         {
+            _agent.enabled = true;
+            _animator.enabled = true;
+        }
+
+        public void DisableAgent()
+        {
+            if (!_agent.enabled)
+                return;
+
             _agent.ResetPath();
+            _agent.enabled = false;
+            _animator.enabled = false;
         }
 
         private void Start()
         {
+            _agentTransform = _agent.transform;
+
             _agent.SetDestination(_targetPosition);
             _agent.autoTraverseOffMeshLink = false;
         }
@@ -35,28 +52,8 @@ namespace Assets.Scripts.Creations.Zombie
             }
         }
 
-        private void LateUpdate()
-        {
-            PlaceModelOnGround();
-        }
-
-        private void PlaceModelOnGround()
-        {
-            if (!_agent.enabled) return;
-
-            if (Physics.Raycast(_model.position + Vector3.up, Vector3.down, out var hit, 5f))
-            {
-                Vector3 pos = _model.position;
-                pos.y = hit.point.y;
-
-                _model.position = pos;
-            }
-        }
-
         private void CrossMeshLink()
         {
-
-
             var linkData = _agent.currentOffMeshLinkData;
             var linkEndPos = linkData.endPos;
             var direction = Vector3.Normalize(linkEndPos - linkData.startPos);
@@ -65,12 +62,16 @@ namespace Assets.Scripts.Creations.Zombie
 
             if (Vector3.Distance(_agent.transform.position, linkEndPos) <= 0.1f)
                 _agent.CompleteOffMeshLink();
-
         }
 
         private void UpdateAnimations(float currentForwardSpeed, float maxForwardSpeed)
         {
             _animator.SetFloat(ZombieAnimatorParameters.ForwardSpeed, currentForwardSpeed / maxForwardSpeed);
+        }
+
+        private void OnValidate()
+        {
+            _agent = GetComponent<NavMeshAgent>();
         }
     }
 }

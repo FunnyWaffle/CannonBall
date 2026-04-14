@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Spawn;
+﻿using Assets.Scripts.Explosion;
+using Assets.Scripts.Spawn;
 using System;
 using UnityEngine;
 
@@ -6,17 +7,24 @@ namespace Assets.Scripts.Guns.Projectile
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SphereCollider))]
-    public class Ball : MonoBehaviour, IPoolableObject
+    public class Ball : MonoBehaviour, IPoolableObject, IExplosionMaker
     {
+        [SerializeField] private float _explosionPower = 5f;
+        [SerializeField] private float _explosionRadius = 2f;
         [SerializeField] private float _lifeTime;
         [SerializeField] private Rigidbody _rigidbody;
 
-        private float _raduis;
+        private SphereCollider _sphereCollider;
+
+        private float _colliderRaduis;
         private float _currentLifeTime;
 
-        public float Radius => _raduis;
+        public bool _isExploded = false;
 
-        public event EventHandler ObjectLifeEnded;
+        public float Radius => _colliderRaduis;
+
+        public event EventHandler Disabled;
+        public event Action<float, Vector3, float> ExplosionPerformed;
 
         public void SetForce(float forceValue)
         {
@@ -27,7 +35,8 @@ namespace Assets.Scripts.Guns.Projectile
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _raduis = GetComponent<SphereCollider>().radius;
+            _sphereCollider = GetComponent<SphereCollider>();
+            _colliderRaduis = _sphereCollider.radius;
         }
 
         private void Update()
@@ -38,24 +47,42 @@ namespace Assets.Scripts.Guns.Projectile
                 Disable();
         }
 
+        private void OnEnable()
+        {
+            ResetState();
+        }
+
         private void OnDisable()
         {
-            ObjectLifeEnded?.Invoke(this, new EventArgs());
-            ResetState();
+            Disabled?.Invoke(this, new EventArgs());
         }
 
         private void OnCollisionEnter(Collision collision)
         {
+            Explode(collision.contacts[0].point);
             Disable();
+        }
+
+        private void Explode(Vector3 explosionCenter)
+        {
+            if (_isExploded)
+                return;
+
+            _isExploded = true;
+
+            ExplosionPerformed?.Invoke(_explosionPower, explosionCenter, _explosionRadius);
         }
 
         private void Disable()
         {
             gameObject.SetActive(false);
+            _sphereCollider.enabled = false;
         }
 
         private void ResetState()
         {
+            _sphereCollider.enabled = true;
+            _isExploded = false;
             _currentLifeTime = 0;
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.linearVelocity = Vector3.zero;

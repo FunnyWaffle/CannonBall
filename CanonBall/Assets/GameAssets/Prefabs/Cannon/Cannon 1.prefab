@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.CannonShoot
   _shootPower: 15
+  _shootDelay: 5
   _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
   _barrelExit: {fileID: 7102758938105071456}
 --- !u!114 &7179173075850796035

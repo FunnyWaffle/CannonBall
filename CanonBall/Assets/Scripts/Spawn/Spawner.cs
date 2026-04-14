@@ -1,26 +1,29 @@
-﻿using Assets.Scripts.Guns.Projectile;
-using UnityEngine;
-using Zenject;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Spawn
 {
     public class Spawner : MonoBehaviour
     {
-        [Inject] private ObjectPool<Ball> _ballObjectPool;
+        private readonly ObjectPool _objectPool = new();
 
-        public Ball Spawn(Ball prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public T Spawn<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+            where T : MonoBehaviour, IPoolableObject
         {
-            if (_ballObjectPool.TryGet(out var ball))
+            if (_objectPool.TryGet<T>(out var @object))
             {
-                ball.transform.SetLocalPositionAndRotation(position, rotation);
+                @object.transform.SetLocalPositionAndRotation(position, rotation);
+                @object.gameObject.SetActive(true);
             }
             else
             {
-                ball = Instantiate(prefab, position, rotation, parent);
-                _ballObjectPool.Register(ball);
+                @object = Instantiate(prefab, position, rotation, parent);
+                _objectPool.Register(@object);
             }
 
-            return ball;
+            return @object;
         }
+
+        public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+            => Instantiate(prefab, position, rotation, parent);
     }
 }
