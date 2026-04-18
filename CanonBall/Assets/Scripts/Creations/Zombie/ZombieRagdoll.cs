@@ -1,34 +1,42 @@
-﻿using System;
+﻿using Assets.Scripts.Systems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Zombie
 {
-    public class ZombieRagdoll : MonoBehaviour
+    public class ZombieRagdoll
     {
-        [SerializeField] private Rigidbody[] _rigidbodies;
-
+        private readonly Rigidbody[] _rigidbodies;
         private readonly List<Collider> _colliders = new();
+        private readonly Transform _rootBone;
 
-        private Transform _rootBone;
         private Coroutine _explosionCoroutine;
 
+        public ZombieRagdoll(Rigidbody[] rigidbodies)
+        {
+            _rigidbodies = rigidbodies;
+
+            _rootBone = _rigidbodies[0].transform;
+            GetRigidbodyColliders();
+            DisableRagdoll();
+        }
+
         public Vector3 Position => _rootBone.position;
+        public Vector3 Down => -_rootBone.up;
 
         public event Action FellAsleep;
 
         public void ApplyExplosion(float force, Vector3 position, float radius)
         {
             EnableRagdoll((rigidbody) => { rigidbody.AddExplosionForce(force, position, radius); });
-            _explosionCoroutine = StartCoroutine(WaitForExplosionEnd());
+            _explosionCoroutine = CoroutineRunner.Instance.StartCoroutine(WaitForExplosionEnd());
         }
 
-        private void Awake()
+        public void SetPosition(Vector3 position)
         {
-            _rootBone = _rigidbodies[0].transform;
-            GetRigidbodyColliders();
-            DisableRagdoll();
+            _rootBone.position = position;
         }
 
         private void GetRigidbodyColliders()

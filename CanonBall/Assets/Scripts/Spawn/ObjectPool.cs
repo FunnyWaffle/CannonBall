@@ -7,13 +7,13 @@ namespace Assets.Scripts.Spawn
     {
         private readonly Dictionary<Type, Queue<IPoolableObject>> _objects = new();
 
-        public void Register<T>(T @object)
+        public void Register<T>(T obj)
         where T : class, IPoolableObject
         {
-            @object.Disabled += OnObjectDisable<T>;
+            obj.Disabled += OnObjectDisable<T>;
         }
 
-        public bool TryGet<T>(out T @object)
+        public bool TryGet<T>(out T obj)
         where T : class, IPoolableObject
         {
             var type = typeof(T);
@@ -25,16 +25,16 @@ namespace Assets.Scripts.Spawn
 
             if (queue.Count == 0)
             {
-                @object = default;
+                obj = default;
                 return false;
             }
 
-            @object = (T)queue.Dequeue();
-            Register(@object);
+            obj = (T)queue.Dequeue();
+            Register(obj);
             return true;
         }
 
-        private void OnObjectDisable<T>(object @object, EventArgs e)
+        private void OnObjectDisable<T>(object obj, EventArgs e)
                     where T : class, IPoolableObject
         {
             var type = typeof(T);
@@ -44,7 +44,7 @@ namespace Assets.Scripts.Spawn
                 _objects[type] = queue;
             }
 
-            var typedObject = @object as T;
+            var typedObject = obj as T;
             queue.Enqueue(typedObject);
             typedObject.Disabled -= OnObjectDisable<T>;
         }

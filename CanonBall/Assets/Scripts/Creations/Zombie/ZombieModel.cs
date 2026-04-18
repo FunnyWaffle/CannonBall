@@ -2,9 +2,14 @@
 
 namespace Assets.Scripts.Creations.Zombie
 {
-    public class ZombieModel : MonoBehaviour
+    public class ZombieModel
     {
-        [SerializeField] private Transform _model;
+        private readonly Transform _model;
+
+        public ZombieModel(Transform model)
+        {
+            _model = model;
+        }
 
         public Vector3 Position => _model.position;
 

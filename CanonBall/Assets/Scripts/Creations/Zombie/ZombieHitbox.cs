@@ -4,12 +4,19 @@ using UnityEngine;
 
 namespace Assets.Scripts.Creations.Zombie
 {
-    public class ZombieHitbox : MonoBehaviour, IExplosionReceiver
+    public class ZombieHitbox : IExplosionReceiver
     {
-        [SerializeField] private CapsuleCollider _collider;
+        private readonly Collider _collider;
 
         private Transform _transform;
 
+        public ZombieHitbox(Collider collider)
+        {
+            _collider = collider;
+            _transform = _collider.transform;
+        }
+
+        public Vector3 Position => _transform.position;
         public Collider Collider => _collider;
 
         public event Action<float, Vector3, float> ExplosionReceived;
@@ -27,11 +34,6 @@ namespace Assets.Scripts.Creations.Zombie
         public void SetTrigger(bool isTrigger)
         {
             _collider.isTrigger = isTrigger;
-        }
-
-        private void Awake()
-        {
-            _transform = _collider.transform;
         }
     }
 }

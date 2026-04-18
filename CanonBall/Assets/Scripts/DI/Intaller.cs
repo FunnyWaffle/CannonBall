@@ -24,6 +24,7 @@ public class Intaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<CameraSystem>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<CannonShooter>().FromComponentInHierarchy().AsSingle();

@@ -140,19 +140,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 4407026726425231562}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 645323041748596395}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 6207630480424901078}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
-      insertIndex: 4
       addedObject: {fileID: 9181561849695169907}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2422293802912040075}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8727231028241304494}
@@ -463,58 +451,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
   m_PrefabInstance: {fileID: 1548235120313730158}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4407026726425231562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854645710173550911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b533ff14bb4ca0048b37c564a47de8c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieModel
-  _model: {fileID: 1366515789844767621}
---- !u!114 &645323041748596395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854645710173550911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d2cca1adfbbc141945be7eaf3fca7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieRagdoll
-  _rigidbodies:
-  - {fileID: 1290304347198092409}
-  - {fileID: 1883230638478455512}
-  - {fileID: 6150387566356595168}
-  - {fileID: 2351817354670699749}
-  - {fileID: 7839707280552580763}
-  - {fileID: 3217889735707230257}
-  - {fileID: 1175173674403326171}
-  - {fileID: 7973274897541631378}
-  - {fileID: 2652338753952373316}
-  - {fileID: 6630693027101920249}
-  - {fileID: 4614603117975361839}
---- !u!114 &6207630480424901078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854645710173550911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 544c0196841c13c4992db3a1faeb3444, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieMover
-  _agent: {fileID: 9181561849695169907}
-  _animator: {fileID: 4906383766749264383}
-  _targetPosition: {x: -1.7577795, y: 0.00000017965891, z: -0.688}
 --- !u!195 &9181561849695169907
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -537,19 +473,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2422293802912040075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854645710173550911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d4eeba85e38c8f45afff9466d1f24c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieHitbox
-  _collider: {fileID: 6921510917104210672}
 --- !u!114 &8727231028241304494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,10 +485,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce214a2d188bd24190e251057aa1dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieCore
-  _mover: {fileID: 6207630480424901078}
-  _ragdoll: {fileID: 645323041748596395}
-  _hitbox: {fileID: 2422293802912040075}
-  _model: {fileID: 4407026726425231562}
+  _agent: {fileID: 9181561849695169907}
+  _animator: {fileID: 4906383766749264383}
+  _targetPosition: {x: 0, y: 0, z: 0}
+  _collider: {fileID: 6921510917104210672}
+  _rigidbodies: []
+  _modelTransform: {fileID: 1366515789844767621}
 --- !u!1 &1907678234338220644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1082271958561512970, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}

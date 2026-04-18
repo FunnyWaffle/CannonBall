@@ -1,15 +1,16 @@
 ﻿using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Explosion;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Spawn
 {
     public class EnemySpawnZone : MonoBehaviour
     {
         [SerializeField] private Vector3 _size;
-        [SerializeField] private int _enemiesCount;
         [SerializeField] private ZombieCore _enemyPrefab;
 
         [Inject] private Spawner _spawner;
@@ -17,37 +18,40 @@ namespace Assets.Scripts.Spawn
 
         private readonly List<ZombieCore> _enemies = new();
 
-        private Vector3 _startSpawnPosition;
-        private Vector3 _endSpawnPosition;
+        public int AliveEnemiesCount => _enemies.Count;
 
-        private void Awake()
+        public event Action AllEnemiesDied;
+
+        public void SpawnEnemies(int count)
         {
-            _startSpawnPosition = transform.position + _size / 2;
-            _endSpawnPosition = transform.position - _size / 2;
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 position = GetSpawnPosition();
+
+                var enemyCore = _spawner.Spawn(_enemyPrefab, position, Quaternion.identity);
+                enemyCore.Enable();
+
+                enemyCore.Died += OnEnemyDied;
+
+                var hitbox = enemyCore.Hitbox;
+
+                _enemies.Add(enemyCore);
+
+                _explosionHandler.AddExplosionReceiver(hitbox.Collider, hitbox);
+            }
         }
 
-        private void Update()
+        private Vector3 GetSpawnPosition()
         {
-            int currentEnemyCount = _enemies.Count;
-            if (currentEnemyCount < _enemiesCount)
-            {
-                for (int i = 0; i < _enemiesCount - currentEnemyCount; i++)
-                {
-                    var position = new Vector3(
-                        Random.Range(_startSpawnPosition.x, _endSpawnPosition.x),
-                        Random.Range(_startSpawnPosition.y, _endSpawnPosition.y),
-                        Random.Range(_startSpawnPosition.z, _endSpawnPosition.z)
-                        );
-                    var enemyCore = _spawner.Spawn(_enemyPrefab, position, Quaternion.identity);
-                    enemyCore.Died += OnEnemyDied;
+            var halfSize = _size / 2;
 
-                    var hitbox = enemyCore.Hitbox;
-
-                    _enemies.Add(enemyCore);
-
-                    _explosionHandler.AddExplosionReceiver(hitbox.Collider, hitbox);
-                }
-            }
+            var localPosition = new Vector3(
+                Random.Range(-halfSize.x, halfSize.x),
+                Random.Range(-halfSize.y, halfSize.y),
+                Random.Range(-halfSize.z, halfSize.z)
+                );
+            var worldPosition = transform.TransformPoint(localPosition);
+            return worldPosition;
         }
 
         private void OnEnemyDied(object enemy, System.EventArgs args)
@@ -56,13 +60,19 @@ namespace Assets.Scripts.Spawn
             {
                 _enemies.Remove(zombieCore);
                 zombieCore.Died -= OnEnemyDied;
+
+                if (_enemies.Count == 0)
+                    AllEnemiesDied?.Invoke();
             }
         }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.beige;
-            Gizmos.DrawWireCube(transform.position, _size);
+            var oldMatrix = Gizmos.matrix;
+            Gizmos.matrix = transform.localToWorldMatrix;
+            Gizmos.DrawWireCube(Vector3.zero, _size);
+            Gizmos.matrix = oldMatrix;
         }
     }
 }
