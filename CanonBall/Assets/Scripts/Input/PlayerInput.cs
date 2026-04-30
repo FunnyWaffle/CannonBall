@@ -12,7 +12,10 @@ namespace Assets.Scripts.Input
 
         public event Action JumpActionPerformed;
         public event Action AttackActionPerformed;
+        public event Action InteractionActionPerformed;
         public event Action<int> ViewModeActionPerformed;
+        public event Action BackActionPerformed;
+        public event Action InventoryActionPerformed;
 
         public PlayerInput()
         {
@@ -20,8 +23,11 @@ namespace Assets.Scripts.Input
 
             _actions.Player.Jump.performed += context => JumpActionPerformed?.Invoke();
             _actions.Player.Attack.performed += context => AttackActionPerformed?.Invoke();
+            _actions.Player.Interact.performed += context => InteractionActionPerformed?.Invoke();
             _actions.Player.FirstPersonView.performed += context => ViewModeActionPerformed?.Invoke(0);
             _actions.Player.ThirdPersonView.performed += context => ViewModeActionPerformed?.Invoke(1);
+            _actions.Player.Back.performed += context => BackActionPerformed?.Invoke();
+            _actions.Player.Inventory.performed += context => InventoryActionPerformed?.Invoke();
         }
     }
 }

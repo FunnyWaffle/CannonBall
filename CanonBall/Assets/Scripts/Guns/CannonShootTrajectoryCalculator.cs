@@ -60,7 +60,7 @@ namespace Assets.Scripts.Guns
         private static List<Vector3> BuildTrajectory(Vector3 startPosition, Vector3 velocity, float deltaTime)
         {
             var points = new List<Vector3>();
-            var steps = 50;
+            var steps = 100;
 
             Vector3 previousPosition = startPosition;
 

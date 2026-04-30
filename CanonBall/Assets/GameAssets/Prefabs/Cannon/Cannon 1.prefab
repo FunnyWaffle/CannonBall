@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7102758938105071456}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel Exit
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -31,6 +31,123 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9033821742604084714}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &983325337672612235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2014294525968684110}
+  - component: {fileID: 7609956016851433321}
+  m_Layer: 9
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2014294525968684110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983325337672612235}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4591967698252750561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &7609956016851433321
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983325337672612235}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!1 &1173924711945068054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1684197107638731819}
+  m_Layer: 9
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1684197107638731819
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173924711945068054}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.5200005, y: 0, z: 1.6599998}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3674501121850709093}
+  - {fileID: 5909995731470542774}
+  m_Father: {fileID: 4591967698252750561}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1481108389681250155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8207905036787185856}
+  m_Layer: 9
+  m_Name: First Person Camera Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8207905036787185856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481108389681250155}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.702, y: 0.713, z: -0.52599996}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3674501121850709093}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2570835261127047374
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,7 +159,7 @@ GameObject:
   - component: {fileID: 7475095995525282939}
   - component: {fileID: 5428957417682569581}
   - component: {fileID: 7857912388673292561}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +249,7 @@ GameObject:
   - component: {fileID: 6985669116092729874}
   - component: {fileID: 2389058411888858520}
   - component: {fileID: 3810434960393204156}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cannon_down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,9 +337,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4591967698252750561}
-  - component: {fileID: 2876239466672353946}
-  - component: {fileID: 7179173075850796035}
-  m_Layer: 0
+  - component: {fileID: 2147448903897935012}
+  m_Layer: 9
   m_Name: Cannon 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +355,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.7577795, y: 0.00000017965891, z: -0.688}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9033821742604084714}
@@ -248,9 +364,11 @@ Transform:
   - {fileID: 5829890366761537367}
   - {fileID: 6790716822521268627}
   - {fileID: 2145911060950085883}
+  - {fileID: 1684197107638731819}
+  - {fileID: 2014294525968684110}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2876239466672353946
+--- !u!114 &2147448903897935012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,28 +377,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 3974509554157810179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 508a4868331b1fb4b9b5f567b9905548, type: 3}
+  m_Script: {fileID: 11500000, guid: 800c1c9a19bdd504bbb268affe0a5444, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.CannonShoot
-  _shootPower: 15
-  _shootDelay: 5
-  _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
-  _barrelExit: {fileID: 7102758938105071456}
---- !u!114 &7179173075850796035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3974509554157810179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08db652415642e24fa392bc65a4135bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.Projectile.CannonRotator
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Guns.CannonView
+  Colliders:
+  - {fileID: 5432423614679217822}
+  - {fileID: 7609956016851433321}
   _barrel: {fileID: 9033821742604084714}
   _rotationSpeed: 5
   _pitchAngleLimit: 15
+  _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
+  _barrelExit: {fileID: 7102758938105071456}
+  _shootPower: 15
+  _shootDelay: 1.5
+  _firstPersonCrosshairPreview: {fileID: 0}
+  _thirdPersonCrosshairPreview: {fileID: 0}
+  _cameraViewPresets:
+    _list:
+    - _key: 1
+      _value:
+        _pivot: {fileID: 3674501121850709093}
+        _position: {fileID: 8207905036787185856}
+    - _key: 2
+      _value:
+        _pivot: {fileID: 5909995731470542774}
+        _position: {fileID: 5909995731470542774}
+--- !u!1 &4035753778525157025
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5909995731470542774}
+  m_Layer: 9
+  m_Name: Third Person Camera Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5909995731470542774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4035753778525157025}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.7577795, y: 3.66, z: -0.688}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1684197107638731819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4564609427809284405
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +443,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2145911060950085883}
   - component: {fileID: 8260659327280199580}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Nav Mesh Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +492,7 @@ GameObject:
   - component: {fileID: 2573699920282063063}
   - component: {fileID: 5774570359421371162}
   - component: {fileID: 294073202125386233}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cannon_small_upgrade_02b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,6 +571,93 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5671179199078397112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323708142382913742}
+  - component: {fileID: 5432423614679217822}
+  m_Layer: 9
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &323708142382913742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5671179199078397112}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9033821742604084714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5432423614679217822
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5671179199078397112}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.1
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.66, z: 0.54}
+--- !u!1 &6408693851259624828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3674501121850709093}
+  m_Layer: 9
+  m_Name: First Person Camera Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3674501121850709093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6408693851259624828}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.7577795, y: 0, z: -0.688}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8207905036787185856}
+  m_Father: {fileID: 1684197107638731819}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7779275122965237262
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +669,7 @@ GameObject:
   - component: {fileID: 6790716822521268627}
   - component: {fileID: 8023299749497032519}
   - component: {fileID: 5912964557319381228}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cannon_small_upgrade_03b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,7 +759,7 @@ GameObject:
   - component: {fileID: 5829890366761537367}
   - component: {fileID: 7893856182249868892}
   - component: {fileID: 4394702365313372155}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cannon_small_upgrade_03b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9033821742604084714}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -630,5 +869,6 @@ Transform:
   m_Children:
   - {fileID: 7475095995525282939}
   - {fileID: 7102758938105071456}
+  - {fileID: 323708142382913742}
   m_Father: {fileID: 4591967698252750561}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

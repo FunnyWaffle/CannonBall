@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Systems;
 using UnityEngine;
-using Zenject;
 
 namespace Assets.Scripts.Guns
 {
@@ -8,11 +7,9 @@ namespace Assets.Scripts.Guns
     {
         [SerializeField] private RectTransform _firstPersonCrosshairPreview;
 
-        [Inject] private CameraSystem _cameraSystem;
-
         public void SetPosition(Vector3 position)
         {
-            var screenPosition = _cameraSystem.ProjectOnMainCamera(position);
+            var screenPosition = CameraSystem.ProjectOnMainCamera(position);
             if (IsPositionBehindScreen(screenPosition.z))
             {
                 SetActive(false);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Spawn
 {
@@ -8,15 +9,18 @@ namespace Assets.Scripts.Spawn
 
         [SerializeField] private int _firstWaveEnemiesCount = 20;
 
-        private int _waveIndex = 1;
+        private int _waveIndex = 0;
         private readonly int _waveEnemiesCountMultiplyer = 2;
 
+        public event Action<int> WaveEnded;
 
         private void Start()
         {
+            var enemiesContainer = new GameObject("Enemies").transform;
             foreach (var zone in _enemySpawnZones)
             {
                 zone.AllEnemiesDied += OnEnemiesDied;
+                zone.SetEnemiesContainer(enemiesContainer);
             }
 
             StartNewWave();
@@ -35,8 +39,10 @@ namespace Assets.Scripts.Spawn
 
         private void StartNewWave()
         {
+            WaveEnded?.Invoke(_waveIndex);
+
             var enemiesCount = _firstWaveEnemiesCount * _waveIndex * _waveEnemiesCountMultiplyer;
-            var enemiesPerZone = enemiesCount / _enemySpawnZones.Length;
+            var enemiesPerZone = enemiesCount == 0 ? _firstWaveEnemiesCount : enemiesCount / _enemySpawnZones.Length;
 
             foreach (var zone in _enemySpawnZones)
             {

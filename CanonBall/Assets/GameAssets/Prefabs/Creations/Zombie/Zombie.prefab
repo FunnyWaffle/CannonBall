@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieCore
   _agent: {fileID: 6495623056014396539}
   _animator: {fileID: 9151341169845229349}
-  _targetPosition: {x: 12.92, y: 300, z: 8.97}
+  _targetPosition: {x: 53.02, y: 300, z: 47.1}
   _collider: {fileID: 417209429076257184}
   _rigidbodies:
   - {fileID: 7625539027623967657}

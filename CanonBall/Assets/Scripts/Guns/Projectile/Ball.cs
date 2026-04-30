@@ -22,6 +22,7 @@ namespace Assets.Scripts.Guns.Projectile
         public bool _isExploded = false;
 
         public float Radius => _colliderRaduis;
+        public SphereCollider Collider => _sphereCollider;
 
         public event EventHandler Disabled;
         public event Action<float, Vector3, float> ExplosionPerformed;
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Guns.Projectile
         {
             _rigidbody = GetComponent<Rigidbody>();
             _sphereCollider = GetComponent<SphereCollider>();
-            _colliderRaduis = _sphereCollider.radius;
+            _colliderRaduis = Collider.radius;
         }
 
         private void Update()
@@ -76,12 +77,12 @@ namespace Assets.Scripts.Guns.Projectile
         private void Disable()
         {
             gameObject.SetActive(false);
-            _sphereCollider.enabled = false;
+            Collider.enabled = false;
         }
 
         private void ResetState()
         {
-            _sphereCollider.enabled = true;
+            Collider.enabled = true;
             _isExploded = false;
             _currentLifeTime = 0;
             _rigidbody.angularVelocity = Vector3.zero;

@@ -18,6 +18,8 @@ namespace Assets.Scripts.Spawn
 
         private readonly List<ZombieCore> _enemies = new();
 
+        private Transform _enemiesContainer;
+
         public int AliveEnemiesCount => _enemies.Count;
 
         public event Action AllEnemiesDied;
@@ -28,7 +30,8 @@ namespace Assets.Scripts.Spawn
             {
                 Vector3 position = GetSpawnPosition();
 
-                var enemyCore = _spawner.Spawn(_enemyPrefab, position, Quaternion.identity);
+                var enemyCore = _spawner.Spawn(_enemyPrefab, position, Quaternion.identity, _enemiesContainer,
+                    _enemyPrefab.name + $"({i})");
                 enemyCore.Enable();
 
                 enemyCore.Died += OnEnemyDied;
@@ -39,6 +42,11 @@ namespace Assets.Scripts.Spawn
 
                 _explosionHandler.AddExplosionReceiver(hitbox.Collider, hitbox);
             }
+        }
+
+        public void SetEnemiesContainer(Transform container)
+        {
+            _enemiesContainer = container;
         }
 
         private Vector3 GetSpawnPosition()

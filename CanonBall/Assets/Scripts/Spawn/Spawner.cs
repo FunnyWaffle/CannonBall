@@ -6,7 +6,7 @@ namespace Assets.Scripts.Spawn
     {
         private readonly ObjectPool _objectPool = new();
 
-        public T Spawn<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public T Spawn<T>(T prefab, Vector3 position, Quaternion rotation, Transform parent = null, string name = null)
             where T : MonoBehaviour, IPoolableObject
         {
             if (_objectPool.TryGet<T>(out var obj))
@@ -17,6 +17,7 @@ namespace Assets.Scripts.Spawn
             else
             {
                 obj = Instantiate(prefab, position, rotation, parent);
+                obj.name = name;
                 _objectPool.Register(obj);
             }
 
