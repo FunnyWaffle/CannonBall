@@ -23,7 +23,7 @@ namespace Assets.Scripts.Guns
             _aimer = aimer;
         }
 
-        public CrosshairMode CrosshairMode
+        public CrosshairMode CurrentCrosshairMode
         {
             get => _crosshairMode;
             private set
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Guns
 
         public void SetCrosshairType(int crosshairMode)
         {
-            CrosshairMode = crosshairMode switch
+            CurrentCrosshairMode = crosshairMode switch
             {
                 0 => CrosshairMode.FirstPerson,
                 1 => CrosshairMode.ThirdPerson,
@@ -106,11 +106,5 @@ namespace Assets.Scripts.Guns
             }
 
         }
-    }
-
-    public enum CrosshairMode
-    {
-        FirstPerson,
-        ThirdPerson,
     }
 }

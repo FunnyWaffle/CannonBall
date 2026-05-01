@@ -70,7 +70,7 @@ namespace Assets.Scripts.Guns
         public void TransferCamera()
         {
             CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
-            _view.ShowCrosshair(_core.CrosshairMode);
+            _view.ShowCrosshair(_core.CurrentCrosshairMode);
         }
 
         private void OnCrosshairModeChange(CrosshairMode mode)
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Guns
 
         private void OnCrosshairPositionChange(Vector3 position)
         {
-            if (_core.CrosshairMode == CrosshairMode.FirstPerson)
+            if (_core.CurrentCrosshairMode == CrosshairMode.FirstPerson)
                 _view.FirstPersonCrosshairPreview.SetPosition(position);
             else
                 _view.ThirdPersonCrosshairPreview.SetPosition(position);
