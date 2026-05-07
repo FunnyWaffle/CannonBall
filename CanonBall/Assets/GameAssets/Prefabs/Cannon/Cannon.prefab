@@ -2562,7 +2562,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7492266319270368432}
   - component: {fileID: 7470853094991982137}
-  - component: {fileID: 4246478053662629776}
   - component: {fileID: 6905571411231806207}
   m_Layer: 0
   m_Name: Cannon
@@ -2617,21 +2616,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4246478053662629776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4640295147786267176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 508a4868331b1fb4b9b5f567b9905548, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Player.Cannon.CannonShoot
-  _projectile: {fileID: -6244228212703884579, guid: f60e2f94f65909341b7387a512741ff7, type: 3}
-  _projectileRadius: 0.5
-  _barrelExit: {fileID: 7142923462415387684}
 --- !u!114 &6905571411231806207
 MonoBehaviour:
   m_ObjectHideFlags: 0
