@@ -1,7 +1,9 @@
 ﻿using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Explosion;
+using Assets.Scripts.Shop;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -11,12 +13,12 @@ namespace Assets.Scripts.Spawn
     public class EnemySpawnZone : MonoBehaviour
     {
         [SerializeField] private Vector3 _size;
-        [SerializeField] private ZombieCore _enemyPrefab;
+        [SerializeField] private ZombieView _enemyPrefab;
 
         [Inject] private Spawner _spawner;
         [Inject] private ExplosionHandler _explosionHandler;
 
-        private readonly List<ZombieCore> _enemies = new();
+        private readonly List<ZombieController> _enemies = new();
 
         private Transform _enemiesContainer;
 
@@ -24,15 +26,13 @@ namespace Assets.Scripts.Spawn
 
         public event Action AllEnemiesDied;
 
-        public void SpawnEnemies(int count)
+        public async Task SpawnEnemies(int count)
         {
             for (int i = 0; i < count; i++)
             {
                 Vector3 position = GetSpawnPosition();
 
-                var enemyCore = _spawner.Spawn(_enemyPrefab, position, Quaternion.identity, _enemiesContainer,
-                    _enemyPrefab.name + $"({i})");
-                enemyCore.Enable();
+                var enemyCore = await _spawner.Spawn<ZombieController>(ItemTypes.Zombie, position, Quaternion.identity, _enemiesContainer);
 
                 enemyCore.Died += OnEnemyDied;
 
@@ -62,9 +62,9 @@ namespace Assets.Scripts.Spawn
             return worldPosition;
         }
 
-        private void OnEnemyDied(object enemy, System.EventArgs args)
+        private void OnEnemyDied(object enemy, EventArgs args)
         {
-            if (enemy is ZombieCore zombieCore)
+            if (enemy is ZombieController zombieCore)
             {
                 _enemies.Remove(zombieCore);
                 zombieCore.Died -= OnEnemyDied;

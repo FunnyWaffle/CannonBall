@@ -1,19 +1,19 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Config;
 using Assets.Scripts.Creations;
-using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Explosion;
-using Assets.Scripts.Guns.Components;
+using Assets.Scripts.Guns.Projectile;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
+using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Systems;
 using R3;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonController : IUpdatable, IGameplayController
+    public class CannonController : IUpdatable, IController, ISpawnable, IPoolableObject
     {
         private readonly CannonCore _core;
         private readonly CannonView _view;
@@ -23,21 +23,19 @@ namespace Assets.Scripts.Guns
         private readonly ExplosionHandler _explosionHandler;
         private readonly CompositeDisposable _disposables = new();
 
-        public CannonController(CannonView cannonView,
+        public CannonController(CannonCore core,
+            CannonView cannonView,
             InteractionObjectsRepositiory interactionObjectsRepositiory,
             Spawner spawner,
-            ExplosionHandler explosionHandler,
-            ConfigRepository configRepository)
+            ExplosionHandler explosionHandler)
         {
+            _core = core;
             _view = cannonView;
-            _view.Initialize();
-
-            var rotator = CreateRotator();
-            var shooter = CreateShooter();
-            var aimer = CreateAimer(configRepository);
-            _core = new CannonCore(rotator, shooter, aimer);
 
             _disposables.Add(_core.CurrentViewType.Subscribe(OnCameraViewTypeChange));
+            _disposables.Add(_core.Aimer.Rotation.Subscribe(OnRotationChanged));
+
+            _core.Shooter.Shot += OnShot;
             _core.CrosshairModeChanged += OnCrosshairModeChange;
             _core.CrosshairPositionChanged += OnCrosshairPositionChange;
 
@@ -46,6 +44,20 @@ namespace Assets.Scripts.Guns
             _explosionHandler = explosionHandler;
 
             SetCannonToInteractionObjects();
+        }
+
+        public event EventHandler Disabled;
+
+        public void Enable()
+        {
+            _view.Enable();
+        }
+
+        public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            _view.SetPosition(position);
+            _view.SetRotation(rotation);
+            _view.SetParent(parent);
         }
 
         public void Update()
@@ -96,11 +108,10 @@ namespace Assets.Scripts.Guns
                 _view.ThirdPersonCrosshairPreview.SetPosition(position);
         }
 
-        private void OnShot(float shootPower)
+        private async void OnShot(float shootPower)
         {
             var projectile = _view.Projectile;
-            var ball = _spawner.Spawn(projectile,
-                _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward,
+            var ball = await _spawner.Spawn<Ball>(ItemTypes.Ball, _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward,
                 _view.BarrelExitRotation);
 
             foreach (var collider in _view.Colliders)
@@ -118,46 +129,17 @@ namespace Assets.Scripts.Guns
             CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
         }
 
+        private void OnRotationChanged(Quaternion quaternion)
+        {
+            _view.SetCameraPivotRotation(quaternion);
+        }
+
         private void SetCannonToInteractionObjects()
         {
             foreach (var collider in _view.Colliders)
             {
-                _interactionObjectsRepositiory.AddCannon(collider, this);
+                _interactionObjectsRepositiory.AddControllers(collider, this);
             }
-        }
-
-        private CannonRotator CreateRotator()
-        {
-            var rotator = new CannonRotator(
-                _view.RotationSpeed,
-                _view.PitchAngleLimit,
-                _view.BarrelLocalRotation);
-
-            rotator.Rotated += _view.SetBarrelRotation;
-            _view.RotationSpeedChanged += rotator.SetRotationSpeed;
-            _view.PitchLimitChanged += rotator.SetPitchLimit;
-
-            return rotator;
-        }
-
-        private CannonShooter CreateShooter()
-        {
-            var shooter = new CannonShooter(_view.ShootPower, _view.ShootDelay);
-
-            shooter.Shot += OnShot;
-            _view.ShootPowerChanged += shooter.SetShootPower;
-            _view.ShootDelayChanged += shooter.SetShootDelay;
-
-            return shooter;
-        }
-
-        private Aimer CreateAimer(ConfigRepository configRepository)
-        {
-            var aimer = new Aimer(configRepository.PlayerConfig.Sensitivity, _view.CameraPreset.Pivot.eulerAngles);
-
-            aimer.RotationChanged += _view.SetCameraPivotRotation;
-
-            return aimer;
         }
     }
 }

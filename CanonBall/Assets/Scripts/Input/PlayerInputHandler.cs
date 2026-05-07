@@ -5,7 +5,7 @@ namespace Assets.Scripts.Input
     public class PlayerInputHandler : IUpdatable
     {
         private readonly PlayerInput _input;
-        private readonly GameStateMachine.GameStateMachine _gameStateMachine;
+        private readonly GameStateMachine.GameController _gameStateMachine;
 
         private int _viewModeIndex;
         private bool _isInteractionPerformed;
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Input
         private bool _isInventoryEventPerformed;
 
         public PlayerInputHandler(PlayerInput playerInput,
-            GameStateMachine.GameStateMachine gameStateMachine)
+            GameStateMachine.GameController gameStateMachine)
         {
             _input = playerInput;
             _gameStateMachine = gameStateMachine;

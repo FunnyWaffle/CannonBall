@@ -7,7 +7,7 @@ namespace Assets.Scripts.Guns.Projectile
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SphereCollider))]
-    public class Ball : MonoBehaviour, IPoolableObject, IExplosionMaker
+    public class Ball : MonoBehaviour, ISpawnable, IPoolableObject, IExplosionMaker
     {
         [SerializeField] private float _explosionPower = 5f;
         [SerializeField] private float _explosionRadius = 2f;
@@ -87,6 +87,17 @@ namespace Assets.Scripts.Guns.Projectile
             _currentLifeTime = 0;
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.linearVelocity = Vector3.zero;
+        }
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            transform.SetLocalPositionAndRotation(position, rotation);
+            transform.SetParent(parent);
         }
     }
 }

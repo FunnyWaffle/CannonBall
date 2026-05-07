@@ -29,16 +29,6 @@ namespace Assets.Scripts.PlayerData
             MoneyCountChanged?.Invoke(_money);
         }
 
-        public void AddGun()
-        {
-            _guns++;
-        }
-
-        public void DecreaseGunCount()
-        {
-            _guns--;
-        }
-
         public void AddItems(IEnumerable<ItemTypes> items)
         {
             _items.AddRange(items);

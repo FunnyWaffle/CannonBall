@@ -1,10 +1,11 @@
 ﻿using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.Input;
+using Assets.Scripts.Interaction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Assets.Scripts.Shop
 {
@@ -13,14 +14,17 @@ namespace Assets.Scripts.Shop
         [SerializeField] private RectTransform _transform;
         [SerializeField] private Button _butButton;
         [SerializeField] private ShopElement[] _elements;
+        [SerializeField] private Collider _vendorCollider;
 
         public UIWindowTypes Type => UIWindowTypes.Shop;
 
-        public event Action Closed;
         public event Action<IEnumerable<ItemTypes>> PurchaseCompleted;
 
-        public void Initialize()
+        [Inject]
+        public void Initialize(InteractionObjectsRepositiory interactionObjectsRepositiory)
         {
+            interactionObjectsRepositiory.AddInteactionable(_vendorCollider, InteractionableTypes.Vendor);
+            interactionObjectsRepositiory.AddUIWindow(InteractionableTypes.Vendor, this);
             _transform.gameObject.SetActive(false);
         }
 
@@ -32,7 +36,6 @@ namespace Assets.Scripts.Shop
         public void Close()
         {
             _transform.gameObject.SetActive(false);
-            Closed?.Invoke();
         }
 
         private void OnEnable()
@@ -51,12 +54,6 @@ namespace Assets.Scripts.Shop
             {
                 element.Deselect();
             }
-        }
-
-        public void HandleInput(InputData input)
-        {
-            if (input.IsBackEventPerformed)
-                Close();
         }
     }
 }

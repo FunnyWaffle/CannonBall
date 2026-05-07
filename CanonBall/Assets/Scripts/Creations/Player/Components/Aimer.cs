@@ -1,4 +1,4 @@
-﻿using System;
+﻿using R3;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player.Components
@@ -9,7 +9,7 @@ namespace Assets.Scripts.Creations.Player.Components
         private readonly float _verticalEdge = 70;
 
         private Vector2 _eulerRotation;
-        private Quaternion _rotation;
+        private readonly ReactiveProperty<Quaternion> _rotation = new();
 
         public Aimer(float sensitivity, Vector2 startEulers)
         {
@@ -17,17 +17,7 @@ namespace Assets.Scripts.Creations.Player.Components
             _eulerRotation = startEulers;
         }
 
-        public Quaternion Rotation
-        {
-            get => _rotation;
-            set
-            {
-                _rotation = value;
-                RotationChanged?.Invoke(value);
-            }
-        }
-
-        public event Action<Quaternion> RotationChanged;
+        public ReadOnlyReactiveProperty<Quaternion> Rotation => _rotation;
 
         public void Aim(Vector2 input)
         {
@@ -37,7 +27,7 @@ namespace Assets.Scripts.Creations.Player.Components
                 Mathf.Clamp(_eulerRotation.x + newRotation.x, -_verticalEdge, _verticalEdge),
                 _eulerRotation.y + newRotation.y);
 
-            Rotation = Quaternion.Euler(_eulerRotation);
+            _rotation.Value = Quaternion.Euler(_eulerRotation);
         }
     }
 }

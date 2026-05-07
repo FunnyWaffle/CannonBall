@@ -93,6 +93,25 @@ namespace Assets.Scripts.Guns
             _playerCrosshair.gameObject.SetActive(true);
         }
 
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            transform.position = position;
+        }
+        public void SetRotation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
+        }
+
+        public void SetParent(Transform parent)
+        {
+            transform.SetParent(parent);
+        }
+
         private void OnValidate()
         {
             RotationSpeedChanged?.Invoke(_rotationSpeed);

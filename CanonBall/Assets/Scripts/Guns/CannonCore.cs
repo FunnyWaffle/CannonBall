@@ -14,6 +14,7 @@ namespace Assets.Scripts.Guns
         private readonly CannonShooter _shooter;
         private readonly Aimer _aimer;
 
+        private readonly ReactiveProperty<CameraViewType> _currentViewType = new();
         private CrosshairMode _crosshairMode = CrosshairMode.FirstPerson;
 
         public CannonCore(CannonRotator rotator, CannonShooter shooter, Aimer aimer)
@@ -33,8 +34,10 @@ namespace Assets.Scripts.Guns
             }
         }
         public CannonShooter Shooter => _shooter;
+        public Aimer Aimer => _aimer;
 
-        public ReactiveProperty<CameraViewType> CurrentViewType = new();
+        public ReadOnlyReactiveProperty<CameraViewType> CurrentViewType => _currentViewType;
+
         public event Action<CrosshairMode> CrosshairModeChanged;
         public event Action<Vector3> CrosshairPositionChanged;
 
@@ -76,7 +79,7 @@ namespace Assets.Scripts.Guns
 
         public void SetViewMode(int viewModeIndex)
         {
-            CurrentViewType.Value = viewModeIndex switch
+            _currentViewType.Value = viewModeIndex switch
             {
                 0 => CameraViewType.FirstPerson,
                 1 => CameraViewType.ThirdPerson,

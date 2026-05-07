@@ -3,42 +3,28 @@ using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Input;
-using Assets.Scripts.Interaction;
 using Assets.Scripts.Systems;
 using R3;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
 {
-    public class PlayerAvatarController : IUpdatable, IGameplayController
+    public class PlayerAvatarController : IUpdatable, IController
     {
         private readonly PlayerAvatarCore _core;
         private readonly PlayerAvatarView _view;
 
-        private readonly GameplayState _gameplayState;
-        private readonly UIState _uISatate;
-        private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
-        private readonly Shop.Shop _shop;
         private readonly CompositeDisposable _disposables = new();
 
         public PlayerAvatarController(PlayerAvatarView view,
-            InteractionObjectsRepositiory interactionObjectsRepositiory,
             ConfigRepository configRepository,
-            Shop.Shop shop,
-            GameplayState gameplayState,
-            UIState uISatate)
+            GameplayController gameplayState)
         {
             _view = view;
-            _interactionObjectsRepositiory = interactionObjectsRepositiory;
-            _shop = shop;
-            _gameplayState = gameplayState;
-            _uISatate = uISatate;
 
             _view.Initialize();
             _core = InitializeCore(configRepository);
             gameplayState.SetController(this);
-
-            _shop.Closed += _view.ShowCrosshair;
         }
 
         public void Update()
@@ -101,17 +87,8 @@ namespace Assets.Scripts.Creations.Player
 
         private void OnInteractionPerform()
         {
-            if (!CameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+            if (!CameraSystem.TryGetMainCameraFacedCollider(out _, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
                 return;
-
-            if (_interactionObjectsRepositiory.TryGetCannon(collider, out var cannonController))
-            {
-                _gameplayState.SetController(cannonController);
-            }
-            else if (collider.gameObject.layer == LayerIds.IndexVendor)
-            {
-                _uISatate.Open(UIWindowTypes.Shop);
-            }
 
             _view.HideCrosshair();
         }
@@ -133,7 +110,7 @@ namespace Assets.Scripts.Creations.Player
         {
             var aimer = new Aimer(config.Sensitivity, _view.CameraPreset.Pivot.eulerAngles);
 
-            aimer.RotationChanged += RotateView;
+            _disposables.Add(aimer.Rotation.Subscribe(RotateView));
 
             return aimer;
         }

@@ -5,5 +5,7 @@ namespace Assets.Scripts.Spawn
     public interface IPoolableObject
     {
         public event EventHandler Disabled;
+
+        public void Enable();
     }
 }

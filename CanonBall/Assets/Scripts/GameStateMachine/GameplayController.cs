@@ -1,19 +1,15 @@
 ﻿using Assets.Scripts.Input;
-using System;
 
 namespace Assets.Scripts.GameStateMachine
 {
-    public class GameplayState : IGameState
+    public class GameplayController
     {
-        private IGameplayController _controller;
+        private IController _controller;
 
-        public event EventHandler StateEntered;
-
-        public void SetController(IGameplayController controller)
+        public void SetController(IController controller)
         {
             _controller = controller;
             _controller.TransferCamera();
-            StateEntered?.Invoke(this, EventArgs.Empty);
         }
 
         public void HandleInput(InputData input)

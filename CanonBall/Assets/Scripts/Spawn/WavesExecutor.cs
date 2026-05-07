@@ -46,7 +46,7 @@ namespace Assets.Scripts.Spawn
 
             foreach (var zone in _enemySpawnZones)
             {
-                zone.SpawnEnemies(enemiesPerZone);
+                _ = zone.SpawnEnemies(enemiesPerZone);
             }
 
             _waveIndex++;
