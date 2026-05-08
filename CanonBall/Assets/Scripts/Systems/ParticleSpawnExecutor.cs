@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Spawn;
-using UnityEngine;
-using Zenject;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Systems
 {
@@ -8,11 +6,9 @@ namespace Assets.Scripts.Systems
     {
         [SerializeField] private ParticleSystem _explosionPrefab;
 
-        [Inject] private Spawner  _spawner;
-
         public void ExecuteExplosionParticlesSpawn(Vector3 position)
         {
-            _spawner.Spawn(_explosionPrefab.gameObject, position, Quaternion.identity);
+            GameObject.Instantiate(_explosionPrefab.gameObject, position, Quaternion.identity);
         }
     }
 }

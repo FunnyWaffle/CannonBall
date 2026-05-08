@@ -1,8 +1,10 @@
 using Assets.Scripts.Camera;
 using Assets.Scripts.Creations.Player;
+using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Guns;
+using Assets.Scripts.Guns.Projectile;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
 using Assets.Scripts.PlayerData;
@@ -31,9 +33,11 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<ObjectPool>().AsSingle();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Spawner>().AsSingle();
+
+        CreateSpawnSystem<CannonController, CannonFactory>();
+        CreateSpawnSystem<ZombieController, ZombieFactory>();
+        CreateSpawnSystem<Ball>();
+
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
@@ -57,5 +61,21 @@ public class SceneInstaller : MonoInstaller
 
         var mainCamera = Container.Resolve<MainCamera>();
         CameraSystem.SetMainCamera(mainCamera);
+    }
+
+    private void CreateSpawnSystem<TSpawnable, TFactory>()
+        where TSpawnable : class, ISpawnable, IPoolableObject
+        where TFactory : Assets.Scripts.Spawn.Factories.IFactory<TSpawnable>
+    {
+        Container.BindInterfacesAndSelfTo<Spawner<TSpawnable>>().AsSingle();
+        Container.BindInterfacesAndSelfTo<TFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpawnRequestHandler<TSpawnable>>().AsSingle();
+    }
+
+    private void CreateSpawnSystem<TSpawnable>()
+        where TSpawnable : class, ISpawnable, IPoolableObject
+    {
+        Container.BindInterfacesAndSelfTo<Spawner<TSpawnable>>().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpawnRequestHandler<TSpawnable>>().AsSingle();
     }
 }

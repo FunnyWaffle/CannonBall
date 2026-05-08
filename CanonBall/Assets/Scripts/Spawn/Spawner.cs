@@ -1,31 +1,25 @@
 ﻿using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn.Factories;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Spawn
 {
-    public class Spawner
+    public class Spawner<T>
+        where T : class, ISpawnable, IPoolableObject
     {
-        private readonly Dictionary<Type, IFactory> _factories = new();
+        private readonly IFactory<T> _factory;
         private readonly ObjectPool _objectPool;
         private readonly AssetLoader _prefabLoader;
 
-        public Spawner(AssetLoader prefabLoader, ObjectPool objectPool, params IFactory[] factories)
+        public Spawner(AssetLoader prefabLoader, ObjectPool objectPool, IFactory<T> factory)
         {
             _prefabLoader = prefabLoader;
             _objectPool = objectPool;
-
-            foreach (var factory in factories)
-            {
-                _factories[factory.CreatedType] = factory;
-            }
+            _factory = factory;
         }
 
-        public async Task<T> Spawn<T>(ItemTypes itemType, Vector3 position, Quaternion rotation, Transform parent = null)
-            where T : class, ISpawnable, IPoolableObject
+        public async Task<T> Spawn(ItemTypes itemType, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             if (_objectPool.TryGet<T>(out var obj))
             {
@@ -35,15 +29,11 @@ namespace Assets.Scripts.Spawn
             {
                 var prefab = await _prefabLoader.Load(itemType);
 
-                var factory = _factories[typeof(T)];
-                obj = (T)factory.Create(prefab, position, rotation, parent);
+                obj = _factory.Create(prefab, position, rotation, parent);
                 _objectPool.Register(obj);
             }
 
             return obj;
         }
-
-        public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation, Transform parent = null)
-            => GameObject.Instantiate(prefab, position, rotation, parent);
     }
 }

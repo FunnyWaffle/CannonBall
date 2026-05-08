@@ -1,11 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Spawn.Factories
 {
-    public interface IFactory
+    public interface IFactory<T>
     {
-        public Type CreatedType { get; }
-        public IPoolableObject Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null);
+        public T Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null);
     }
 }

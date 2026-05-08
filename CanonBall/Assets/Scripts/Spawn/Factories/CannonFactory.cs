@@ -2,16 +2,18 @@
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Components;
+using Assets.Scripts.Guns.Projectile;
 using System;
 using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Spawn.Factories
 {
-    public class CannonFactory : IFactory
+    public class CannonFactory : IFactory<CannonController>, ISpawnRequesterCreator<Ball>
     {
         private readonly DiContainer _container;
         private readonly ConfigRepository _configRepository;
+
 
         public CannonFactory(DiContainer container, ConfigRepository configRepository)
         {
@@ -19,9 +21,9 @@ namespace Assets.Scripts.Spawn.Factories
             _container = container;
         }
 
-        public Type CreatedType => typeof(CannonController);
+        public event Action<ISpawnRequester<Ball>> SpawnRequesterCreated;
 
-        public IPoolableObject Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             var obj = GameObject.Instantiate(prefab, position, rotation, parent);
             var view = obj.GetComponent<CannonView>();
@@ -31,7 +33,11 @@ namespace Assets.Scripts.Spawn.Factories
             var shooter = CreateShooter(view);
             var aimer = CreateAimer(rotation);
             var core = new CannonCore(rotator, shooter, aimer);
-            return _container.Instantiate<CannonController>(new object[] { core, view });
+            var controller = _container.Instantiate<CannonController>(new object[] { core, view });
+
+            SpawnRequesterCreated?.Invoke(controller);
+
+            return controller;
         }
 
         private CannonRotator CreateRotator(CannonView view)

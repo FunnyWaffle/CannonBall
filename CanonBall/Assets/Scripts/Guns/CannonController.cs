@@ -13,20 +13,18 @@ using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonController : IUpdatable, IController, ISpawnable, IPoolableObject
+    public class CannonController : IUpdatable, IController, ISpawnable, IPoolableObject, ISpawnRequester<Ball>
     {
         private readonly CannonCore _core;
         private readonly CannonView _view;
 
         private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
-        private readonly Spawner _spawner;
         private readonly ExplosionHandler _explosionHandler;
         private readonly CompositeDisposable _disposables = new();
 
         public CannonController(CannonCore core,
             CannonView cannonView,
             InteractionObjectsRepositiory interactionObjectsRepositiory,
-            Spawner spawner,
             ExplosionHandler explosionHandler)
         {
             _core = core;
@@ -40,13 +38,13 @@ namespace Assets.Scripts.Guns
             _core.CrosshairPositionChanged += OnCrosshairPositionChange;
 
             _interactionObjectsRepositiory = interactionObjectsRepositiory;
-            _spawner = spawner;
             _explosionHandler = explosionHandler;
 
             SetCannonToInteractionObjects();
         }
 
         public event EventHandler Disabled;
+        public event EventHandler<SpawnArguments> SpawnRequested;
 
         public void Enable()
         {
@@ -85,6 +83,17 @@ namespace Assets.Scripts.Guns
             _view.ShowCrosshair(_core.CurrentCrosshairMode);
         }
 
+        public void SetSpawnedObject(Ball ball)
+        {
+            foreach (var collider in _view.Colliders)
+            {
+                Physics.IgnoreCollision(collider, ball.Collider);
+            }
+
+            ball.SetForce(_core.Shooter.ShootPower);
+            _explosionHandler.AddExplosionMaker(ball);
+        }
+
         private void OnCrosshairModeChange(CrosshairMode mode)
         {
             switch (mode)
@@ -111,16 +120,8 @@ namespace Assets.Scripts.Guns
         private async void OnShot(float shootPower)
         {
             var projectile = _view.Projectile;
-            var ball = await _spawner.Spawn<Ball>(ItemTypes.Ball, _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward,
-                _view.BarrelExitRotation);
-
-            foreach (var collider in _view.Colliders)
-            {
-                Physics.IgnoreCollision(collider, ball.Collider);
-            }
-
-            ball.SetForce(shootPower);
-            _explosionHandler.AddExplosionMaker(ball);
+            SpawnRequested.Invoke(this, new SpawnArguments(ItemTypes.Ball, _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward,
+               _view.BarrelExitRotation, null));
         }
 
         private void OnCameraViewTypeChange(CameraViewType type)

@@ -1,14 +1,11 @@
 ﻿using Assets.Scripts.Creations.Zombie;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Spawn.Factories
 {
-    public class ZombieFactory : IFactory
+    public class ZombieFactory : IFactory<ZombieController>
     {
-        public Type CreatedType => typeof(ZombieController);
-
-        public IPoolableObject Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public ZombieController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             var view = GameObject.Instantiate(prefab, position, rotation, parent).GetComponent<ZombieView>();
 

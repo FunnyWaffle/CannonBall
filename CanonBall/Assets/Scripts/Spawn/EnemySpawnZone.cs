@@ -15,7 +15,7 @@ namespace Assets.Scripts.Spawn
         [SerializeField] private Vector3 _size;
         [SerializeField] private ZombieView _enemyPrefab;
 
-        [Inject] private Spawner _spawner;
+        [Inject] private Spawner<ZombieController> _spawner;
         [Inject] private ExplosionHandler _explosionHandler;
 
         private readonly List<ZombieController> _enemies = new();
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Spawn
             {
                 Vector3 position = GetSpawnPosition();
 
-                var enemyCore = await _spawner.Spawn<ZombieController>(ItemTypes.Zombie, position, Quaternion.identity, _enemiesContainer);
+                var enemyCore = await _spawner.Spawn(ItemTypes.Zombie, position, Quaternion.identity, _enemiesContainer);
 
                 enemyCore.Died += OnEnemyDied;
 
