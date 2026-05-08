@@ -23,7 +23,7 @@ namespace Assets.Scripts.Creations.Zombie
 
         public Rigidbody[] Rigidbodies => _rigidbodies;
 
-        public Collider Collider => Collider;
+        public Collider Collider => _collider;
 
         public void Enable()
             => gameObject.SetActive(true);

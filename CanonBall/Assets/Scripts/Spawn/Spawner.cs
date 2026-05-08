@@ -11,9 +11,9 @@ namespace Assets.Scripts.Spawn
     {
         private readonly Dictionary<Type, IFactory> _factories = new();
         private readonly ObjectPool _objectPool;
-        private readonly PrefabLoader _prefabLoader;
+        private readonly AssetLoader _prefabLoader;
 
-        public Spawner(PrefabLoader prefabLoader, ObjectPool objectPool, params IFactory[] factories)
+        public Spawner(AssetLoader prefabLoader, ObjectPool objectPool, params IFactory[] factories)
         {
             _prefabLoader = prefabLoader;
             _objectPool = objectPool;

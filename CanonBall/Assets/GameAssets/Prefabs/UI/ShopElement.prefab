@@ -150,7 +150,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Connon
+  m_text: Cannon
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -562,9 +562,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833c2882f573b9b428c6fbb63e5d5df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Shop.ShopElement
-  _itemType: 0
+  _itemType: 1
   _name: {fileID: 6173074655651352525}
   _checkMark: {fileID: 6628088602458438578}
+  _image: {fileID: 9059223977690209596}
+  _price: {fileID: 3951027268815268196}
 --- !u!1 &6250330992118710145
 GameObject:
   m_ObjectHideFlags: 0

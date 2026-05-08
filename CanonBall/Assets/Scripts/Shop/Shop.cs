@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Interaction;
+using Assets.Scripts.Spawn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +22,17 @@ namespace Assets.Scripts.Shop
         public event Action<IEnumerable<ItemTypes>> PurchaseCompleted;
 
         [Inject]
-        public void Initialize(InteractionObjectsRepositiory interactionObjectsRepositiory)
+        public void Initialize(InteractionObjectsRepositiory interactionObjectsRepositiory,
+            AssetLoader assetLoader)
         {
             interactionObjectsRepositiory.AddInteactionable(_vendorCollider, InteractionableTypes.Vendor);
             interactionObjectsRepositiory.AddUIWindow(InteractionableTypes.Vendor, this);
             _transform.gameObject.SetActive(false);
+
+            foreach (var element in _elements)
+            {
+                _ = element.InitializeAsync(assetLoader);
+            }
         }
 
         public void Open()
@@ -46,7 +53,7 @@ namespace Assets.Scripts.Shop
         private void OnBuyButtonClick()
         {
             var selectedElements = _elements.Where(element => element.IsSelected);
-            var itemTypes = selectedElements.Select(element => element.ItemType);
+            var itemTypes = selectedElements.Where(element => element.ItemType != ItemTypes.None).Select(element => element.ItemType);
 
             PurchaseCompleted?.Invoke(itemTypes);
 

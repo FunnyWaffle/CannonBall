@@ -1,7 +1,5 @@
-﻿using Assets.Scripts.Spawn.Factories;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Scripts.Spawn
 {
@@ -50,41 +48,6 @@ namespace Assets.Scripts.Spawn
             var typedObject = obj as T;
             queue.Enqueue(typedObject);
             typedObject.Disabled -= OnObjectDisable<T>;
-        }
-    }
-
-    public class ObjectPool<T>
-        where T : class, IPoolableObject
-    {
-        private readonly IFactory<T> _factory;
-        private readonly Queue<T> _objects = new();
-
-        public ObjectPool(IFactory<T> factory)
-        {
-            _factory = factory;
-        }
-
-        public void Register(T obj)
-        {
-            obj.Disabled += OnObjectDisable;
-        }
-
-        public T Get(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
-        {
-            if (_objects.Count == 0)
-                return _factory.Create(prefab, position, rotation, parent);
-
-            var obj = _objects.Dequeue();
-            Register(obj);
-            obj.Enable();
-            return obj;
-        }
-
-        private void OnObjectDisable(object obj, EventArgs e)
-        {
-            var typedObject = obj as T;
-            _objects.Enqueue(typedObject);
-            typedObject.Disabled -= OnObjectDisable;
         }
     }
 }

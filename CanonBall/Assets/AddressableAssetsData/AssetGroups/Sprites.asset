@@ -10,23 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Config
+  m_Name: Sprites
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Config
-  m_GUID: 1963db336a2a8ea45b02a50dbd2db33e
+  m_GroupName: Sprites
+  m_GUID: d5d7e1377e5001e44974602b58a386be
   m_SerializeEntries:
-  - m_GUID: db573cd29bfd6c8488a9d7fe321f7901
-    m_Address: PrefabAssetReferences
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e03d976d070fca54ba005dbc4730885b
-    m_Address: Player
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: eb8ddaa69a2fb1142998d9383fa0c15a
-    m_Address: SpriteAssetReferences
+  - m_GUID: 88c792fa6a49f3f468ae2ad8d18f58c6
+    m_Address: Cannon
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -34,5 +24,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 0be49d4d9097ba742889e700f9c2bb10, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 7e1443f0e0f34124c83f9086774ced52, type: 2}
-    - {fileID: 11400000, guid: 1c63fe84749c26c4da3e9ec8337104b8, type: 2}
+    - {fileID: 11400000, guid: a488daaccaeda7148b9f1f5d5b3e6ccf, type: 2}
+    - {fileID: 11400000, guid: 7752f99d34319e741aade9b26314f24e, type: 2}

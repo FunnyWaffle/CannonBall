@@ -15,11 +15,13 @@ namespace Assets.Scripts.PlayerData
         private readonly WavesExecutor _wavesExecutor;
         private readonly PlaceObjectSystem _placeObjectSystem;
         private readonly Shop.Shop _shop;
+        private readonly AssetLoader _assetLoader;
 
         public InventoryController(InventoryView inventoryView,
             WavesExecutor wavesExecutor,
             Shop.Shop shop,
-            PlaceObjectSystem placeObjectSystem)
+            PlaceObjectSystem placeObjectSystem,
+            AssetLoader assetLoader)
         {
             _view = inventoryView;
             _core = new Inventory();
@@ -28,6 +30,7 @@ namespace Assets.Scripts.PlayerData
             _wavesExecutor = wavesExecutor;
             _shop = shop;
             _placeObjectSystem = placeObjectSystem;
+            _assetLoader = assetLoader;
 
             _core.MoneyCountChanged += _view.SetMoneyValue;
             _wavesExecutor.WaveEnded += AddCoinsToInventory;
@@ -51,13 +54,14 @@ namespace Assets.Scripts.PlayerData
             var slotViews = _core.Items.CreateView(item =>
             {
                 var inventorySlot = GameObject.Instantiate(_view.SlotPrefab, _view.Grid.transform);
-                inventorySlot.SetItem(item);
+                inventorySlot.Initialize(_assetLoader);
+                _ = inventorySlot.SetItem(item);
                 inventorySlot.PlaceButtonPressed += _placeObjectSystem.Place;
                 return inventorySlot;
             });
             slotViews.ObserveReplace().Subscribe(replace =>
             {
-                replace.OldValue.View.SetItem(replace.NewValue.Value);
+                _ = replace.OldValue.View.SetItem(replace.NewValue.Value);
             });
 
             _view.Initialize(slotViews);

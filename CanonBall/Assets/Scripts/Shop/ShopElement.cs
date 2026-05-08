@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using Assets.Scripts.Spawn;
+using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,8 @@ namespace Assets.Scripts.Shop
         [SerializeField] private ItemTypes _itemType;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private Toggle _checkMark;
+        [SerializeField] private Image _image;
+        [SerializeField] private TMP_Text _price;
 
         public bool IsSelected
         {
@@ -20,10 +24,10 @@ namespace Assets.Scripts.Shop
         }
         public ItemTypes ItemType => _itemType;
 
-        public void Initialize(ItemTypes itemType)
+        public async Task InitializeAsync(AssetLoader assetLoader)
         {
-            _itemType = itemType;
             _name.SetText(_itemType.ToString());
+            _image.sprite = await assetLoader.LoadSprite(_itemType);
         }
 
         public void Deselect()

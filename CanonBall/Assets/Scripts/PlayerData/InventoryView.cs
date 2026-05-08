@@ -10,12 +10,11 @@ namespace Assets.Scripts.PlayerData
     {
         [SerializeField] private InventorySlot _slotPrefab;
         [SerializeField] private GridLayoutGroup _grid;
-        [SerializeField] private Transform _transform;
         [SerializeField] private TMP_Text _text;
 
         private ISynchronizedView<ItemTypes, InventorySlot> _slotViews;
 
-        public bool IsActive => _transform.gameObject.activeSelf;
+        public bool IsActive => transform.gameObject.activeSelf;
         public InventorySlot SlotPrefab => _slotPrefab;
         public GridLayoutGroup Grid => _grid;
 
@@ -33,12 +32,12 @@ namespace Assets.Scripts.PlayerData
 
         public void Open()
         {
-            _transform.gameObject.SetActive(true);
+            transform.gameObject.SetActive(true);
         }
 
         public void Close()
         {
-            _transform.gameObject.SetActive(false);
+            transform.gameObject.SetActive(false);
         }
     }
 }

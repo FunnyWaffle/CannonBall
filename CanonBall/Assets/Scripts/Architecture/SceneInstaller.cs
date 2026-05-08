@@ -30,7 +30,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Shop>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ObjectPool>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PrefabLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
         Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<Spawner>().AsSingle();

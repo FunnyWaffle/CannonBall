@@ -524,3 +524,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.PlayerData.InventorySlot
   _name: {fileID: 4514483467253890799}
+  _image: {fileID: 4819403008055243261}
+  _placeButton: {fileID: 5942429339750483928}
