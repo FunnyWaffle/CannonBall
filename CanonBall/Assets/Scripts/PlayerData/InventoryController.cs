@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GameStateMachine;
+﻿using Assets.Scripts.Curency;
+using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Systems;
 using ObservableCollections;
@@ -7,18 +8,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.PlayerData
 {
-    public class InventoryController : IUIWindow
+    public class InventoryController : IUIWindow, ICurrencyReceiver<int>
     {
         private readonly Inventory _core;
         private readonly InventoryView _view;
 
-        private readonly WavesExecutor _wavesExecutor;
         private readonly PlaceObjectSystem _placeObjectSystem;
         private readonly Shop.Shop _shop;
         private readonly AssetLoader _assetLoader;
 
         public InventoryController(InventoryView inventoryView,
-            WavesExecutor wavesExecutor,
             Shop.Shop shop,
             PlaceObjectSystem placeObjectSystem,
             AssetLoader assetLoader)
@@ -27,13 +26,11 @@ namespace Assets.Scripts.PlayerData
             _core = new Inventory();
             Initialize();
 
-            _wavesExecutor = wavesExecutor;
             _shop = shop;
             _placeObjectSystem = placeObjectSystem;
             _assetLoader = assetLoader;
 
             _core.MoneyCountChanged += _view.SetMoneyValue;
-            _wavesExecutor.WaveEnded += AddCoinsToInventory;
             _shop.PurchaseCompleted += _core.AddItems;
         }
 
@@ -67,10 +64,9 @@ namespace Assets.Scripts.PlayerData
             _view.Initialize(slotViews);
         }
 
-        private void AddCoinsToInventory(int waveIndex)
+        public void Add(int count)
         {
-            const int coinPerWave = 5;
-            _core.AddMoney(waveIndex * coinPerWave);
+            _core.AddMoney(count);
         }
     }
 }

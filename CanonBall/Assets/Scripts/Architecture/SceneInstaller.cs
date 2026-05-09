@@ -1,6 +1,7 @@
 using Assets.Scripts.Camera;
 using Assets.Scripts.Creations.Player;
 using Assets.Scripts.Creations.Zombie;
+using Assets.Scripts.Curency;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Guns;
@@ -31,6 +32,10 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<InventoryView>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Shop>().FromComponentInHierarchy().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
+
         Container.BindInterfacesAndSelfTo<ObjectPool>().AsSingle();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
 
@@ -38,9 +43,7 @@ public class SceneInstaller : MonoInstaller
         CreateSpawnSystem<ZombieController, ZombieFactory>();
         CreateSpawnSystem<Ball>();
 
-        Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
