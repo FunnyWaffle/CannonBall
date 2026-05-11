@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Input;
+using Assets.Scripts.Shop;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Assets.Scripts.Interaction
     public class InteractionObjectsRepositiory
     {
         private readonly Dictionary<Collider, IController> _controllers = new();
+        private readonly Dictionary<Collider, IItemSeller> _itemSellers = new();
         private readonly Dictionary<Collider, InteractionableTypes> _interactionables = new();
         private readonly Dictionary<InteractionableTypes, IUIWindow> _uis = new();
 
@@ -39,6 +41,16 @@ namespace Assets.Scripts.Interaction
 
             uIWindow = default;
             return false;
+        }
+
+        public void AddItemSeller(Collider collider, IItemSeller itemSeller)
+        {
+            _itemSellers[collider] = itemSeller;
+        }
+
+        public bool TryGetItemSeller(Collider collider, out IItemSeller itemSeller)
+        {
+            return _itemSellers.TryGetValue(collider, out itemSeller);
         }
     }
 

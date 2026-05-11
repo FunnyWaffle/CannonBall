@@ -30,11 +30,12 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<CannonView>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<MainCamera>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<InventoryView>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<Shop>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<ShopView>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ObjectPool>().AsSingle();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
@@ -53,7 +54,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerInputHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<PurchaseHandler>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
 

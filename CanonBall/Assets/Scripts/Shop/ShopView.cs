@@ -10,16 +10,18 @@ using Zenject;
 
 namespace Assets.Scripts.Shop
 {
-    public class Shop : MonoBehaviour, IUIWindow
+    public class ShopView : MonoBehaviour, IUIWindow, IPurchaseMaker
     {
         [SerializeField] private RectTransform _transform;
         [SerializeField] private Button _butButton;
         [SerializeField] private ShopElement[] _elements;
         [SerializeField] private Collider _vendorCollider;
 
+        private IItemSeller _seller;
+
         public UIWindowTypes Type => UIWindowTypes.Shop;
 
-        public event Action<IEnumerable<ItemTypes>> PurchaseCompleted;
+        public event Action<IItemSeller, IEnumerable<ItemTypes>> PurchasePerformed;
 
         [Inject]
         public void Initialize(InteractionObjectsRepositiory interactionObjectsRepositiory,
@@ -35,6 +37,11 @@ namespace Assets.Scripts.Shop
             }
         }
 
+        public void SetItemSeller(IItemSeller itemSeller)
+        {
+            _seller = itemSeller;
+        }
+
         public void Open()
         {
             _transform.gameObject.SetActive(true);
@@ -42,6 +49,7 @@ namespace Assets.Scripts.Shop
 
         public void Close()
         {
+            _seller = null;
             _transform.gameObject.SetActive(false);
         }
 
@@ -55,7 +63,7 @@ namespace Assets.Scripts.Shop
             var selectedElements = _elements.Where(element => element.IsSelected);
             var itemTypes = selectedElements.Where(element => element.ItemType != ItemTypes.None).Select(element => element.ItemType);
 
-            PurchaseCompleted?.Invoke(itemTypes);
+            PurchasePerformed?.Invoke(_seller, itemTypes);
 
             foreach (var element in selectedElements)
             {

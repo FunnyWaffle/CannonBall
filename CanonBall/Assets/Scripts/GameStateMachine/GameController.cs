@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Config;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
+using Assets.Scripts.Shop;
 using Assets.Scripts.Systems;
 
 namespace Assets.Scripts.GameStateMachine
@@ -23,21 +24,33 @@ namespace Assets.Scripts.GameStateMachine
 
         public void HandleInput(InputData input)
         {
-            if (input.IsInteractionPerformed)
-            {
-                if (CameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
-                {
-                    if (_interactionObjectsRepositiory.TryGetControllers(collider, out var cannonController))
-                        _gameplayController.SetController(cannonController);
-                    else if (_interactionObjectsRepositiory.TryGetUIWindow(collider, out var uIWindow))
-                        _uIController.Open(uIWindow);
-                }
-            }
+            HandleInteraction(input.IsInteractionPerformed);
 
             if (!_uIController.HasOpenWindow)
                 _gameplayController.HandleInput(input);
 
             _uIController.HandleInput(input);
+        }
+
+        private void HandleInteraction(bool isInteractionPerformed)
+        {
+            if (!isInteractionPerformed)
+                return;
+
+            if (CameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+                return;
+
+            if (_interactionObjectsRepositiory.TryGetControllers(collider, out var cannonController))
+                _gameplayController.SetController(cannonController);
+
+            else if (_interactionObjectsRepositiory.TryGetUIWindow(collider, out var uIWindow))
+            {
+                if (uIWindow is ShopView shopView
+                    && _interactionObjectsRepositiory.TryGetItemSeller(collider, out var itemSeller))
+                    shopView.SetItemSeller(itemSeller);
+
+                _uIController.Open(uIWindow);
+            }
         }
     }
 }

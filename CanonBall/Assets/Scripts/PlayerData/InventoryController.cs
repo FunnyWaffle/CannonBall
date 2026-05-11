@@ -1,24 +1,24 @@
 ﻿using Assets.Scripts.Curency;
 using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Systems;
 using ObservableCollections;
 using R3;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.PlayerData
 {
-    public class InventoryController : IUIWindow, ICurrencyReceiver<int>
+    public class InventoryController : IUIWindow, ICurrencyReceiver<int>, IItemStorage, ICurrencyStorage
     {
         private readonly Inventory _core;
         private readonly InventoryView _view;
 
         private readonly PlaceObjectSystem _placeObjectSystem;
-        private readonly Shop.Shop _shop;
         private readonly AssetLoader _assetLoader;
 
         public InventoryController(InventoryView inventoryView,
-            Shop.Shop shop,
             PlaceObjectSystem placeObjectSystem,
             AssetLoader assetLoader)
         {
@@ -26,12 +26,10 @@ namespace Assets.Scripts.PlayerData
             _core = new Inventory();
             Initialize();
 
-            _shop = shop;
             _placeObjectSystem = placeObjectSystem;
             _assetLoader = assetLoader;
 
             _core.MoneyCountChanged += _view.SetMoneyValue;
-            _shop.PurchaseCompleted += _core.AddItems;
         }
 
         public UIWindowTypes Type => UIWindowTypes.Inventory;
@@ -44,6 +42,25 @@ namespace Assets.Scripts.PlayerData
         public void Close()
         {
             _view.Close();
+        }
+
+        public void Add(int count)
+        {
+            _core.AddMoney(count);
+        }
+
+        public void ApplyPurchasedItems(IEnumerable<ItemTypes> items)
+        {
+            _core.AddItems(items);
+        }
+
+        public bool TrySpend(int count)
+        {
+            if (_core.Money < count)
+                return false;
+
+            _core.SpendMoney(count);
+            return true;
         }
 
         private void Initialize()
@@ -62,11 +79,6 @@ namespace Assets.Scripts.PlayerData
             });
 
             _view.Initialize(slotViews);
-        }
-
-        public void Add(int count)
-        {
-            _core.AddMoney(count);
         }
     }
 }
