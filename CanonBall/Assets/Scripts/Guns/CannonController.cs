@@ -7,7 +7,6 @@ using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Systems;
-using R3;
 using System;
 using UnityEngine;
 
@@ -20,7 +19,6 @@ namespace Assets.Scripts.Guns
 
         private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
         private readonly ExplosionHandler _explosionHandler;
-        private readonly CompositeDisposable _disposables = new();
 
         public CannonController(CannonCore core,
             CannonView cannonView,
@@ -30,18 +28,15 @@ namespace Assets.Scripts.Guns
             _core = core;
             _view = cannonView;
 
-            _disposables.Add(_core.CurrentViewType.Subscribe(OnCameraViewTypeChange));
-            _disposables.Add(_core.Aimer.Rotation.Subscribe(OnRotationChanged));
-
             _core.Shooter.Shot += OnShot;
-            _core.CrosshairModeChanged += OnCrosshairModeChange;
-            _core.CrosshairPositionChanged += OnCrosshairPositionChange;
 
             _interactionObjectsRepositiory = interactionObjectsRepositiory;
             _explosionHandler = explosionHandler;
 
             SetCannonToInteractionObjects();
         }
+
+        public CrosshairTypes CrosshairType => CrosshairTypes.Cannon;
 
         public event EventHandler Disabled;
         public event EventHandler<SpawnArguments> SpawnRequested;
@@ -64,23 +59,17 @@ namespace Assets.Scripts.Guns
             _core.Shooter.BarrelForward = _view.BarrelExitForward;
         }
 
-        public void HandleInput(InputData input)
+        public void HandleInput(Vector2 movementInput, Vector3 positionToRotation)
         {
-            _core.Aim(input.Rotation);
-            var position = CameraSystem.MainCamera.GetFacedPosition();
-            _core.RotateToPosition(position);
+            _core.RotateToPosition(positionToRotation);
 
             if (input.IsAttacked)
                 _core.Shoot();
-
-            _core.SetCrosshairType(input.ViewModeIndex);
-            _core.SetViewMode(input.ViewModeIndex);
         }
 
-        public void TransferCamera()
+        public CameraPresetHandler GetCameraTransformPreset()
         {
-            CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
-            _view.ShowCrosshair(_core.CurrentCrosshairMode);
+            return _view.CameraPresetHandler;
         }
 
         public void SetSpawnedObject(Ball ball)
@@ -94,45 +83,11 @@ namespace Assets.Scripts.Guns
             _explosionHandler.AddExplosionMaker(ball);
         }
 
-        private void OnCrosshairModeChange(CrosshairMode mode)
-        {
-            switch (mode)
-            {
-                case CrosshairMode.FirstPerson:
-                    _view.FirstPersonCrosshairPreview.SetActive(true);
-                    _view.ThirdPersonCrosshairPreview.SetActive(false);
-                    break;
-                case CrosshairMode.ThirdPerson:
-                    _view.FirstPersonCrosshairPreview.SetActive(false);
-                    _view.ThirdPersonCrosshairPreview.SetActive(true);
-                    break;
-            }
-        }
-
-        private void OnCrosshairPositionChange(Vector3 position)
-        {
-            if (_core.CurrentCrosshairMode == CrosshairMode.FirstPerson)
-                _view.FirstPersonCrosshairPreview.SetPosition(position);
-            else
-                _view.ThirdPersonCrosshairPreview.SetPosition(position);
-        }
-
         private async void OnShot(float shootPower)
         {
             var projectile = _view.Projectile;
-            SpawnRequested.Invoke(this, new SpawnArguments(ItemTypes.Ball, _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward,
-               _view.BarrelExitRotation, null));
-        }
-
-        private void OnCameraViewTypeChange(CameraViewType type)
-        {
-            _view.SetCameraViewType(type);
-            CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
-        }
-
-        private void OnRotationChanged(Quaternion quaternion)
-        {
-            _view.SetCameraPivotRotation(quaternion);
+            SpawnRequested.Invoke(this, new SpawnArguments(ItemTypes.Ball,
+               _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward, _view.BarrelExitRotation));
         }
 
         private void SetCannonToInteractionObjects()

@@ -21,17 +21,10 @@ namespace Assets.Scripts.Guns
         [SerializeField] private float _shootPower = 15f;
         [SerializeField] private float _shootDelay = 1.5f;
 
-        [Header("Crosshairs")]
-        [SerializeField] private FirstPersonCannonCrosshairPreview _firstPersonCrosshairPreview;
-        [SerializeField] private ThirdPersonCannonCrosshairPreview _thirdPersonCrosshairPreview;
-        [SerializeField] private RectTransform _playerCrosshair;
-
         [Header("Camera")]
         [SerializeField] private SerializableDictionary<CameraViewType, CameraTransformPreset> _cameraViewPresets;
 
-        private CameraPresetHandler _cameraPresetHandler;
-
-        public CameraTransformPreset CameraPreset => _cameraPresetHandler.CurrentPreset;
+        public CameraPresetHandler CameraPresetHandler { get; private set; }
 
         public Quaternion BarrelLocalRotation => _barrel.localRotation;
         public float RotationSpeed => _rotationSpeed;
@@ -44,9 +37,6 @@ namespace Assets.Scripts.Guns
         public float ShootDelay => _shootDelay;
         public Ball Projectile => _projectile;
 
-        public FirstPersonCannonCrosshairPreview FirstPersonCrosshairPreview => _firstPersonCrosshairPreview;
-        public ThirdPersonCannonCrosshairPreview ThirdPersonCrosshairPreview => _thirdPersonCrosshairPreview;
-
         public event Action<float> RotationSpeedChanged;
         public event Action<float> PitchLimitChanged;
 
@@ -55,42 +45,12 @@ namespace Assets.Scripts.Guns
 
         public void Initialize()
         {
-            _cameraPresetHandler = new CameraPresetHandler(_cameraViewPresets);
-        }
-
-        public void SetCameraViewType(CameraViewType cameraViewType)
-        {
-            _cameraPresetHandler.SetViewType(cameraViewType);
+            CameraPresetHandler = new CameraPresetHandler(_cameraViewPresets);
         }
 
         public void SetBarrelRotation(Quaternion rotation)
         {
             _barrel.localRotation = rotation;
-        }
-
-        public void SetCameraPivotRotation(Quaternion rotation)
-        {
-            _cameraPresetHandler.CurrentPreset.Pivot.rotation = rotation;
-        }
-
-        public void ShowCrosshair(CrosshairMode crosshairMode)
-        {
-            _playerCrosshair.gameObject.SetActive(true);
-            if (crosshairMode == CrosshairMode.FirstPerson)
-            {
-                FirstPersonCrosshairPreview.SetActive(true);
-                ThirdPersonCrosshairPreview.SetActive(false);
-            }
-            else
-            {
-                FirstPersonCrosshairPreview.SetActive(false);
-                ThirdPersonCrosshairPreview.SetActive(true);
-            }
-        }
-
-        public void HideCrosshair()
-        {
-            _playerCrosshair.gameObject.SetActive(true);
         }
 
         public void Enable()

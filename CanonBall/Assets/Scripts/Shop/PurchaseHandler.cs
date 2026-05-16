@@ -9,21 +9,18 @@ namespace Assets.Scripts.Shop
         private readonly IItemStorage _itemStorage;
         private readonly ICurrencyStorage _currencyStorage;
 
-        public PurchaseHandler(IItemStorage purchaseSource, IPurchaseMaker purchaseMaker)
+        public PurchaseHandler(IItemStorage purchaseSource, IPurchaseMaker purchaseMaker, ICurrencyStorage currencyStorage)
         {
             _itemStorage = purchaseSource;
             _purchaseMaker = purchaseMaker;
+            _currencyStorage = currencyStorage;
 
             _purchaseMaker.PurchasePerformed += OnPerformPurchase;
         }
 
         private void OnPerformPurchase(IItemSeller itemSeller, IEnumerable<ItemTypes> itemsToBuy)
         {
-            var existingItems = itemSeller.GetItems();
-
-            var itemsAvailableForPurchase = itemsToBuy.Where(item => existingItems.Contains(item));
-
-            if (!_currencyStorage.TrySpend(itemsAvailableForPurchase.Count()))
+            if (!_currencyStorage.TrySpend(itemsToBuy.Count()))
                 return;
 
             _itemStorage.ApplyPurchasedItems(itemsToBuy);

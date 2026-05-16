@@ -480,7 +480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1630789194408794699}
-  - component: {fileID: 6624340058402223660}
+  - component: {fileID: 4268444454752783357}
   m_Layer: 0
   m_Name: InventorySlot
   m_TagString: Untagged
@@ -511,7 +511,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6624340058402223660
+--- !u!114 &4268444454752783357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -520,9 +520,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7778777269562628935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ed1a3f108ebaae4f911d3558e94d2cd, type: 3}
+  m_Script: {fileID: 11500000, guid: a860a493f9a41c64591fb06986eef1d1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.PlayerData.InventorySlot
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.PlayerData.InventorySlotView
   _name: {fileID: 4514483467253890799}
   _image: {fileID: 4819403008055243261}
   _placeButton: {fileID: 5942429339750483928}

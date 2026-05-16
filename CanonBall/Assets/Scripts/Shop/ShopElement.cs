@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Spawn;
-using System.Threading.Tasks;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,11 +6,12 @@ namespace Assets.Scripts.Shop
 {
     public class ShopElement : MonoBehaviour
     {
-        [SerializeField] private ItemTypes _itemType;
         [SerializeField] private TMP_Text _name;
         [SerializeField] private Toggle _checkMark;
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _price;
+
+        private ItemTypes _itemType;
 
         public bool IsSelected
         {
@@ -24,10 +23,12 @@ namespace Assets.Scripts.Shop
         }
         public ItemTypes ItemType => _itemType;
 
-        public async Task InitializeAsync(AssetLoader assetLoader)
+        public void SetItem(ItemTypes itemType, Sprite sprite)
         {
+            _itemType = itemType;
+
             _name.SetText(_itemType.ToString());
-            _image.sprite = await assetLoader.LoadSprite(_itemType);
+            _image.sprite = sprite;
         }
 
         public void Deselect()

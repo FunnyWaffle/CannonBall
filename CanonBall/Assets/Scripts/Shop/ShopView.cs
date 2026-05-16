@@ -3,7 +3,7 @@ using Assets.Scripts.Interaction;
 using Assets.Scripts.Spawn;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -15,7 +15,8 @@ namespace Assets.Scripts.Shop
         [SerializeField] private RectTransform _transform;
         [SerializeField] private Button _butButton;
         [SerializeField] private ShopElement[] _elements;
-        [SerializeField] private Collider _vendorCollider;
+
+        private AssetLoader _assetLoader;
 
         private IItemSeller _seller;
 
@@ -24,22 +25,26 @@ namespace Assets.Scripts.Shop
         public event Action<IItemSeller, IEnumerable<ItemTypes>> PurchasePerformed;
 
         [Inject]
-        public void Initialize(InteractionObjectsRepositiory interactionObjectsRepositiory,
-            AssetLoader assetLoader)
+        public void Initialize(AssetLoader assetLoader, InteractionObjectsRepositiory interactionObjectsRepositiory)
         {
-            interactionObjectsRepositiory.AddInteactionable(_vendorCollider, InteractionableTypes.Vendor);
             interactionObjectsRepositiory.AddUIWindow(InteractionableTypes.Vendor, this);
+            _assetLoader = assetLoader;
             _transform.gameObject.SetActive(false);
-
-            foreach (var element in _elements)
-            {
-                _ = element.InitializeAsync(assetLoader);
-            }
         }
 
-        public void SetItemSeller(IItemSeller itemSeller)
+        public async Task SetItemSeller(IItemSeller itemSeller)
         {
             _seller = itemSeller;
+
+            var index = 0;
+            foreach (var item in itemSeller.GetItems())
+            {
+                var element = _elements[index];
+                var sprite = await _assetLoader.LoadSprite(item);
+                element.SetItem(item, sprite);
+
+                index++;
+            }
         }
 
         public void Open()
@@ -60,12 +65,16 @@ namespace Assets.Scripts.Shop
 
         private void OnBuyButtonClick()
         {
-            var selectedElements = _elements.Where(element => element.IsSelected);
-            var itemTypes = selectedElements.Where(element => element.ItemType != ItemTypes.None).Select(element => element.ItemType);
+            var selectedItems = new List<ItemTypes>();
+            foreach (var element in _elements)
+            {
+                if (element.IsSelected)
+                    selectedItems.Add(element.ItemType);
+            }
 
-            PurchasePerformed?.Invoke(_seller, itemTypes);
+            PurchasePerformed?.Invoke(_seller, selectedItems);
 
-            foreach (var element in selectedElements)
+            foreach (var element in _elements)
             {
                 element.Deselect();
             }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffe1551bcd76c645b5c0f05b96eadc3, type: 3}
   m_Name: PrefabAssetReferences
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Config.AssetReferences
-  References:
+  _references:
     _list:
     - _key: 1
       _value:
@@ -21,9 +21,23 @@ MonoBehaviour:
         m_SubObjectType: 
         m_SubObjectGUID: 
         m_EditorAssetChanged: 0
-    - _key: 3
+    - _key: 2
+      _value:
+        m_AssetGUID: 494b9a1267cdf3b47993c2c4e4b33e09
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_SubObjectGUID: 
+        m_EditorAssetChanged: 0
+    - _key: 4
       _value:
         m_AssetGUID: 8609f8b75bdccd74c9acfb36aa6fa421
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_SubObjectGUID: 
+        m_EditorAssetChanged: 0
+    - _key: 3
+      _value:
+        m_AssetGUID: f60e2f94f65909341b7387a512741ff7
         m_SubObjectName: 
         m_SubObjectType: 
         m_SubObjectGUID: 

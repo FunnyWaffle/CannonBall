@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Guns
   m_GUID: 850dfd9daefa3194fbf0201c65e99df3
   m_SerializeEntries:
+  - m_GUID: 494b9a1267cdf3b47993c2c4e4b33e09
+    m_Address: CannonProjection
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 53a37f89187d04440b102ec2f0ce27b2
     m_Address: Cannon
     m_ReadOnly: 0

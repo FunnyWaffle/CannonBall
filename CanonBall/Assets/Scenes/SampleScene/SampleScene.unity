@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0560cb294a1384f41878e5a0f6be2450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Player.InventoryView
-  _slotPrefab: {fileID: 6624340058402223660, guid: 3bbb9bc07b19f0b4ab56a60d4e4bab12, type: 3}
+  _slotPrefab: {fileID: 4268444454752783357, guid: 3bbb9bc07b19f0b4ab56a60d4e4bab12, type: 3}
   _grid: {fileID: 1002394043}
   _text: {fileID: 1946778176}
 --- !u!1 &410087039
@@ -1617,7 +1617,6 @@ MonoBehaviour:
   _butButton: {fileID: 637692459}
   _elements:
   - {fileID: 837010913}
-  _vendorCollider: {fileID: 1320181590}
 --- !u!1 &1317120185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1668,11 +1667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Guns.FirstPersonCannonCrosshairPreview
   _firstPersonCrosshairPreview: {fileID: 1317120186}
---- !u!136 &1320181590 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 1130647082156192520, guid: 6f0a678e0aa4d6044b56a1c32bd11e8c, type: 3}
-  m_PrefabInstance: {fileID: 5658182634011746229}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1329151675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2426,6 +2420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1983552888}
+  - component: {fileID: 1983552889}
   m_Layer: 0
   m_Name: Player Crosshair
   m_TagString: Untagged
@@ -2453,6 +2448,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1983552889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983552887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4513802cddaba874a96612b105cdcd90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Crosshairs.PlayerCrosshair
 --- !u!1 &2010997423
 GameObject:
   m_ObjectHideFlags: 0
@@ -2868,10 +2875,6 @@ PrefabInstance:
     - target: {fileID: 5059189448960159286, guid: ada4e9f514166504f88416615ca00ae7, type: 3}
       propertyPath: m_Name
       value: Cannon Player Crosshair
-      objectReference: {fileID: 0}
-    - target: {fileID: 5059189448960159286, guid: ada4e9f514166504f88416615ca00ae7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8143491936018793107, guid: ada4e9f514166504f88416615ca00ae7, type: 3}
       propertyPath: m_Pivot.x

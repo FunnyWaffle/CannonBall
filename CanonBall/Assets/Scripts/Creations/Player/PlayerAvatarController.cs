@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
-using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Input;
 using Assets.Scripts.Systems;
 using R3;
@@ -9,110 +8,50 @@ using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
 {
-    public class PlayerAvatarController : IUpdatable, IController
+    public class PlayerAvatarController : IController
     {
-        private readonly PlayerAvatarCore _core;
+        private readonly PlayerAvatarMover _mover;
         private readonly PlayerAvatarView _view;
 
         private readonly CompositeDisposable _disposables = new();
 
         public PlayerAvatarController(PlayerAvatarView view,
-            ConfigRepository configRepository,
-            GameplayController gameplayState)
+            PlayerConfig config)
         {
             _view = view;
-
             _view.Initialize();
-            _core = InitializeCore(configRepository);
-            gameplayState.SetController(this);
+
+            _mover = CreateMoverComtroller(config);
         }
 
-        public void Update()
+        public CrosshairTypes CrosshairType => CrosshairTypes.Player;
+
+        public void HandleInput(Vector2 movementInput, Vector3 positionToRotation)
         {
-            CheckInteractions();
+            RotateView(positionToRotation);
+            _mover.UpdateVelocity(movementInput);
         }
 
-        public void HandleInput(InputData input)
+        public CameraPresetHandler GetCameraTransformPreset()
         {
-            _core.Move(input.Movement);
-            _core.Aim(input.Rotation);
-            _core.SetViewMode(input.ViewModeIndex);
-
-            if (input.IsInteractionPerformed)
-                OnInteractionPerform();
+            return _view.CameraPresetHandler;
         }
 
-        public void TransferCamera()
+        private void RotateView(Vector3 positionToRotation)
         {
-            CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
-            _view.ShowCrosshair();
-        }
+            var direction = Vector3.Normalize(positionToRotation - _view.ModelPosition);
 
-        private void RotateView(Quaternion rotation)
-        {
+            var flatDirection = direction;
+            flatDirection.y = 0;
+
+            var rotation = Quaternion.LookRotation(flatDirection, Vector3.up);
             _view.SetCameraPivotRotation(rotation);
-        }
-
-        private void CheckInteractions()
-        {
-            if (CameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
-            {
-                var gameObject = collider.gameObject;
-                var layer = gameObject.layer;
-
-                if (layer == LayerIds.IndexVendor
-                    || layer == LayerIds.IndexGun)
-                {
-                    _view.ShowInteractionPrompt();
-                }
-            }
-            else
-            {
-                _view.HideInteractionPrompt();
-            }
         }
 
         private void OnVelocityChange(Vector3 velocity)
         {
-            var mainCamera = CameraSystem.MainCamera;
-            var projectedVelocity = _core.Mover.ProjectVelocityOn(mainCamera.Forward, mainCamera.Right);
+            var projectedVelocity = _mover.ProjectVelocityOn(_view.ModelForwad, _view.ModelRight);
             _view.Move(projectedVelocity);
-        }
-
-        private void OnCameraViewTypeChange(CameraViewType cameraViewType)
-        {
-            _view.SetCameraViewType(cameraViewType);
-            CameraSystem.ApplyMainCameraPreset(_view.CameraPreset);
-        }
-
-        private void OnInteractionPerform()
-        {
-            if (!CameraSystem.TryGetMainCameraFacedCollider(out _, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
-                return;
-
-            _view.HideCrosshair();
-        }
-
-        private PlayerAvatarCore InitializeCore(ConfigRepository configRepository)
-        {
-            var config = configRepository.PlayerConfig;
-            var aimer = CreateAimer(config);
-            var mover = CreateMoverComtroller(config);
-
-            var core = new PlayerAvatarCore(aimer, mover);
-
-            _disposables.Add(core.CurrentViewType.Subscribe(OnCameraViewTypeChange));
-
-            return core;
-        }
-
-        private Aimer CreateAimer(PlayerConfig config)
-        {
-            var aimer = new Aimer(config.Sensitivity, _view.CameraPreset.Pivot.eulerAngles);
-
-            _disposables.Add(aimer.Rotation.Subscribe(RotateView));
-
-            return aimer;
         }
 
         private PlayerAvatarMover CreateMoverComtroller(PlayerConfig config)

@@ -6,14 +6,14 @@ namespace Assets.Scripts.Config
     public class ConfigRepository
     {
         public PlayerConfig PlayerConfig { get; private set; }
-        public AssetReferences PrefabAssetReferences { get; private set; }
-        public AssetReferences SpriteAssetReferences { get; private set; }
+        public AssetReferences PrefabReferences { get; private set; }
+        public AssetReferences SpriteReferences { get; private set; }
 
         public async Task LoadAsync()
         {
             PlayerConfig = await ConfigLoader.Load<PlayerConfig>(ConfigNames.Player);
-            PrefabAssetReferences = await ConfigLoader.Load<AssetReferences>(ConfigNames.PrefabAssetReferences);
-            SpriteAssetReferences = await ConfigLoader.Load<AssetReferences>(ConfigNames.SpriteAssetReferences);
+            PrefabReferences = await ConfigLoader.Load<AssetReferences>(ConfigNames.PrefabAssetReferences);
+            SpriteReferences = await ConfigLoader.Load<AssetReferences>(ConfigNames.SpriteAssetReferences);
         }
     }
 }

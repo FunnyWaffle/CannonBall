@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Guns
+﻿namespace Assets.Scripts.Crosshairs
 {
     public enum CrosshairMode
     {

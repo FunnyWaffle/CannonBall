@@ -15,8 +15,8 @@ namespace Assets.Scripts.PlayerData
         private readonly Inventory _core;
         private readonly InventoryView _view;
 
-        private readonly PlaceObjectSystem _placeObjectSystem;
         private readonly AssetLoader _assetLoader;
+        private readonly PlaceObjectSystem _placeObjectSystem;
 
         public InventoryController(InventoryView inventoryView,
             PlaceObjectSystem placeObjectSystem,
@@ -24,12 +24,15 @@ namespace Assets.Scripts.PlayerData
         {
             _view = inventoryView;
             _core = new Inventory();
-            Initialize();
 
             _placeObjectSystem = placeObjectSystem;
             _assetLoader = assetLoader;
 
+            Initialize();
+
             _core.MoneyCountChanged += _view.SetMoneyValue;
+
+            _placeObjectSystem.ObjectPlaced += _core.RemoveItem;
         }
 
         public UIWindowTypes Type => UIWindowTypes.Inventory;
@@ -70,12 +73,16 @@ namespace Assets.Scripts.PlayerData
                 var inventorySlot = GameObject.Instantiate(_view.SlotPrefab, _view.Grid.transform);
                 inventorySlot.Initialize(_assetLoader);
                 _ = inventorySlot.SetItem(item);
-                inventorySlot.PlaceButtonPressed += _placeObjectSystem.Place;
+                inventorySlot.PlaceButtonPressed += _placeObjectSystem.ShowProjection;
                 return inventorySlot;
             });
             slotViews.ObserveReplace().Subscribe(replace =>
             {
                 _ = replace.OldValue.View.SetItem(replace.NewValue.Value);
+            });
+            slotViews.ObserveRemove().Subscribe(slot =>
+            {
+                slot.Value.View.Disable();
             });
 
             _view.Initialize(slotViews);

@@ -1,8 +1,7 @@
-﻿using Assets.Scripts.Config;
-using Assets.Scripts.Creations.Player.Components;
-using Assets.Scripts.Guns;
+﻿using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Guns.Projectile;
+using Assets.Scripts.Shop;
 using System;
 using UnityEngine;
 using Zenject;
@@ -12,12 +11,11 @@ namespace Assets.Scripts.Spawn.Factories
     public class CannonFactory : IFactory<CannonController>, ISpawnRequesterCreator<Ball>
     {
         private readonly DiContainer _container;
-        private readonly ConfigRepository _configRepository;
 
+        public ItemTypes CreationType => ItemTypes.Cannon;
 
-        public CannonFactory(DiContainer container, ConfigRepository configRepository)
+        public CannonFactory(DiContainer container)
         {
-            _configRepository = configRepository;
             _container = container;
         }
 
@@ -31,8 +29,7 @@ namespace Assets.Scripts.Spawn.Factories
 
             var rotator = CreateRotator(view);
             var shooter = CreateShooter(view);
-            var aimer = CreateAimer(rotation);
-            var core = new CannonCore(rotator, shooter, aimer);
+            var core = new CannonCore(rotator, shooter);
             var controller = _container.Instantiate<CannonController>(new object[] { core, view });
 
             SpawnRequesterCreated?.Invoke(controller);
@@ -62,13 +59,6 @@ namespace Assets.Scripts.Spawn.Factories
             view.ShootDelayChanged += shooter.SetShootDelay;
 
             return shooter;
-        }
-
-        private Aimer CreateAimer(Quaternion rotation)
-        {
-            var aimer = new Aimer(_configRepository.PlayerConfig.Sensitivity, rotation.eulerAngles);
-
-            return aimer;
         }
     }
 }

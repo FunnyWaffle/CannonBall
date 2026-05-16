@@ -11,7 +11,11 @@ namespace Assets.Scripts.PlayerData
         private readonly ObservableList<ItemTypes> _items = new();
 
         private int _money;
-        private int _guns;
+
+        public Inventory()
+        {
+            _items.Add(ItemTypes.Cannon);
+        }
 
         public int Money
         {
@@ -39,6 +43,11 @@ namespace Assets.Scripts.PlayerData
         public void AddItems(IEnumerable<ItemTypes> items)
         {
             _items.AddRange(items);
+        }
+
+        public void RemoveItem(ItemTypes item)
+        {
+            _items.Remove(item);
         }
     }
 }

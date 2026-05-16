@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Creations.Player.Components;
+using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Guns.Components;
 using R3;
 using System;
@@ -12,16 +12,18 @@ namespace Assets.Scripts.Guns
     {
         private readonly CannonRotator _rotator;
         private readonly CannonShooter _shooter;
-        private readonly Aimer _aimer;
 
-        private readonly ReactiveProperty<CameraViewType> _currentViewType = new();
+        private readonly ReactiveProperty<CameraViewType> _currentViewType = new()
+        {
+            Value = CameraViewType.FirstPerson
+        };
+
         private CrosshairMode _crosshairMode = CrosshairMode.FirstPerson;
 
-        public CannonCore(CannonRotator rotator, CannonShooter shooter, Aimer aimer)
+        public CannonCore(CannonRotator rotator, CannonShooter shooter)
         {
             _rotator = rotator;
             _shooter = shooter;
-            _aimer = aimer;
         }
 
         public CrosshairMode CurrentCrosshairMode
@@ -30,21 +32,15 @@ namespace Assets.Scripts.Guns
             private set
             {
                 _crosshairMode = value;
-                CrosshairModeChanged.Invoke(value);
+                CrosshairModeChanged?.Invoke(value);
             }
         }
         public CannonShooter Shooter => _shooter;
-        public Aimer Aimer => _aimer;
 
         public ReadOnlyReactiveProperty<CameraViewType> CurrentViewType => _currentViewType;
 
         public event Action<CrosshairMode> CrosshairModeChanged;
         public event Action<Vector3> CrosshairPositionChanged;
-
-        public void Aim(Vector2 input)
-        {
-            _aimer.Aim(input);
-        }
 
         public void RotateToPosition(Vector3 position)
         {

@@ -12,6 +12,7 @@ namespace Assets.Scripts.Architecture
             var configRepository = new ConfigRepository();
             await configRepository.LoadAsync();
             ProjectContext.Instance.Container.BindInterfacesAndSelfTo<ConfigRepository>().FromInstance(configRepository).AsSingle();
+            ProjectContext.Instance.Container.BindInterfacesAndSelfTo<PlayerConfig>().FromInstance(configRepository.PlayerConfig).AsSingle();
 
             SceneManager.LoadScene("SampleScene");
         }

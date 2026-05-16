@@ -12,38 +12,38 @@ namespace Assets.Scripts.Spawn
         private readonly Dictionary<ItemTypes, Transform> _loadedPrefabs = new();
         private readonly Dictionary<ItemTypes, Sprite> _loadedSprites = new();
 
-        private readonly AssetReferences _prefabAssetReferences;
-        private readonly AssetReferences _spriteAssetReferences;
+        private readonly AssetReferences _prefabReferences;
+        private readonly AssetReferences _spriteReferences;
 
         public AssetLoader(ConfigRepository configRepository)
         {
-            _prefabAssetReferences = configRepository.PrefabAssetReferences;
-            _spriteAssetReferences = configRepository.SpriteAssetReferences;
+            _prefabReferences = configRepository.PrefabReferences;
+            _spriteReferences = configRepository.SpriteReferences;
         }
 
-        public async Task<Sprite> LoadSprite(ItemTypes itemName)
+        public async Task<Sprite> LoadSprite(ItemTypes itemType)
         {
-            if (_loadedSprites.TryGetValue(itemName, out var prefab))
-                return prefab;
+            if (_loadedSprites.TryGetValue(itemType, out var sprite))
+                return sprite;
 
-            var task = Addressables.LoadAssetAsync<Sprite>(_spriteAssetReferences.Get(itemName));
-            prefab = await task.Task;
+            var task = Addressables.LoadAssetAsync<Sprite>(_spriteReferences.Get(itemType));
+            sprite = await task.Task;
 
-            _loadedSprites.Add(itemName, prefab);
+            _loadedSprites[itemType] = sprite;
 
-            return prefab;
+            return sprite;
         }
 
-        public async Task<Transform> Load(ItemTypes itemName)
+        public async Task<Transform> Load(ItemTypes itemType)
         {
-            if (_loadedPrefabs.TryGetValue(itemName, out var prefab))
+            if (_loadedPrefabs.TryGetValue(itemType, out var prefab))
                 return prefab;
 
-            var task = Addressables.LoadAssetAsync<GameObject>(_prefabAssetReferences.Get(itemName));
+            var task = Addressables.LoadAssetAsync<GameObject>(_prefabReferences.Get(itemType));
             var gameObject = await task.Task;
             prefab = gameObject.transform;
 
-            _loadedPrefabs.Add(itemName, prefab);
+            _loadedPrefabs[itemType] = prefab;
 
             return prefab;
         }

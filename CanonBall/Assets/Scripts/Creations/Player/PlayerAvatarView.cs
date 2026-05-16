@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Config;
-using Assets.Scripts.Systems;
 using Assets.Scripts.Wrappers;
 using UnityEngine;
 
@@ -18,38 +17,19 @@ namespace Assets.Scripts.Creations.Player
         [Header("Camera")]
         [SerializeField] private SerializableDictionary<CameraViewType, CameraTransformPreset> _cameraViewPresets;
 
-        [Header("Hud")]
-        [SerializeField] private RectTransform _interactionPrompt;
-        [SerializeField] private RectTransform _crosshair;
-
-        private CameraPresetHandler _cameraPresetHandler;
-
-        public CameraTransformPreset CameraPreset => _cameraPresetHandler.CurrentPreset;
+        public CameraPresetHandler CameraPresetHandler { get; private set; }
+        public Vector3 ModelPosition => _model.position;
+        public Vector3 ModelForwad => _model.forward;
+        public Vector3 ModelRight => _model.right;
 
         public void Initialize()
         {
-            _cameraPresetHandler = new CameraPresetHandler(_cameraViewPresets);
-        }
-
-        public void SetCameraViewType(CameraViewType cameraViewType)
-        {
-            _cameraPresetHandler.SetViewType(cameraViewType);
+            CameraPresetHandler = new CameraPresetHandler(_cameraViewPresets);
         }
 
         public void SetCameraPivotRotation(Quaternion rotation)
         {
-            _cameraPresetHandler.CurrentPreset.Pivot.rotation = rotation;
-            RotateBody();
-        }
-
-        public void ShowInteractionPrompt()
-        {
-            _interactionPrompt.gameObject.SetActive(true);
-        }
-
-        public void HideInteractionPrompt()
-        {
-            _interactionPrompt.gameObject.SetActive(false);
+            RotateBody(rotation);
         }
 
         public void Move(Vector3 velocity)
@@ -61,20 +41,9 @@ namespace Assets.Scripts.Creations.Player
             _animator.SetFloat(SoldierAnimatorParameters.SideSpeed, localVelocity.x);
         }
 
-        public void ShowCrosshair()
+        private void RotateBody(Quaternion rotation)
         {
-            _crosshair.gameObject.SetActive(true);
-        }
-
-        public void HideCrosshair()
-        {
-            _crosshair.gameObject.SetActive(false);
-        }
-
-        private void RotateBody()
-        {
-            var flatDirection = Vector3.ProjectOnPlane(CameraSystem.MainCamera.Forward, Vector3.up);
-            _model.rotation = Quaternion.LookRotation(flatDirection, Vector3.up);
+            _model.rotation = rotation;
         }
     }
 }

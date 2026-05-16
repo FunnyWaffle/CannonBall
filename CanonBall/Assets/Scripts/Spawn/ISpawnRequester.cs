@@ -13,7 +13,7 @@ namespace Assets.Scripts.Spawn
 
     public class SpawnArguments
     {
-        public ItemTypes ItemType { get; }
+        public ItemTypes ItemType;
         public Vector3 Position { get; }
         public Quaternion Rotation { get; }
         public Transform Parent { get; }
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Spawn
             ItemTypes itemType,
             Vector3 position,
             Quaternion rotation,
-            Transform parent)
+            Transform parent = null)
         {
             ItemType = itemType;
             Position = position;

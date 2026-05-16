@@ -1,8 +1,14 @@
-﻿namespace Assets.Scripts.Input
+﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Systems;
+using UnityEngine;
+
+namespace Assets.Scripts.Input
 {
     public interface IController
     {
-        public void HandleInput(InputData input);
-        public void TransferCamera();
+        public CrosshairTypes CrosshairType { get; }
+
+        public void HandleInput(Vector2 movementInput, Vector3 positionToRotation);
+        public CameraPresetHandler GetCameraTransformPreset();
     }
 }

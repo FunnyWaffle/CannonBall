@@ -10,7 +10,6 @@ namespace Assets.Scripts.Camera
 
         public Vector3 Position => _cameraTransform.position;
         public Vector3 Forward => _cameraTransform.forward;
-        public Vector3 Right => _cameraTransform.right;
 
         public void Initialize()
         {
@@ -37,16 +36,16 @@ namespace Assets.Scripts.Camera
             return _camera.WorldToScreenPoint(position);
         }
 
-        public Vector3 GetFacedPosition()
+        public Vector3 GetFacedPosition(QueryTriggerInteraction queryTriggerInteraction, int ignoreLayer = 0)
         {
             Debug.DrawRay(Position, Forward * float.PositiveInfinity, Color.red, 0.1f);
-            if (Physics.Raycast(Position, Forward, out var hit, float.PositiveInfinity))
+            if (Physics.Raycast(Position, Forward, out var hit, float.PositiveInfinity, ~ignoreLayer, queryTriggerInteraction))
                 return hit.point;
             else
                 return Position + Forward * 10f;
         }
 
-        public bool TryGetFacedCollider(out Collider collider, int ignoreLayer = ~0)
+        public bool TryGetFacedCollider(out Collider collider, int ignoreLayer = 0)
         {
             if (Physics.Raycast(Position, Forward, out var hit, float.PositiveInfinity, ~ignoreLayer))
             {

@@ -4,6 +4,7 @@
     {
         None,
         Cannon,
+        CannonProjection,
         Ball,
         Zombie,
     }

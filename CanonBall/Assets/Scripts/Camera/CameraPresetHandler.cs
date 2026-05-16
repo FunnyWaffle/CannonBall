@@ -28,5 +28,10 @@ namespace Assets.Scripts.Camera
             CurrentPreset.Pivot.gameObject.SetActive(true);
             CurrentPreset.Pivot.rotation = rotation;
         }
+
+        public CameraTransformPreset GetPreset(CameraViewType cameraViewType)
+        {
+            return _cameraViewPresets[cameraViewType];
+        }
     }
 }

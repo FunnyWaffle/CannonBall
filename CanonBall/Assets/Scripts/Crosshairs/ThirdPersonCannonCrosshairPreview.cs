@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-namespace Assets.Scripts.Guns
+namespace Assets.Scripts.Crosshairs
 {
     public class ThirdPersonCannonCrosshairPreview : MonoBehaviour
     {

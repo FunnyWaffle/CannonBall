@@ -8,19 +8,17 @@ namespace Assets.Scripts.PlayerData
 {
     public class InventoryView : MonoBehaviour
     {
-        [SerializeField] private InventorySlot _slotPrefab;
+        [SerializeField] private InventorySlotView _slotPrefab;
         [SerializeField] private GridLayoutGroup _grid;
         [SerializeField] private TMP_Text _text;
 
-        private ISynchronizedView<ItemTypes, InventorySlot> _slotViews;
-
         public bool IsActive => transform.gameObject.activeSelf;
-        public InventorySlot SlotPrefab => _slotPrefab;
+        public InventorySlotView SlotPrefab => _slotPrefab;
         public GridLayoutGroup Grid => _grid;
 
-        public ISynchronizedView<ItemTypes, InventorySlot> SlotViews { get => _slotViews; private set => _slotViews = value; }
+        public ISynchronizedView<ItemTypes, InventorySlotView> SlotViews { get; private set; }
 
-        public void Initialize(ISynchronizedView<ItemTypes, InventorySlot> slotViews)
+        public void Initialize(ISynchronizedView<ItemTypes, InventorySlotView> slotViews)
         {
             SlotViews = slotViews;
         }

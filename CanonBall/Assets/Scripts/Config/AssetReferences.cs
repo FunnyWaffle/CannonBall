@@ -8,11 +8,8 @@ namespace Assets.Scripts.Config
     [CreateAssetMenu(fileName = nameof(AssetReferences), menuName = "Config/" + nameof(AssetReferences))]
     public class AssetReferences : ScriptableObject
     {
-        public SerializableDictionary<ItemTypes, AssetReference> References;
+        [SerializeField] private SerializableDictionary<ItemTypes, AssetReference> _references;
 
-        public AssetReference Get(ItemTypes itemType)
-        {
-            return References[itemType];
-        }
+        public AssetReference Get(ItemTypes itemType) => _references[itemType];
     }
 }
