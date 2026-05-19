@@ -6,8 +6,9 @@ namespace Assets.Scripts.Systems
     public class CameraSystem
     {
         private readonly MainCamera _mainCamera;
-
         private CameraPresetHandler _presetHandler;
+
+        private ViewType _viewType = ViewType.FirstPerson;
 
         public CameraSystem(MainCamera mainCamera)
         {
@@ -17,29 +18,25 @@ namespace Assets.Scripts.Systems
 
         public MainCamera MainCamera => _mainCamera;
 
+        public void RotateCameraPivot(Quaternion rotation)
+        {
+            var preset = _presetHandler.GetPreset(_viewType);
+            preset.Pivot.rotation = rotation;
+        }
+
         public void ApplyMainCameraPreset(CameraPresetHandler presetHandler)
         {
             _presetHandler = presetHandler;
-
+            SetPreset();
         }
 
-        public void ChangeCameraViewType(int viewModeIndex)
+        public void ChangeCameraViewType(ViewType viewType)
         {
-            var cameraViewType = viewModeIndex switch
-            {
-                0 => CameraViewType.FirstPerson,
-                1 => CameraViewType.ThirdPerson,
-                _ => throw new System.NotImplementedException(),
-            };
-
-            var preset = _presetHandler.GetPreset(cameraViewType);
-
-            _mainCamera.SetPosition(preset.Position);
-            _mainCamera.SetParent(preset.Pivot);
-            _mainCamera.SetRotation(preset.Pivot.rotation);
+            _viewType = viewType;
+            SetPreset();
         }
 
-        public bool TryGetMainCameraFacedCollider(out Collider collider, int ignoreLayer = ~0)
+        public bool TryGetMainCameraFacedCollider(out Collider collider, int ignoreLayer = 0)
         {
             return _mainCamera.TryGetFacedCollider(out collider, ignoreLayer);
         }
@@ -47,6 +44,15 @@ namespace Assets.Scripts.Systems
         public Vector3 ProjectOnMainCamera(Vector3 position)
         {
             return _mainCamera.WorldToScreenPoint(position);
+        }
+
+        private void SetPreset()
+        {
+            var preset = _presetHandler.GetPreset(_viewType);
+
+            _mainCamera.SetPosition(preset.Position);
+            _mainCamera.SetParent(preset.Pivot);
+            _mainCamera.SetRotation(preset.Pivot.rotation);
         }
     }
 }

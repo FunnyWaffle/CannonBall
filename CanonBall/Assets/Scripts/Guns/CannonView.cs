@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Guns.Projectile;
 using Assets.Scripts.Wrappers;
 using System;
 using UnityEngine;
@@ -16,13 +15,12 @@ namespace Assets.Scripts.Guns
         [SerializeField] private float _pitchAngleLimit = 15;
 
         [Header("Shoot")]
-        [SerializeField] private Ball _projectile;
         [SerializeField] private Transform _barrelExit;
         [SerializeField] private float _shootPower = 15f;
         [SerializeField] private float _shootDelay = 1.5f;
 
         [Header("Camera")]
-        [SerializeField] private SerializableDictionary<CameraViewType, CameraTransformPreset> _cameraViewPresets;
+        [SerializeField] private SerializableDictionary<ViewType, CameraTransformPreset> _cameraViewPresets;
 
         public CameraPresetHandler CameraPresetHandler { get; private set; }
 
@@ -35,7 +33,6 @@ namespace Assets.Scripts.Guns
         public Vector3 BarrelExitPosition => _barrelExit.position;
         public float ShootPower => _shootPower;
         public float ShootDelay => _shootDelay;
-        public Ball Projectile => _projectile;
 
         public event Action<float> RotationSpeedChanged;
         public event Action<float> PitchLimitChanged;
@@ -62,6 +59,7 @@ namespace Assets.Scripts.Guns
         {
             transform.position = position;
         }
+
         public void SetRotation(Quaternion rotation)
         {
             transform.rotation = rotation;

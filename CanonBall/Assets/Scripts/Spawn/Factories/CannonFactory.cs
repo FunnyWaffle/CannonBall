@@ -1,25 +1,24 @@
 ﻿using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Components;
-using Assets.Scripts.Guns.Projectile;
+using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
-using System;
 using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Spawn.Factories
 {
-    public class CannonFactory : IFactory<CannonController>, ISpawnRequesterCreator<Ball>
+    public class CannonFactory : IFactory<CannonController>
     {
         private readonly DiContainer _container;
+        private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
 
         public ItemTypes CreationType => ItemTypes.Cannon;
 
-        public CannonFactory(DiContainer container)
+        public CannonFactory(DiContainer container, InteractionObjectsRepositiory interactionObjectsRepositiory)
         {
             _container = container;
+            _interactionObjectsRepositiory = interactionObjectsRepositiory;
         }
-
-        public event Action<ISpawnRequester<Ball>> SpawnRequesterCreated;
 
         public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {
@@ -29,22 +28,25 @@ namespace Assets.Scripts.Spawn.Factories
 
             var rotator = CreateRotator(view);
             var shooter = CreateShooter(view);
-            var core = new CannonCore(rotator, shooter);
-            var controller = _container.Instantiate<CannonController>(new object[] { core, view });
+            var controller = _container.Instantiate<CannonController>(new object[] { view, rotator, shooter });
 
-            SpawnRequesterCreated?.Invoke(controller);
+            foreach (var collider in view.Colliders)
+            {
+                _interactionObjectsRepositiory.AddController(collider, controller);
+            }
 
             return controller;
         }
 
         private CannonRotator CreateRotator(CannonView view)
         {
-            var rotator = new CannonRotator(
+            var rotator = _container.Instantiate<CannonRotator>(
+                new object[] {
                 view.RotationSpeed,
                 view.PitchAngleLimit,
-                view.BarrelLocalRotation);
+                view.BarrelLocalRotation
+            });
 
-            rotator.Rotated += view.SetBarrelRotation;
             view.RotationSpeedChanged += rotator.SetRotationSpeed;
             view.PitchLimitChanged += rotator.SetPitchLimit;
 
@@ -53,7 +55,7 @@ namespace Assets.Scripts.Spawn.Factories
 
         private CannonShooter CreateShooter(CannonView view)
         {
-            var shooter = new CannonShooter(view.ShootPower, view.ShootDelay);
+            var shooter = _container.Instantiate<CannonShooter>(new object[] { view.ShootPower, view.ShootDelay });
 
             view.ShootPowerChanged += shooter.SetShootPower;
             view.ShootDelayChanged += shooter.SetShootDelay;

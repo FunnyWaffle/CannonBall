@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Creations
+  m_Name: Projectile
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Creations
-  m_GUID: cbd115bbaffe47d4eaa9bb77a5f554e1
+  m_GroupName: Projectile
+  m_GUID: c39fe7625e2265d48998f5850f0b29ff
   m_SerializeEntries:
-  - m_GUID: 8609f8b75bdccd74c9acfb36aa6fa421
-    m_Address: Zombie
+  - m_GUID: f60e2f94f65909341b7387a512741ff7
+    m_Address: Ball
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -24,5 +24,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 0be49d4d9097ba742889e700f9c2bb10, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 995cc34baf356df40ac40a7f7423dc2b, type: 2}
-    - {fileID: 11400000, guid: f832d3e0b31f156448045cfde38055dd, type: 2}
+    - {fileID: 11400000, guid: 23d5730c1a531334c802057a0c19995a, type: 2}
+    - {fileID: 11400000, guid: 0bf8ff66719cb9f40956021aeafc17be, type: 2}

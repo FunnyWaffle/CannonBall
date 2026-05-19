@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Spawn;
+﻿using Assets.Scripts.Shop;
+using Assets.Scripts.Spawn;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Assets.Scripts.Guns.Projections
 
         private List<MeshRenderer> _renderers = new();
 
-        public event EventHandler Disabled;
+        public event EventHandler<ItemTypes> Disabled;
 
         private void Start()
         {
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Guns.Projections
         public void Disable()
         {
             gameObject.SetActive(false);
-            Disabled?.Invoke(this, EventArgs.Empty);
+            Disabled?.Invoke(this, ItemTypes.CannonProjection);
         }
 
         public void Place(Vector3 position, Quaternion rotation, Transform parent = null)

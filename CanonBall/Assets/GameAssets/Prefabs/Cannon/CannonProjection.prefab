@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 216967191655955668}
   - component: {fileID: 6128768808158478201}
   - component: {fileID: 9026592582940492481}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: cannon_down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 7009675570785843700}
   - component: {fileID: 5127321126482612476}
   - component: {fileID: 4805530003540532840}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: cannon_small_upgrade_03b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 2467431047477220346}
   - component: {fileID: 2269080210532275302}
   - component: {fileID: 4166409956925223556}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: cannon_small_upgrade_03b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8955463825281820471}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 2749206832265027552}
   - component: {fileID: 1300976299319238583}
   - component: {fileID: 4156911766365887795}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 8552564282236119158}
   - component: {fileID: 2918248199258360266}
   - component: {fileID: 7172241570804518058}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: cannon_small_upgrade_02b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 8287027809792031041}
   - component: {fileID: 974783881980032162}
   - component: {fileID: 2845292503059731166}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: CannonProjection
   m_TagString: Untagged
   m_Icon: {fileID: 0}

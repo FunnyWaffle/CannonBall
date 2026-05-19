@@ -42,7 +42,7 @@ namespace Assets.Scripts.Input
             _isBackEventPerformed = false;
             _isInventoryEventPerformed = false;
 
-            _gameStateMachine.HandleInput(input);
+            //_gameStateMachine.HandleInput(input);
         }
 
         private void OnBackPerform() => _isBackEventPerformed = true;

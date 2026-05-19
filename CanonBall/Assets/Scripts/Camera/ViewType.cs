@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Camera
 {
-    public enum CameraViewType
+    public enum ViewType
     {
         Default,
         FirstPerson,

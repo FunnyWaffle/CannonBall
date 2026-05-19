@@ -5,20 +5,20 @@ namespace Assets.Scripts.Camera
 {
     public class CameraPresetHandler
     {
-        private readonly SerializableDictionary<CameraViewType, CameraTransformPreset> _cameraViewPresets;
+        private readonly SerializableDictionary<ViewType, CameraTransformPreset> _cameraViewPresets;
 
         public CameraTransformPreset CurrentPreset { get; private set; }
 
-        public CameraPresetHandler(SerializableDictionary<CameraViewType, CameraTransformPreset> cameraViewPresets)
+        public CameraPresetHandler(SerializableDictionary<ViewType, CameraTransformPreset> cameraViewPresets)
         {
             _cameraViewPresets = cameraViewPresets;
 
-            CurrentPreset = _cameraViewPresets[CameraViewType.FirstPerson];
+            CurrentPreset = _cameraViewPresets[ViewType.FirstPerson];
             CurrentPreset.Pivot.gameObject.SetActive(true);
             CurrentPreset.Pivot.localRotation = Quaternion.identity;
         }
 
-        public void SetViewType(CameraViewType cameraViewType)
+        public void SetViewType(ViewType cameraViewType)
         {
             var rotation = CurrentPreset.Pivot.rotation;
             CurrentPreset.Pivot.gameObject.SetActive(false);
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Camera
             CurrentPreset.Pivot.rotation = rotation;
         }
 
-        public CameraTransformPreset GetPreset(CameraViewType cameraViewType)
+        public CameraTransformPreset GetPreset(ViewType cameraViewType)
         {
             return _cameraViewPresets[cameraViewType];
         }

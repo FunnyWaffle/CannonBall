@@ -10,6 +10,7 @@ namespace Assets.Scripts.Camera
 
         public Vector3 Position => _cameraTransform.position;
         public Vector3 Forward => _cameraTransform.forward;
+        public Vector3 Right => _cameraTransform.right;
 
         public void Initialize()
         {

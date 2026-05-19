@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Creations.Zombie;
+using Assets.Scripts.Explosion;
 using Assets.Scripts.Shop;
 using UnityEngine;
 
@@ -6,6 +7,13 @@ namespace Assets.Scripts.Spawn.Factories
 {
     public class ZombieFactory : IFactory<ZombieController>
     {
+        private readonly ExplosionHandler _explosionHandler;
+
+        public ZombieFactory(ExplosionHandler explosionHandler)
+        {
+            _explosionHandler = explosionHandler;
+        }
+
         public ItemTypes CreationType => ItemTypes.Zombie;
 
         public ZombieController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
@@ -16,6 +24,8 @@ namespace Assets.Scripts.Spawn.Factories
             var ragdoll = new ZombieRagdoll(view.Rigidbodies);
             var model = new ZombieModel(view.ModelTransform);
             var hitbox = new ZombieHitbox(view.Collider);
+
+            _explosionHandler.AddExplosionReceiver(view.Collider, hitbox);
 
             var controller = new ZombieController(view, mover, ragdoll, model, hitbox);
             return controller;

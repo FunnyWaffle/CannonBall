@@ -1,26 +1,24 @@
-﻿using System;
+﻿using Assets.Scripts.Shop;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Spawn
 {
-    public class ObjectPool
+    public class ObjectPool<T>
+                where T : IPoolableObject
     {
-        private readonly Dictionary<Type, Queue<IPoolableObject>> _objects = new();
+        private readonly Dictionary<ItemTypes, Queue<T>> _objects = new();
 
-        public void Register<T>(T obj)
-        where T : IPoolableObject
+        public void Register(T obj)
         {
-            obj.Disabled += OnObjectDisable<T>;
+            obj.Disabled += OnObjectDisable;
         }
 
-        public bool TryGet<T>(out T obj)
-        where T : IPoolableObject
+        public bool TryGet(ItemTypes itemType, out T obj)
         {
-            var type = typeof(T);
-            if (!_objects.TryGetValue(type, out var queue))
+            if (!_objects.TryGetValue(itemType, out var queue))
             {
-                queue = new Queue<IPoolableObject>();
-                _objects[type] = queue;
+                queue = new Queue<T>();
+                _objects[itemType] = queue;
             }
 
             if (queue.Count == 0)
@@ -29,25 +27,23 @@ namespace Assets.Scripts.Spawn
                 return false;
             }
 
-            obj = (T)queue.Dequeue();
+            obj = queue.Dequeue();
             Register(obj);
             obj.Enable();
             return true;
         }
 
-        private void OnObjectDisable<T>(object obj, EventArgs e)
-                    where T : IPoolableObject
+        private void OnObjectDisable(object obj, ItemTypes itemType)
         {
-            var type = typeof(T);
-            if (!_objects.TryGetValue(type, out var queue))
+            if (!_objects.TryGetValue(itemType, out var queue))
             {
-                queue = new Queue<IPoolableObject>();
-                _objects[type] = queue;
+                queue = new Queue<T>();
+                _objects[itemType] = queue;
             }
 
-            var typedObject = obj as IPoolableObject;
+            var typedObject = (T)obj;
             queue.Enqueue(typedObject);
-            typedObject.Disabled -= OnObjectDisable<T>;
+            typedObject.Disabled -= OnObjectDisable;
         }
     }
 }

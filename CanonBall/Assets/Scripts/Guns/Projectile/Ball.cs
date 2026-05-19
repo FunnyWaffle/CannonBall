@@ -1,20 +1,21 @@
 ﻿using Assets.Scripts.Explosion;
+using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns.Projectile
 {
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(SphereCollider))]
-    public class Ball : MonoBehaviour, ISpawnable, IPoolableObject, IExplosionMaker
+    public class Ball : MonoBehaviour, IProjectile, ISpawnable, IPoolableObject, IExplosionMaker
     {
         [SerializeField] private float _explosionPower = 5f;
         [SerializeField] private float _explosionRadius = 2f;
         [SerializeField] private float _lifeTime;
         [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private SphereCollider _sphereCollider;
 
-        private SphereCollider _sphereCollider;
+        private readonly List<Collider> _ignoredColliders = new();
 
         private float _colliderRaduis;
         private float _currentLifeTime;
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Guns.Projectile
         public float Radius => _colliderRaduis;
         public SphereCollider Collider => _sphereCollider;
 
-        public event EventHandler Disabled;
+        public event EventHandler<ItemTypes> Disabled;
         public event Action<float, Vector3, float> ExplosionPerformed;
 
         public void SetForce(float forceValue)
@@ -33,10 +34,26 @@ namespace Assets.Scripts.Guns.Projectile
             //_rigidbody.AddForce(new Vector3(0f, 0f, _startPower), ForceMode.Impulse);
         }
 
+        public void SetIgnoredCollider(Collider collider)
+        {
+            Physics.IgnoreCollision(collider, _sphereCollider);
+            _ignoredColliders.Add(collider);
+        }
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            transform.SetLocalPositionAndRotation(position, rotation);
+            transform.SetParent(parent);
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _sphereCollider = GetComponent<SphereCollider>();
             _colliderRaduis = Collider.radius;
         }
 
@@ -55,7 +72,7 @@ namespace Assets.Scripts.Guns.Projectile
 
         private void OnDisable()
         {
-            Disabled?.Invoke(this, new EventArgs());
+            Disabled?.Invoke(this, ItemTypes.Ball);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -87,17 +104,17 @@ namespace Assets.Scripts.Guns.Projectile
             _currentLifeTime = 0;
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.linearVelocity = Vector3.zero;
+            _ignoredColliders.Clear();
+            ClearIgnoredColliders();
         }
 
-        public void Enable()
+        private void ClearIgnoredColliders()
         {
-            gameObject.SetActive(true);
-        }
-
-        public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
-        {
-            transform.SetLocalPositionAndRotation(position, rotation);
-            transform.SetParent(parent);
+            foreach (var collider in _ignoredColliders)
+            {
+                Physics.IgnoreCollision(collider, _sphereCollider, false);
+            }
+            _ignoredColliders.Clear();
         }
     }
 }

@@ -1,55 +1,45 @@
-﻿using Assets.Scripts.Crosshairs;
+﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Crosshairs;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Systems
 {
     public class CrosshairSystem
     {
-        private readonly PlayerCrosshair _playerCrosshair;
-        private readonly CannonCrosshair _cannonCrosshair;
+        private readonly CameraSystem _cameraSystem;
 
-        private CrosshairTypes _currentCrosshairType;
+        private readonly Dictionary<CrosshairTypes, ICrosshair> _crosshairs = new();
 
-        public CrosshairSystem(PlayerCrosshair playerCrosshair,
-            CannonCrosshair cannonCrosshair)
+        private ICrosshair _crosshair;
+
+        public CrosshairSystem(CameraSystem cameraSystem, params ICrosshair[] crosshairs)
         {
-            _playerCrosshair = playerCrosshair;
-            _cannonCrosshair = cannonCrosshair;
+            _cameraSystem = cameraSystem;
+
+            foreach (var crosshair in crosshairs)
+            {
+                _crosshairs[crosshair.CrosshairType] = crosshair;
+            }
+
+            _crosshair = _crosshairs[CrosshairTypes.Player];
         }
 
         public void EnableCrosshair(CrosshairTypes crosshairType)
         {
-            _currentCrosshairType = crosshairType;
-
-            switch (crosshairType)
-            {
-                case CrosshairTypes.Player:
-                    _playerCrosshair.SetActive(true);
-                    _cannonCrosshair.SetActive(false);
-                    break;
-                case CrosshairTypes.Cannon:
-                    _playerCrosshair.SetActive(false);
-                    _cannonCrosshair.SetActive(true);
-                    break;
-            }
+            _crosshair.SetActive(false);
+            _crosshair = _crosshairs[crosshairType];
+            _crosshair.SetActive(true);
         }
 
-        public void SwitchCrosshairMode(int viewModeIndex)
+        public void SetCrosshairPosition(Vector3 position)
         {
-            if (_currentCrosshairType != CrosshairTypes.Cannon)
-                return;
-
-            var crosshairMode = viewModeIndex switch
-            {
-                0 => CrosshairMode.FirstPerson,
-                1 => CrosshairMode.ThirdPerson,
-            };
-            _cannonCrosshair.SwitchMode(crosshairMode);
+            _crosshair.SetPreviewPosition(position);
         }
 
-        public void SetPositionToCrosshairPreview(Vector3 position)
+        public void SwitchCrosshairMode(ViewType viewType)
         {
-
+            _crosshair.SwitchMode(viewType);
         }
     }
 

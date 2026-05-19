@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Camera;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 namespace Assets.Scripts.Crosshairs
 {
-    public class ThirdPersonCannonCrosshairPreview : MonoBehaviour
+    public class ThirdPersonCannonCrosshairPreview : MonoBehaviour, ICrosshairPreview
     {
         [SerializeField] private DecalProjector _crosshair;
 
         private Transform _transform;
+
+        public ViewType ViewType => ViewType.ThirdPerson;
 
         private void Awake()
         {

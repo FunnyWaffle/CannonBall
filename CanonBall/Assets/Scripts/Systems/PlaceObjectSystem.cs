@@ -16,9 +16,15 @@ namespace Assets.Scripts.Systems
         {
             [ItemTypes.Cannon] = ItemTypes.CannonProjection
         };
+        private readonly CameraSystem _cameraSystem;
 
         private CannonProjection _spawnedProjection;
         private ItemTypes _itemType;
+
+        public PlaceObjectSystem(CameraSystem cameraSystem)
+        {
+            _cameraSystem = cameraSystem;
+        }
 
         private EventHandler<SpawnArguments> _cannonProjectionSpawnRequest;
         private EventHandler<SpawnArguments> _cannonControllerSpawnRequest;
@@ -42,17 +48,17 @@ namespace Assets.Scripts.Systems
             if (_spawnedProjection == null)
                 return;
 
-            var position = CameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
+            var position = GetCameraFacedPosition();
 
             _cannonControllerSpawnRequest?.Invoke(this, new SpawnArguments(_itemType, position, rotation: Quaternion.identity));
         }
 
         public void ShowProjection(ItemTypes itemType)
         {
-            var position = CameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
-
             _itemType = itemType;
             var projection = _projections[itemType];
+
+            var position = GetCameraFacedPosition();
 
             _cannonProjectionSpawnRequest?.Invoke(this, new SpawnArguments(projection, position, rotation: Quaternion.identity));
         }
@@ -75,9 +81,14 @@ namespace Assets.Scripts.Systems
             if (_spawnedProjection == null)
                 return;
 
-            var position = CameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
+            var position = GetCameraFacedPosition();
 
             _spawnedProjection.Place(position, Quaternion.identity);
+        }
+
+        private Vector3 GetCameraFacedPosition()
+        {
+            return _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
         }
     }
 }

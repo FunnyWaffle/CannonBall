@@ -7,5 +7,6 @@
         CannonProjection,
         Ball,
         Zombie,
+        PlayerAvatar,
     }
 }

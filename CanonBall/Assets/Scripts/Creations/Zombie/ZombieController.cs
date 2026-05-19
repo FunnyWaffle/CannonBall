@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Spawn;
+﻿using Assets.Scripts.Shop;
+using Assets.Scripts.Spawn;
 using System;
 using UnityEngine;
 
@@ -29,12 +30,14 @@ namespace Assets.Scripts.Creations.Zombie
 
             _ragdollRootOffsetPosition = _ragdoll.Position - _mover.Position;
             _hitboxOffsetPosition = _hitbox.Position - _mover.Position;
+
+            Enable();
         }
 
         public ZombieHitbox Hitbox => _hitbox;
 
         public event EventHandler Died;
-        public event EventHandler Disabled;
+        public event EventHandler<ItemTypes> Disabled;
 
         public void Enable()
         {
@@ -68,6 +71,7 @@ namespace Assets.Scripts.Creations.Zombie
         {
             _mover.Update();
         }
+
         private void OnRagdollFellAsleep()
         {
             Disable();
@@ -84,10 +88,10 @@ namespace Assets.Scripts.Creations.Zombie
 
         private void Disable()
         {
-            _ragdoll.FellAsleep += OnRagdollFellAsleep;
-            _hitbox.ExplosionReceived += OnExplosion;
+            _ragdoll.FellAsleep -= OnRagdollFellAsleep;
+            _hitbox.ExplosionReceived -= OnExplosion;
 
-            Disabled?.Invoke(this, EventArgs.Empty);
+            Disabled?.Invoke(this, ItemTypes.Zombie);
         }
 
         private void ResetState()

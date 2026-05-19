@@ -1,26 +1,24 @@
-﻿using System;
+﻿using Assets.Scripts.Spawn.Projectile;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns.Components
 {
     public class CannonShooter
     {
+        private readonly ProjectileSpawner _spawner;
+
         private float _shootPower = 15f;
         private float _shootDelay = 1.5f;
 
         private float _nextPermittedShootingTime;
 
-        public CannonShooter(float shootPower, float shootDelay)
+        public CannonShooter(ProjectileSpawner spawner, float shootPower, float shootDelay)
         {
+            _spawner = spawner;
             _shootPower = shootPower;
             _shootDelay = shootDelay;
         }
-
-        public Vector3 BarrelExitPosition { get; set; }
-        public Vector3 BarrelForward { get; set; }
-        public float ShootPower => _shootPower;
-
-        public event Action<float> Shot;
 
         public void SetShootPower(float value)
         {
@@ -32,12 +30,19 @@ namespace Assets.Scripts.Guns.Components
             _shootDelay = value;
         }
 
-        public void Shoot()
+        public async Task Shoot(Vector3 shootPosition, Quaternion shootRotation, Collider[] ignoredColliders)
         {
             if (Time.time < _nextPermittedShootingTime)
                 return;
 
-            Shot?.Invoke(_shootPower);
+            var projectile = await _spawner.Spawn(Shop.ItemTypes.Ball, shootPosition, shootRotation);
+
+            foreach (var collider in ignoredColliders)
+            {
+                projectile.SetIgnoredCollider(collider);
+            }
+
+            projectile.SetForce(_shootPower);
 
             _nextPermittedShootingTime = Time.time + _shootDelay;
         }

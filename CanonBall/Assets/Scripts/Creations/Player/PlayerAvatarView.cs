@@ -15,7 +15,7 @@ namespace Assets.Scripts.Creations.Player
         [SerializeField] private Animator _animator;
 
         [Header("Camera")]
-        [SerializeField] private SerializableDictionary<CameraViewType, CameraTransformPreset> _cameraViewPresets;
+        [SerializeField] private SerializableDictionary<ViewType, CameraTransformPreset> _cameraViewPresets;
 
         public CameraPresetHandler CameraPresetHandler { get; private set; }
         public Vector3 ModelPosition => _model.position;

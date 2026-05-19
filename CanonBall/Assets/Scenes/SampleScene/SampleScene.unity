@@ -320,6 +320,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 103170982}
   m_CullTransparentMesh: 1
+--- !u!1 &195652430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 195652431}
+  - component: {fileID: 195652432}
+  m_Layer: 0
+  m_Name: Interaction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &195652431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195652430}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1893946722}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &195652432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 195652430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b51fbcb44c10a48ad9e1ba0e441d0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Systems.InteractionSystem
+  _interactionPrompt: {fileID: 2146754640}
 --- !u!1 &229993266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,7 +2148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1892911528}
   - component: {fileID: 1892911527}
-  - component: {fileID: 1892911526}
+  - component: {fileID: 1892911529}
   m_Layer: 10
   m_Name: Terrain
   m_TagString: Untagged
@@ -2111,26 +2156,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!154 &1892911526
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1892911525}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: b6626b0aa90c3964da5445456f2960b4, type: 2}
-  m_EnableTreeColliders: 1
 --- !u!218 &1892911527
 Terrain:
   m_ObjectHideFlags: 0
@@ -2186,6 +2211,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1761451419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!154 &1892911529
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892911525}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: b6626b0aa90c3964da5445456f2960b4, type: 2}
+  m_EnableTreeColliders: 1
 --- !u!1 &1893946721
 GameObject:
   m_ObjectHideFlags: 0
@@ -2220,6 +2265,7 @@ Transform:
   - {fileID: 1585338492}
   - {fileID: 789474159}
   - {fileID: 1329151676}
+  - {fileID: 195652431}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1946778174
@@ -2874,7 +2920,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5059189448960159286, guid: ada4e9f514166504f88416615ca00ae7, type: 3}
       propertyPath: m_Name
-      value: Cannon Player Crosshair
+      value: Cannon Crosshair
       objectReference: {fileID: 0}
     - target: {fileID: 8143491936018793107, guid: ada4e9f514166504f88416615ca00ae7, type: 3}
       propertyPath: m_Pivot.x

@@ -1,9 +1,6 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Creations;
-using Assets.Scripts.Explosion;
-using Assets.Scripts.Guns.Projectile;
+using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Input;
-using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Systems;
@@ -12,34 +9,22 @@ using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonController : IUpdatable, IController, ISpawnable, IPoolableObject, ISpawnRequester<Ball>
+    public class CannonController : IController, ISpawnable, IPoolableObject
     {
-        private readonly CannonCore _core;
         private readonly CannonView _view;
+        private readonly CannonRotator _rotator;
+        private readonly CannonShooter _shooter;
 
-        private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
-        private readonly ExplosionHandler _explosionHandler;
-
-        public CannonController(CannonCore core,
-            CannonView cannonView,
-            InteractionObjectsRepositiory interactionObjectsRepositiory,
-            ExplosionHandler explosionHandler)
+        public CannonController(CannonView cannonView, CannonRotator cannonRotator, CannonShooter shooter)
         {
-            _core = core;
             _view = cannonView;
-
-            _core.Shooter.Shot += OnShot;
-
-            _interactionObjectsRepositiory = interactionObjectsRepositiory;
-            _explosionHandler = explosionHandler;
-
-            SetCannonToInteractionObjects();
+            _rotator = cannonRotator;
+            _shooter = shooter;
         }
 
         public CrosshairTypes CrosshairType => CrosshairTypes.Cannon;
 
-        public event EventHandler Disabled;
-        public event EventHandler<SpawnArguments> SpawnRequested;
+        public event EventHandler<ItemTypes> Disabled;
 
         public void Enable()
         {
@@ -53,49 +38,24 @@ namespace Assets.Scripts.Guns
             _view.SetParent(parent);
         }
 
-        public void Update()
+        public void Rotate(Vector3 positionToRotation)
         {
-            _core.Shooter.BarrelExitPosition = _view.BarrelExitPosition;
-            _core.Shooter.BarrelForward = _view.BarrelExitForward;
+            var barrelExitPosition = _view.BarrelExitPosition;
+            float shootPower = _view.ShootPower;
+            var rotation = _rotator.Rotate(positionToRotation, barrelExitPosition, _view.BarrelExitForward, shootPower);
+            _view.SetBarrelRotation(rotation);
         }
 
-        public void HandleInput(Vector2 movementInput, Vector3 positionToRotation)
-        {
-            _core.RotateToPosition(positionToRotation);
+        public void Move(Vector2 movementInput) { }
 
-            if (input.IsAttacked)
-                _core.Shoot();
+        public void Attack()
+        {
+            _ = _shooter.Shoot(_view.BarrelExitPosition, _view.BarrelExitRotation, _view.Colliders);
         }
 
         public CameraPresetHandler GetCameraTransformPreset()
         {
             return _view.CameraPresetHandler;
-        }
-
-        public void SetSpawnedObject(Ball ball)
-        {
-            foreach (var collider in _view.Colliders)
-            {
-                Physics.IgnoreCollision(collider, ball.Collider);
-            }
-
-            ball.SetForce(_core.Shooter.ShootPower);
-            _explosionHandler.AddExplosionMaker(ball);
-        }
-
-        private async void OnShot(float shootPower)
-        {
-            var projectile = _view.Projectile;
-            SpawnRequested.Invoke(this, new SpawnArguments(ItemTypes.Ball,
-               _view.BarrelExitPosition + projectile.Radius * _view.BarrelExitForward, _view.BarrelExitRotation));
-        }
-
-        private void SetCannonToInteractionObjects()
-        {
-            foreach (var collider in _view.Colliders)
-            {
-                _interactionObjectsRepositiory.AddControllers(collider, this);
-            }
         }
     }
 }

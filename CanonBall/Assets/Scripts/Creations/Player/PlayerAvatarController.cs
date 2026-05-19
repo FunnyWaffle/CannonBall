@@ -3,7 +3,6 @@ using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Input;
 using Assets.Scripts.Systems;
-using R3;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
@@ -13,31 +12,26 @@ namespace Assets.Scripts.Creations.Player
         private readonly PlayerAvatarMover _mover;
         private readonly PlayerAvatarView _view;
 
-        private readonly CompositeDisposable _disposables = new();
-
         public PlayerAvatarController(PlayerAvatarView view,
+            PlayerAvatarMover mover,
             PlayerConfig config)
         {
             _view = view;
             _view.Initialize();
 
-            _mover = CreateMoverComtroller(config);
+            _mover = mover;
+            _mover.SetSpeed(config.Speed);
         }
 
         public CrosshairTypes CrosshairType => CrosshairTypes.Player;
 
-        public void HandleInput(Vector2 movementInput, Vector3 positionToRotation)
+        public void Move(Vector2 movementInput)
         {
-            RotateView(positionToRotation);
-            _mover.UpdateVelocity(movementInput);
+            var velocity = _mover.UpdateVelocity(movementInput);
+            _view.Move(velocity);
         }
 
-        public CameraPresetHandler GetCameraTransformPreset()
-        {
-            return _view.CameraPresetHandler;
-        }
-
-        private void RotateView(Vector3 positionToRotation)
+        public void Rotate(Vector3 positionToRotation)
         {
             var direction = Vector3.Normalize(positionToRotation - _view.ModelPosition);
 
@@ -48,19 +42,13 @@ namespace Assets.Scripts.Creations.Player
             _view.SetCameraPivotRotation(rotation);
         }
 
-        private void OnVelocityChange(Vector3 velocity)
+        public void Attack()
         {
-            var projectedVelocity = _mover.ProjectVelocityOn(_view.ModelForwad, _view.ModelRight);
-            _view.Move(projectedVelocity);
         }
 
-        private PlayerAvatarMover CreateMoverComtroller(PlayerConfig config)
+        public CameraPresetHandler GetCameraTransformPreset()
         {
-            var mover = new PlayerAvatarMover(config.Speed);
-
-            mover.VelocityChanged += OnVelocityChange;
-
-            return mover;
+            return _view.CameraPresetHandler;
         }
     }
 }

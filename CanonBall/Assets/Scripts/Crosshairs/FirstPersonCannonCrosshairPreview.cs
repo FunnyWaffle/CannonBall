@@ -1,30 +1,19 @@
-﻿using Assets.Scripts.Systems;
+﻿using Assets.Scripts.Camera;
 using UnityEngine;
 
 namespace Assets.Scripts.Crosshairs
 {
-    public class FirstPersonCannonCrosshairPreview : MonoBehaviour
+    public class FirstPersonCannonCrosshairPreview : MonoBehaviour, ICrosshairPreview
     {
         [SerializeField] private RectTransform _firstPersonCrosshairPreview;
 
+        public ViewType ViewType => ViewType.FirstPerson;
+
         public void SetPosition(Vector3 position)
         {
-            var screenPosition = CameraSystem.ProjectOnMainCamera(position);
-            if (IsPositionBehindScreen(screenPosition.z))
-            {
-                SetActive(false);
-                return;
-            }
-
-            SetActive(true);
-            _firstPersonCrosshairPreview.position = screenPosition;
+            _firstPersonCrosshairPreview.position = position;
         }
 
         public void SetActive(bool isActive) => gameObject.SetActive(isActive);
-
-        private bool IsPositionBehindScreen(float axisCoordinates)
-        {
-            return axisCoordinates < 0;
-        }
     }
 }

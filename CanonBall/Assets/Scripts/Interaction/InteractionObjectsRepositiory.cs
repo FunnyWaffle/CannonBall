@@ -13,7 +13,7 @@ namespace Assets.Scripts.Interaction
         private readonly Dictionary<Collider, InteractionableTypes> _interactionables = new();
         private readonly Dictionary<InteractionableTypes, IUIWindow> _uis = new();
 
-        public void AddControllers(Collider collider, IController controller)
+        public void AddController(Collider collider, IController controller)
         {
             _controllers[collider] = controller;
         }

@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Input;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Assets.Scripts.GameStateMachine
 {
@@ -9,7 +8,7 @@ namespace Assets.Scripts.GameStateMachine
 
         private IUIWindow _currentUIWindow;
 
-        public bool HasOpenWindow { get; private set; }
+        public UIWindowTypes? OpenWindow { get; private set; }
 
         public UIController(params IUIWindow[] windows)
         {
@@ -31,30 +30,18 @@ namespace Assets.Scripts.GameStateMachine
 
             _currentUIWindow = window;
             _currentUIWindow.Open();
-            HasOpenWindow = true;
+            OpenWindow = window.Type;
         }
 
-        private void ClearOpenWindow()
+
+        public void ClearOpenWindow()
         {
-            if (!HasOpenWindow)
+            if (!OpenWindow.HasValue)
                 return;
 
             _currentUIWindow.Close();
             _currentUIWindow = null;
-            HasOpenWindow = false;
-        }
-
-        public void HandleInput(InputData input)
-        {
-            if (input.IsBackEventPerformed)
-                ClearOpenWindow();
-
-            if (input.IsInventoryEventPerformed)
-                if (_windows.TryGetValue(UIWindowTypes.Inventory, out var inventory))
-                    if (!HasOpenWindow && _currentUIWindow != inventory)
-                        Open(inventory);
-                    else
-                        ClearOpenWindow();
+            OpenWindow = null;
         }
     }
 

@@ -1,12 +1,11 @@
 using Assets.Scripts.Camera;
 using Assets.Scripts.Creations.Player;
-using Assets.Scripts.Creations.Zombie;
+using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Curency;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Guns;
-using Assets.Scripts.Guns.Projectile;
 using Assets.Scripts.Guns.Projections;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
@@ -14,6 +13,7 @@ using Assets.Scripts.PlayerData;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
+using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
 using UnityEngine;
 using Zenject;
@@ -38,21 +38,22 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<CannonCrosshair>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<FirstPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ThirdPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<InteractionSystem>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<ObjectPool>().AsSingle();
+        Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo(typeof(Spawner<>)).AsTransient();
+        Container.BindInterfacesAndSelfTo(typeof(SpawnRequesterCreationHandler<>)).AsTransient();
+        Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
 
         Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
-
-        CreateSpawnSystem<CannonController>();
-        CreateSpawnSystem<ZombieController>();
-        CreateSpawnSystem<Ball>();
+        Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<CannonProjectionFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<Spawner<CannonProjection>>().AsSingle();
@@ -69,11 +70,13 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<GameplayController>().AsSingle();
         Container.BindInterfacesAndSelfTo<Aimer>().AsSingle();
         Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerInputHandler>().AsSingle();
+        //Container.BindInterfacesAndSelfTo<PlayerInputHandler>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CameraSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<CrosshairSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<PurchaseHandler>().AsSingle().NonLazy();
 
+        Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
 
         Container.Resolve<ExplosionHandler>().Exploded +=
@@ -83,15 +86,5 @@ public class SceneInstaller : MonoInstaller
 
         Container.Resolve<SpawnRequestHandler<CannonProjection>>();
         Container.Resolve<SpawnRequestHandler<CannonController>>();
-
-        var mainCamera = Container.Resolve<MainCamera>();
-        CameraSystem.SetMainCamera(mainCamera);
-    }
-
-    private void CreateSpawnSystem<TSpawnable>()
-        where TSpawnable : ISpawnable, IPoolableObject
-    {
-        Container.BindInterfacesAndSelfTo<Spawner<TSpawnable>>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpawnRequesterCreationHandler<TSpawnable>>().AsSingle();
     }
 }
