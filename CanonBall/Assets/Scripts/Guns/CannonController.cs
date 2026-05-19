@@ -57,5 +57,7 @@ namespace Assets.Scripts.Guns
         {
             return _view.CameraPresetHandler;
         }
+
+        public void Stop() { }
     }
 }

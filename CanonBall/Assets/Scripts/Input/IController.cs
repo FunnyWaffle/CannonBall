@@ -12,5 +12,6 @@ namespace Assets.Scripts.Input
         public void Rotate(Vector3 positionToRotation);
         public void Attack();
         public CameraPresetHandler GetCameraTransformPreset();
+        public void Stop();
     }
 }

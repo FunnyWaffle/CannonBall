@@ -50,5 +50,11 @@ namespace Assets.Scripts.Creations.Player
         {
             return _view.CameraPresetHandler;
         }
+
+        public void Stop()
+        {
+            _mover.Stop();
+            _view.Stop();
+        }
     }
 }

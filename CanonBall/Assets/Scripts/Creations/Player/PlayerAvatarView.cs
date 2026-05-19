@@ -37,13 +37,23 @@ namespace Assets.Scripts.Creations.Player
             _characterController.Move(velocity * Time.deltaTime);
 
             var localVelocity = _model.InverseTransformDirection(velocity);
-            _animator.SetFloat(SoldierAnimatorParameters.ForwardSpeed, localVelocity.z);
-            _animator.SetFloat(SoldierAnimatorParameters.SideSpeed, localVelocity.x);
+            SetAnimationVelocity(localVelocity);
+        }
+
+        public void Stop()
+        {
+            SetAnimationVelocity(Vector3.zero);
         }
 
         private void RotateBody(Quaternion rotation)
         {
             _model.rotation = rotation;
+        }
+
+        private void SetAnimationVelocity(Vector3 localVelocity)
+        {
+            _animator.SetFloat(SoldierAnimatorParameters.ForwardSpeed, localVelocity.z);
+            _animator.SetFloat(SoldierAnimatorParameters.SideSpeed, localVelocity.x);
         }
     }
 }

@@ -9,10 +9,10 @@ namespace Assets.Scripts.Curency
         private readonly List<ICurrencyReceiver<int>> _receivers;
 
         public WaveCurrencyAccruer(WavesExecutor wavesExecutor,
-            List<ICurrencyReceiver<int>> receivers)
+            params ICurrencyReceiver<int>[] receivers)
         {
             _wavesExecutor = wavesExecutor;
-            _receivers = receivers;
+            _receivers = new(receivers);
 
             _wavesExecutor.WaveEnded += OnWaveEnded;
         }

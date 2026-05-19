@@ -19,6 +19,7 @@ namespace Assets.Scripts.GameStateMachine
 
         public void SetController(IController controller)
         {
+            _controller.Stop();
             PrivateSet(controller);
         }
 

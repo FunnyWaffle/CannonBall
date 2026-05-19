@@ -30,5 +30,10 @@ namespace Assets.Scripts.Creations.Player.Components
 
             return flatForward * _velocity.z + flatRight * _velocity.x;
         }
+
+        public void Stop()
+        {
+            _velocity = Vector3.zero;
+        }
     }
 }

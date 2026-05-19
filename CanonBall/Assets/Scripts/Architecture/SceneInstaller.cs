@@ -86,5 +86,7 @@ public class SceneInstaller : MonoInstaller
 
         Container.Resolve<SpawnRequestHandler<CannonProjection>>();
         Container.Resolve<SpawnRequestHandler<CannonController>>();
+
+        Container.Resolve<WaveCurrencyAccruer>();
     }
 }
