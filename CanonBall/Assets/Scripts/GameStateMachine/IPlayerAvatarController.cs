@@ -1,13 +1,10 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Systems;
 using UnityEngine;
 
-namespace Assets.Scripts.Input
+namespace Assets.Scripts.GameStateMachine
 {
-    public interface IController
+    public interface IPlayerAvatarController
     {
-        public CrosshairTypes CrosshairType { get; }
-
         public void Move(Vector2 movementInput);
         public void Rotate(Vector3 positionToRotation);
         public void Attack();

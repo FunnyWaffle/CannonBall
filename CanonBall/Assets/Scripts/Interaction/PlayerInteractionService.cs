@@ -1,30 +1,32 @@
 ﻿using Assets.Scripts.Config;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Input;
-using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Systems;
 using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Systems
+namespace Assets.Scripts.Interaction
 {
-    public class InteractionSystem : MonoBehaviour
+    public class PlayerInteractionService : MonoBehaviour
     {
         [SerializeField] private RectTransform _interactionPrompt;
 
-        private GameplayInput _gameplayInput;
+        private PlayerAvatarInput _playerInput;
         [Inject] private CameraSystem _cameraSystem;
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
-        [Inject] private GameplayController _gameplayController;
+        [Inject] private CannonColliderMap _colliderMap;
+        [Inject] private PlayerAvatarInputProvider _playerAvatarInputProvider;
+        [Inject] private CannonInputProvider _cannonInputProvider;
         [Inject] private UIController _uIController;
-
+        [Inject] private InputSystem _inputSystem;
 
         [Inject]
-        public void Initialize(GameplayInput gameplayInput)
+        public void Initialize(PlayerAvatarInput playerInput)
         {
-            _gameplayInput = gameplayInput;
+            _playerInput = playerInput;
 
-            _gameplayInput.InteractionActionPerformed += OnInteractionPerform;
+            _playerInput.InteractionActionPerformed += OnInteractionPerform;
         }
 
         private void Update()
@@ -51,9 +53,10 @@ namespace Assets.Scripts.Systems
             if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
                 return;
 
-            if (_interactionObjectsRepositiory.TryGetControllers(collider, out var cannonController))
+            if (_colliderMap.TryGet(collider, out var cannonController))
             {
-                _gameplayController.SetController(cannonController);
+                _cannonInputProvider.SetController(cannonController);
+                _inputSystem.SwitchTo(InputType.Cannon);
             }
 
             else if (_interactionObjectsRepositiory.TryGetUIWindow(collider, out var uIWindow))

@@ -1,13 +1,13 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
-using Assets.Scripts.Input;
+using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Systems;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
 {
-    public class PlayerAvatarController : IController
+    public class PlayerAvatarController : IPlayerAvatarController
     {
         private readonly PlayerAvatarMover _mover;
         private readonly PlayerAvatarView _view;

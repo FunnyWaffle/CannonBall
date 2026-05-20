@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Input
 {
-    public class GameplayInput : IInputSheme
+    public class PlayerAvatarInput : IInputActionMap
     {
         private readonly InputSystem_Actions.PlayerActions _actions = new();
 
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Input
         public event Action BackActionPerformed;
         public event Action InventoryActionPerformed;
 
-        public GameplayInput(InputSystem_Actions.PlayerActions inputActions)
+        public PlayerAvatarInput(InputSystem_Actions.PlayerActions inputActions)
         {
             _actions = inputActions;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Input
             _actions.Inventory.performed += context => InventoryActionPerformed?.Invoke();
         }
 
-        public InputType Type => InputType.Gameplay;
+        public InputType Type => InputType.Player;
 
         public void Enable()
         {

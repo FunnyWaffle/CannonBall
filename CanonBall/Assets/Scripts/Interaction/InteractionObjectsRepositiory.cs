@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,17 +7,17 @@ namespace Assets.Scripts.Interaction
 {
     public class InteractionObjectsRepositiory
     {
-        private readonly Dictionary<Collider, IController> _controllers = new();
+        private readonly Dictionary<Collider, IPlayerAvatarController> _controllers = new();
         private readonly Dictionary<Collider, IItemSeller> _itemSellers = new();
         private readonly Dictionary<Collider, InteractionableTypes> _interactionables = new();
         private readonly Dictionary<InteractionableTypes, IUIWindow> _uis = new();
 
-        public void AddController(Collider collider, IController controller)
+        public void AddController(Collider collider, IPlayerAvatarController controller)
         {
             _controllers[collider] = controller;
         }
 
-        public bool TryGetControllers(Collider collider, out IController controller)
+        public bool TryGetControllers(Collider collider, out IPlayerAvatarController controller)
         {
             return _controllers.TryGetValue(collider, out controller);
         }

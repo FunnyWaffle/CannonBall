@@ -1,29 +1,25 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Creations;
 using Assets.Scripts.Input;
 using Assets.Scripts.Systems;
-using UnityEngine;
 
 namespace Assets.Scripts.GameStateMachine
 {
-    public class GameController : IUpdatable
+    public class GameController
     {
-        private readonly GameplayController _gameplayController;
+        private readonly PlayerAvatarInputProvider _gameplayController;
         private readonly UIController _uIController;
 
         private readonly PlaceObjectSystem _placeObjectSystem;
         private readonly CrosshairSystem _crosshairSystem;
         private readonly CameraSystem _cameraSystem;
-        private readonly GameplayInput _gameplayInput;
-        private readonly Aimer _aimer;
+        private readonly PlayerAvatarInput _gameplayInput;
 
-        public GameController(GameplayController gameplayController,
+        public GameController(PlayerAvatarInputProvider gameplayController,
             UIController uIController,
             PlaceObjectSystem placeObjectSystem,
             CrosshairSystem crosshairSystem,
             CameraSystem cameraSystem,
-            GameplayInput gameplayInput,
-            Aimer aimer)
+            PlayerAvatarInput gameplayInput)
         {
             _gameplayController = gameplayController;
             _uIController = uIController;
@@ -31,26 +27,11 @@ namespace Assets.Scripts.GameStateMachine
             _crosshairSystem = crosshairSystem;
             _cameraSystem = cameraSystem;
             _gameplayInput = gameplayInput;
-            _aimer = aimer;
 
             _gameplayInput.AttackActionPerformed += OnAttackPerform;
             _gameplayInput.ViewModeActionPerformed += OnViewModeActionPerform;
             _gameplayInput.BackActionPerformed += OnBackActionPerform;
             _gameplayInput.InventoryActionPerformed += OnInventoryActionPerform;
-        }
-
-        public void Update()
-        {
-            if (!_uIController.OpenWindow.HasValue)
-            {
-                var rotation = _aimer.Aim(_gameplayInput.Look);
-
-                _cameraSystem.RotateCameraPivot(rotation);
-                var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore);
-
-                _gameplayController.HandleRotation(position);
-                _gameplayController.HandleMovement(_gameplayInput.Movement);
-            }
         }
 
         private void OnAttackPerform()
@@ -61,7 +42,7 @@ namespace Assets.Scripts.GameStateMachine
             if (_placeObjectSystem.IsPlacingObject)
                 _placeObjectSystem.Place();
             else
-                _gameplayController.HandleAttack();
+                _gameplayController.OnAttack();
         }
 
         private void OnViewModeActionPerform(int viewModeIndex)

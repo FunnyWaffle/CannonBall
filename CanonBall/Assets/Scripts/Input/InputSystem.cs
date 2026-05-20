@@ -4,23 +4,24 @@ namespace Assets.Scripts.Input
 {
     public class InputSystem
     {
-        private readonly Dictionary<InputType, IInputSheme> _shemes = new();
+        private readonly Dictionary<InputType, IInputActionMap> _shemes = new();
 
         private readonly InputSystem_Actions _inputActions;
 
-        private IInputSheme _inputSheme;
+        private IInputActionMap _inputSheme;
 
-        public InputSystem(InputSystem_Actions inputActions, params IInputSheme[] inputShemes)
+        public InputSystem(InputSystem_Actions inputActions, params IInputActionMap[] inputShemes)
         {
             _inputActions = inputActions;
             _inputActions.Enable();
 
             foreach (var sheme in inputShemes)
             {
+                sheme.Disable();
                 _shemes[sheme.Type] = sheme;
             }
 
-            EnableSheme(InputType.Gameplay);
+            EnableSheme(InputType.Player);
         }
 
         public void SwitchTo(InputType inputType)
@@ -38,7 +39,8 @@ namespace Assets.Scripts.Input
 
     public enum InputType
     {
-        Gameplay,
+        Player,
+        Cannon,
         Placement,
     }
 }

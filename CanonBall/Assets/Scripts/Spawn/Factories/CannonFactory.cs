@@ -10,14 +10,14 @@ namespace Assets.Scripts.Spawn.Factories
     public class CannonFactory : IFactory<CannonController>
     {
         private readonly DiContainer _container;
-        private readonly InteractionObjectsRepositiory _interactionObjectsRepositiory;
+        private readonly CannonColliderMap _cannonColliderMap;
 
         public ItemTypes CreationType => ItemTypes.Cannon;
 
-        public CannonFactory(DiContainer container, InteractionObjectsRepositiory interactionObjectsRepositiory)
+        public CannonFactory(DiContainer container, CannonColliderMap cannonColliderMap)
         {
             _container = container;
-            _interactionObjectsRepositiory = interactionObjectsRepositiory;
+            _cannonColliderMap = cannonColliderMap;
         }
 
         public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
@@ -30,10 +30,7 @@ namespace Assets.Scripts.Spawn.Factories
             var shooter = CreateShooter(view);
             var controller = _container.Instantiate<CannonController>(new object[] { view, rotator, shooter });
 
-            foreach (var collider in view.Colliders)
-            {
-                _interactionObjectsRepositiory.AddController(collider, controller);
-            }
+            _cannonColliderMap.Register(view.Colliders, controller);
 
             return controller;
         }

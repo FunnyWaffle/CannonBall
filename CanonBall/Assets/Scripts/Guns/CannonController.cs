@@ -1,15 +1,14 @@
 ﻿using Assets.Scripts.Camera;
+using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Guns.Components;
-using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
-using Assets.Scripts.Systems;
 using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonController : IController, ISpawnable, IPoolableObject
+    public class CannonController : ICannonController, ISpawnable, IPoolableObject
     {
         private readonly CannonView _view;
         private readonly CannonRotator _rotator;
@@ -21,8 +20,6 @@ namespace Assets.Scripts.Guns
             _rotator = cannonRotator;
             _shooter = shooter;
         }
-
-        public CrosshairTypes CrosshairType => CrosshairTypes.Cannon;
 
         public event EventHandler<ItemTypes> Disabled;
 
@@ -46,18 +43,15 @@ namespace Assets.Scripts.Guns
             _view.SetBarrelRotation(rotation);
         }
 
-        public void Move(Vector2 movementInput) { }
-
-        public void Attack()
+        public void Shoot()
         {
             _ = _shooter.Shoot(_view.BarrelExitPosition, _view.BarrelExitRotation, _view.Colliders);
+
         }
 
         public CameraPresetHandler GetCameraTransformPreset()
         {
             return _view.CameraPresetHandler;
         }
-
-        public void Stop() { }
     }
 }

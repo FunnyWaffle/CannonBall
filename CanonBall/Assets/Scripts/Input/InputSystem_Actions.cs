@@ -1154,6 +1154,54 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Cannon"",
+            ""id"": ""738009c6-0192-48b8-82ff-266569a89365"",
+            ""actions"": [
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""bfb550a5-8218-4756-9279-dc026a548d70"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7dcefc1-d345-4cf3-ae4a-40559f54de63"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""623009cf-4325-4104-9254-83a8e79f7c93"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6e98b70-f186-4849-befc-66601e266ab4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1248,6 +1296,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         // Placement
         m_Placement = asset.FindActionMap("Placement", throwIfNotFound: true);
         m_Placement_Place = m_Placement.FindAction("Place", throwIfNotFound: true);
+        // Cannon
+        m_Cannon = asset.FindActionMap("Cannon", throwIfNotFound: true);
+        m_Cannon_Look = m_Cannon.FindAction("Look", throwIfNotFound: true);
+        m_Cannon_Shoot = m_Cannon.FindAction("Shoot", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1255,6 +1307,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, InputSystem_Actions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Placement.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Placement.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Cannon.enabled, "This will cause a leak and performance issues, InputSystem_Actions.Cannon.Disable() has not been called.");
     }
 
     /// <summary>
@@ -1834,6 +1887,113 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="PlacementActions" /> instance referencing this action map.
     /// </summary>
     public PlacementActions @Placement => new PlacementActions(this);
+
+    // Cannon
+    private readonly InputActionMap m_Cannon;
+    private List<ICannonActions> m_CannonActionsCallbackInterfaces = new List<ICannonActions>();
+    private readonly InputAction m_Cannon_Look;
+    private readonly InputAction m_Cannon_Shoot;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Cannon".
+    /// </summary>
+    public struct CannonActions
+    {
+        private @InputSystem_Actions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public CannonActions(@InputSystem_Actions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Cannon/Look".
+        /// </summary>
+        public InputAction @Look => m_Wrapper.m_Cannon_Look;
+        /// <summary>
+        /// Provides access to the underlying input action "Cannon/Shoot".
+        /// </summary>
+        public InputAction @Shoot => m_Wrapper.m_Cannon_Shoot;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Cannon; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="CannonActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(CannonActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="CannonActions" />
+        public void AddCallbacks(ICannonActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CannonActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CannonActionsCallbackInterfaces.Add(instance);
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="CannonActions" />
+        private void UnregisterCallbacks(ICannonActions instance)
+        {
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="CannonActions.UnregisterCallbacks(ICannonActions)" />.
+        /// </summary>
+        /// <seealso cref="CannonActions.UnregisterCallbacks(ICannonActions)" />
+        public void RemoveCallbacks(ICannonActions instance)
+        {
+            if (m_Wrapper.m_CannonActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="CannonActions.AddCallbacks(ICannonActions)" />
+        /// <seealso cref="CannonActions.RemoveCallbacks(ICannonActions)" />
+        /// <seealso cref="CannonActions.UnregisterCallbacks(ICannonActions)" />
+        public void SetCallbacks(ICannonActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CannonActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CannonActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="CannonActions" /> instance referencing this action map.
+    /// </summary>
+    public CannonActions @Cannon => new CannonActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -2083,5 +2243,27 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPlace(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Cannon" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="CannonActions.AddCallbacks(ICannonActions)" />
+    /// <seealso cref="CannonActions.RemoveCallbacks(ICannonActions)" />
+    public interface ICannonActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShoot(InputAction.CallbackContext context);
     }
 }

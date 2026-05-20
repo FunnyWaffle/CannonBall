@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Input
 {
-    public class PlacementInput : IInputSheme
+    public class PlacementInput : IInputActionMap
     {
         private readonly InputSystem_Actions.PlacementActions _actions;
 

@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Input
 {
-    public interface IInputSheme
+    public interface IInputActionMap
     {
         public InputType Type { get; }
 

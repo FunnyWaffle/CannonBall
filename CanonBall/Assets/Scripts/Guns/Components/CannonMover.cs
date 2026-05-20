@@ -9,7 +9,7 @@ namespace Assets.Scripts.Guns.Components
         [SerializeField] private float _motorPower = 1;
         [SerializeField] private WheelCollider[] _wheels;
 
-        [Inject] private GameplayInput _playerInput;
+        [Inject] private PlayerAvatarInput _playerInput;
 
         private void Update()
         {

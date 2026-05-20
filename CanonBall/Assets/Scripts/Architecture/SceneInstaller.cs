@@ -38,7 +38,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<CannonCrosshair>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<FirstPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ThirdPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<InteractionSystem>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerInteractionService>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
@@ -63,14 +63,10 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
-        Container.BindInterfacesAndSelfTo<GameplayInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
         Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<GameplayController>().AsSingle();
         Container.BindInterfacesAndSelfTo<Aimer>().AsSingle();
         Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
-        //Container.BindInterfacesAndSelfTo<PlayerInputHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<CameraSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<CrosshairSystem>().AsSingle();
@@ -79,9 +75,17 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonColliderMap>().AsSingle();
+
         Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions.CannonActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarInputProvider>().AsSingle();
 
         Container.Resolve<ExplosionHandler>().Exploded +=
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
