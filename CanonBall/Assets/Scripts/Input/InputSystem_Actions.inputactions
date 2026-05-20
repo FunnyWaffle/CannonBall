@@ -1040,6 +1040,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Placement",
+            "id": "e272f0db-efc8-4033-9a89-6127e76ec030",
+            "actions": [
+                {
+                    "name": "Place",
+                    "type": "Button",
+                    "id": "43fc461a-3574-487c-85ea-50bb5876f0bd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b11f5071-01a6-4ff6-ac8b-1b9f972327f1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

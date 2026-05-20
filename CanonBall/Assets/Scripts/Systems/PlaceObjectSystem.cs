@@ -26,6 +26,8 @@ namespace Assets.Scripts.Systems
             _cameraSystem = cameraSystem;
         }
 
+        public bool IsPlacingObject => _spawnedProjection != null;
+
         private EventHandler<SpawnArguments> _cannonProjectionSpawnRequest;
         private EventHandler<SpawnArguments> _cannonControllerSpawnRequest;
 
@@ -45,7 +47,7 @@ namespace Assets.Scripts.Systems
 
         public void Place()
         {
-            if (_spawnedProjection == null)
+            if (!IsPlacingObject)
                 return;
 
             var position = GetCameraFacedPosition();
@@ -78,7 +80,7 @@ namespace Assets.Scripts.Systems
 
         public void Update()
         {
-            if (_spawnedProjection == null)
+            if (!IsPlacingObject)
                 return;
 
             var position = GetCameraFacedPosition();

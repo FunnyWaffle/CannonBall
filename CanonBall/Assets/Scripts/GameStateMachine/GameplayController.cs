@@ -7,12 +7,15 @@ namespace Assets.Scripts.GameStateMachine
     public class GameplayController
     {
         private readonly CameraSystem _cameraSystem;
+        private readonly CrosshairSystem _crosshairSystem;
 
         private IController _controller;
+        private IController _previousController;
 
-        public GameplayController(CameraSystem cameraSystem, IController controller)
+        public GameplayController(CameraSystem cameraSystem, CrosshairSystem crosshairSystem, IController controller)
         {
             _cameraSystem = cameraSystem;
+            _crosshairSystem = crosshairSystem;
             PrivateSet(controller);
             _cameraSystem.ChangeCameraViewType(Camera.ViewType.FirstPerson);
         }
@@ -20,7 +23,14 @@ namespace Assets.Scripts.GameStateMachine
         public void SetController(IController controller)
         {
             _controller.Stop();
+            _previousController = _controller;
             PrivateSet(controller);
+        }
+
+        public void ReturnPreviousController()
+        {
+            SetController(_previousController);
+            _previousController = null;
         }
 
         public void HandleMovement(Vector2 movementInput)
@@ -40,9 +50,10 @@ namespace Assets.Scripts.GameStateMachine
 
         private void PrivateSet(IController controller)
         {
-            _controller = controller;
-            var preset = _controller.GetCameraTransformPreset();
+            var preset = controller.GetCameraTransformPreset();
             _cameraSystem.ApplyMainCameraPreset(preset);
+            _crosshairSystem.EnableCrosshair(controller.CrosshairType);
+            _controller = controller;
         }
     }
 }

@@ -63,7 +63,7 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<GameplayInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
         Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIController>().AsSingle();
@@ -79,6 +79,10 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
+
         Container.Resolve<ExplosionHandler>().Exploded +=
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
 
@@ -88,5 +92,7 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<SpawnRequestHandler<CannonController>>();
 
         Container.Resolve<WaveCurrencyAccruer>();
+
+        Container.Resolve<InputSystem>();
     }
 }
