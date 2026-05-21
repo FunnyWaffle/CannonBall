@@ -8,32 +8,45 @@ namespace Assets.Scripts.Input
 
         private readonly InputSystem_Actions _inputActions;
 
-        private IInputActionMap _inputSheme;
+        private IInputActionMap _inputActionMap;
+        private IInputActionMap _lastInputActionMap;
 
-        public InputSystem(InputSystem_Actions inputActions, params IInputActionMap[] inputShemes)
+        public InputSystem(InputSystem_Actions inputActions, params IInputActionMap[] inputActionMaps)
         {
             _inputActions = inputActions;
             _inputActions.Enable();
 
-            foreach (var sheme in inputShemes)
+            foreach (var map in inputActionMaps)
             {
-                sheme.Disable();
-                _shemes[sheme.Type] = sheme;
+                map.Disable();
+                _shemes[map.Type] = map;
             }
 
-            EnableSheme(InputType.Player);
+            EnableMap(InputType.Player);
         }
 
         public void SwitchTo(InputType inputType)
         {
-            _inputSheme.Disable();
-            EnableSheme(inputType);
+            _lastInputActionMap = _inputActionMap;
+            _inputActionMap.Disable();
+            EnableMap(inputType);
         }
 
-        private void EnableSheme(InputType inputType)
+        public void SwitchToLast()
         {
-            _inputSheme = _shemes[inputType];
-            _inputSheme.Enable();
+            var last = _lastInputActionMap;
+
+            _inputActionMap.Disable();
+            _lastInputActionMap = _inputActionMap;
+
+            last.Enable();
+            _inputActionMap = last;
+        }
+
+        private void EnableMap(InputType inputType)
+        {
+            _inputActionMap = _shemes[inputType];
+            _inputActionMap.Enable();
         }
     }
 
@@ -42,5 +55,6 @@ namespace Assets.Scripts.Input
         Player,
         Cannon,
         Placement,
+        UI,
     }
 }

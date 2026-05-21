@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Input
 {
@@ -7,15 +8,6 @@ namespace Assets.Scripts.Input
     {
         private readonly InputSystem_Actions.PlayerActions _actions = new();
 
-        public Vector2 Movement => _actions.Move.ReadValue<Vector2>();
-        public Vector2 Look => _actions.Look.ReadValue<Vector2>();
-
-        public event Action JumpActionPerformed;
-        public event Action AttackActionPerformed;
-        public event Action InteractionActionPerformed;
-        public event Action<int> ViewModeActionPerformed;
-        public event Action BackActionPerformed;
-        public event Action InventoryActionPerformed;
 
         public PlayerAvatarInput(InputSystem_Actions.PlayerActions inputActions)
         {
@@ -27,10 +19,20 @@ namespace Assets.Scripts.Input
             _actions.FirstPersonView.performed += context => ViewModeActionPerformed?.Invoke(0);
             _actions.ThirdPersonView.performed += context => ViewModeActionPerformed?.Invoke(1);
             _actions.Back.performed += context => BackActionPerformed?.Invoke();
-            _actions.Inventory.performed += context => InventoryActionPerformed?.Invoke();
+            _actions.Inventory.performed += OnInventoryActionPerformed;
         }
 
         public InputType Type => InputType.Player;
+
+        public Vector2 Movement => _actions.Move.ReadValue<Vector2>();
+        public Vector2 Look => _actions.Look.ReadValue<Vector2>();
+
+        public event Action JumpActionPerformed;
+        public event Action AttackActionPerformed;
+        public event Action InteractionActionPerformed;
+        public event Action<int> ViewModeActionPerformed;
+        public event Action BackActionPerformed;
+        public event Action InventoryActionPerformed;
 
         public void Enable()
         {
@@ -40,6 +42,11 @@ namespace Assets.Scripts.Input
         public void Disable()
         {
             _actions.Disable();
+        }
+
+        private void OnInventoryActionPerformed(InputAction.CallbackContext context)
+        {
+            InventoryActionPerformed?.Invoke();
         }
     }
 }
