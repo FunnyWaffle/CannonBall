@@ -28,9 +28,15 @@ namespace Assets.Scripts.GameStateMachine
             PrivateSet(controller);
         }
 
-        public IPlayerAvatarController GetController()
+        public void ClearController()
         {
-            return _controller;
+            _controller = null;
+        }
+
+        public bool TryGetController(out IPlayerAvatarController controller)
+        {
+            controller = _controller;
+            return _controller != null;
         }
 
         private void PrivateSet(IPlayerAvatarController controller)

@@ -14,7 +14,7 @@ namespace Assets.Scripts.Input
             _actions = inputActions;
 
             _actions.Jump.performed += context => JumpActionPerformed?.Invoke();
-            _actions.Attack.performed += context => AttackActionPerformed?.Invoke();
+            _actions.Attack.performed += OnAttack;
             _actions.Interact.performed += context => InteractionActionPerformed?.Invoke();
             _actions.FirstPersonView.performed += context => ViewModeActionPerformed?.Invoke(0);
             _actions.ThirdPersonView.performed += context => ViewModeActionPerformed?.Invoke(1);
@@ -42,6 +42,11 @@ namespace Assets.Scripts.Input
         public void Disable()
         {
             _actions.Disable();
+        }
+
+        private void OnAttack(InputAction.CallbackContext context)
+        {
+            AttackActionPerformed?.Invoke();
         }
 
         private void OnInventoryActionPerformed(InputAction.CallbackContext context)

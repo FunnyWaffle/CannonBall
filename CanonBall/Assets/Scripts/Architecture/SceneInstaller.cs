@@ -105,6 +105,7 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<SpawnRequestHandler<CannonController>>();
 
         Container.Resolve<WaveCurrencyAccruer>();
+        Container.Resolve<PlayerAvatarAttackInputProvider>();
 
         Container.Resolve<InputSystem>();
 
