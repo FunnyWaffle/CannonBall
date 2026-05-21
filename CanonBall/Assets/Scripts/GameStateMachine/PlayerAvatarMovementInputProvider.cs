@@ -11,18 +11,18 @@ namespace Assets.Scripts.GameStateMachine
         private readonly PlayerAvatarInput _input;
         private readonly Aimer _aimer;
         private readonly CameraSystem _cameraSystem;
-        private readonly CurrentPlayerAvatarController _controllerPlaceholder;
+        private readonly CurrentPlayerAvatarController _currentController;
 
         public PlayerAvatarMovementInputProvider(
             PlayerAvatarInput input,
             Aimer aimer,
             CameraSystem cameraSystem,
-            CurrentPlayerAvatarController controllerPlaceholder)
+            CurrentPlayerAvatarController currentController)
         {
             _input = input;
             _aimer = aimer;
             _cameraSystem = cameraSystem;
-            _controllerPlaceholder = controllerPlaceholder;
+            _currentController = currentController;
         }
 
         public void Update()
@@ -33,7 +33,8 @@ namespace Assets.Scripts.GameStateMachine
             _cameraSystem.RotateCameraPivot(rotation);
             var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
 
-            var controller = _controllerPlaceholder.GetController();
+            if (!_currentController.TryGetController(out var controller))
+                return;
 
             controller.Rotate(position);
             var movementInput = _input.Movement;

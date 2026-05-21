@@ -6,16 +6,16 @@ namespace Assets.Scripts.GameStateMachine
     public class PlayerAvatarAttackInputProvider
     {
         private readonly PlayerAvatarInput _input;
-        private readonly CurrentPlayerAvatarController _controllerPlaceholder;
+        private readonly CurrentPlayerAvatarController _currentController;
         private readonly PlaceObjectSystem _placeObjectSystem;
 
         public PlayerAvatarAttackInputProvider(
             PlayerAvatarInput input,
-            CurrentPlayerAvatarController controllerPlaceholder,
+            CurrentPlayerAvatarController currentController,
             PlaceObjectSystem placeObjectSystem)
         {
             _input = input;
-            _controllerPlaceholder = controllerPlaceholder;
+            _currentController = currentController;
             _placeObjectSystem = placeObjectSystem;
 
             _input.AttackActionPerformed += OnAttack;
@@ -31,7 +31,9 @@ namespace Assets.Scripts.GameStateMachine
 
         private void ExecuteControllerAttack()
         {
-            var controller = _controllerPlaceholder.GetController();
+            if (!_currentController.TryGetController(out var controller))
+                return;
+
             controller.Attack();
         }
 

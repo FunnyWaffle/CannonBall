@@ -20,6 +20,7 @@ namespace Assets.Scripts.Interaction
         [Inject] private CannonInputProvider _cannonInputProvider;
         [Inject] private UIController _uIController;
         [Inject] private InputSystem _inputSystem;
+        [Inject] private CurrentPlayerAvatarController _currentPlayerAvatarController;
 
         [Inject]
         public void Initialize(PlayerAvatarInput playerInput)
@@ -55,6 +56,7 @@ namespace Assets.Scripts.Interaction
 
             if (_colliderMap.TryGet(collider, out var cannonController))
             {
+                _currentPlayerAvatarController.ClearController();
                 _cannonInputProvider.SetController(cannonController);
                 _inputSystem.SwitchTo(InputType.Cannon);
             }
