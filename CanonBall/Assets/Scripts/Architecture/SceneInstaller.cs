@@ -9,12 +9,14 @@ using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Projections;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
+using Assets.Scripts.Placement;
 using Assets.Scripts.PlayerData;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
 using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
+using Assets.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
@@ -60,10 +62,8 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SpawnRequestHandler<CannonProjection>>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpawnRequestHandler<CannonController>>().AsSingle();
 
-
         Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIController>().AsSingle();
         Container.BindInterfacesAndSelfTo<Aimer>().AsSingle();
         Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
@@ -71,6 +71,9 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<CrosshairSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<PurchaseHandler>().AsSingle().NonLazy();
+
+        Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ItemAdder>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
@@ -81,11 +84,17 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.CannonActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions.UIActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerAvatarInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<UIInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarMovementInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarAttackInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CurrentPlayerAvatarController>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
         Container.Resolve<ExplosionHandler>().Exploded +=
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
@@ -98,5 +107,7 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<WaveCurrencyAccruer>();
 
         Container.Resolve<InputSystem>();
+
+        Container.Resolve<UIOpener>();
     }
 }

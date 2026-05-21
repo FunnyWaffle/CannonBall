@@ -16,7 +16,7 @@ namespace Assets.Scripts.Interaction
         [Inject] private CameraSystem _cameraSystem;
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
         [Inject] private CannonColliderMap _colliderMap;
-        [Inject] private PlayerAvatarInputProvider _playerAvatarInputProvider;
+        [Inject] private PlayerAvatarMovementInputProvider _playerAvatarInputProvider;
         [Inject] private CannonInputProvider _cannonInputProvider;
         [Inject] private UIController _uIController;
         [Inject] private InputSystem _inputSystem;
