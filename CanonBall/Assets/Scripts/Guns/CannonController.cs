@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;

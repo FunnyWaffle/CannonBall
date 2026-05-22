@@ -11,13 +11,13 @@ namespace Assets.Scripts.GameStateMachine
         private readonly PlayerAvatarInput _input;
         private readonly Aimer _aimer;
         private readonly CameraSystem _cameraSystem;
-        private readonly CurrentPlayerAvatarController _currentController;
+        private readonly ActivePlayerAvatarControllerContainer _currentController;
 
         public PlayerAvatarMovementInputProvider(
             PlayerAvatarInput input,
             Aimer aimer,
             CameraSystem cameraSystem,
-            CurrentPlayerAvatarController currentController)
+            ActivePlayerAvatarControllerContainer currentController)
         {
             _input = input;
             _aimer = aimer;

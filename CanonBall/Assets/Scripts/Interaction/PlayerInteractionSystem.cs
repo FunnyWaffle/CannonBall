@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Config;
 using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Systems;
@@ -8,7 +9,7 @@ using Zenject;
 
 namespace Assets.Scripts.Interaction
 {
-    public class PlayerInteractionService : MonoBehaviour
+    public class PlayerInteractionSystem : MonoBehaviour
     {
         [SerializeField] private RectTransform _interactionPrompt;
 
@@ -17,10 +18,10 @@ namespace Assets.Scripts.Interaction
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
         [Inject] private CannonColliderMap _colliderMap;
         [Inject] private PlayerAvatarMovementInputProvider _playerAvatarInputProvider;
-        [Inject] private CannonInputProvider _cannonInputProvider;
+        [Inject] private ActiveCannonControllerContainer _activeCannonControllerContainer;
         [Inject] private UIController _uIController;
         [Inject] private InputSystem _inputSystem;
-        [Inject] private CurrentPlayerAvatarController _currentPlayerAvatarController;
+        [Inject] private ActivePlayerAvatarControllerContainer _currentPlayerAvatarController;
 
         [Inject]
         public void Initialize(PlayerAvatarInput playerInput)
@@ -57,10 +58,9 @@ namespace Assets.Scripts.Interaction
             if (_colliderMap.TryGet(collider, out var cannonController))
             {
                 _currentPlayerAvatarController.ClearController();
-                _cannonInputProvider.SetController(cannonController);
+                _activeCannonControllerContainer.SetController(cannonController);
                 _inputSystem.SwitchTo(InputType.Cannon);
             }
-
             else if (_interactionObjectsRepositiory.TryGetUIWindow(collider, out var uIWindow))
             {
                 if (uIWindow is ShopView shopView
