@@ -30,6 +30,7 @@ namespace Assets.Scripts.GameStateMachine
 
         public void ClearController()
         {
+            _controller.Stop();
             _controller = null;
         }
 
