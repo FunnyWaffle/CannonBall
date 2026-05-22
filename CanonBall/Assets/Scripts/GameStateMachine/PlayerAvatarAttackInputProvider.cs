@@ -6,12 +6,12 @@ namespace Assets.Scripts.GameStateMachine
     public class PlayerAvatarAttackInputProvider
     {
         private readonly PlayerAvatarInput _input;
-        private readonly CurrentPlayerAvatarController _currentController;
+        private readonly ActivePlayerAvatarControllerContainer _currentController;
         private readonly PlaceObjectSystem _placeObjectSystem;
 
         public PlayerAvatarAttackInputProvider(
             PlayerAvatarInput input,
-            CurrentPlayerAvatarController currentController,
+            ActivePlayerAvatarControllerContainer currentController,
             PlaceObjectSystem placeObjectSystem)
         {
             _input = input;

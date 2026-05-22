@@ -2,14 +2,15 @@
 
 namespace Assets.Scripts.GameStateMachine
 {
-    public class CurrentPlayerAvatarController
+    public class ActivePlayerAvatarControllerContainer
     {
         private readonly CameraSystem _cameraSystem;
         private readonly CrosshairSystem _crosshairSystem;
 
         private IPlayerAvatarController _controller;
+        private IPlayerAvatarController _lastController;
 
-        public CurrentPlayerAvatarController(
+        public ActivePlayerAvatarControllerContainer(
             IPlayerAvatarController controller,
             CameraSystem cameraSystem,
             CrosshairSystem crosshairSystem)
@@ -25,13 +26,21 @@ namespace Assets.Scripts.GameStateMachine
         public void SetController(IPlayerAvatarController controller)
         {
             _controller.Stop();
+            _lastController = _controller;
             PrivateSet(controller);
         }
 
         public void ClearController()
         {
+            _lastController = _controller;
             _controller.Stop();
             _controller = null;
+        }
+
+        public void SetLastController()
+        {
+            PrivateSet(_lastController);
+            _lastController = null;
         }
 
         public bool TryGetController(out IPlayerAvatarController controller)
