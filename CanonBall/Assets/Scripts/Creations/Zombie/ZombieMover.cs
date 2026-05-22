@@ -9,13 +9,11 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly NavMeshAgent _agent;
         private readonly Transform _agentTransform;
         private readonly Animator _animator;
-        private readonly Vector3 _targetPosition;
 
-        public ZombieMover(NavMeshAgent agent, Animator animator, Vector3 targetPosition)
+        public ZombieMover(NavMeshAgent agent, Animator animator)
         {
             _agent = agent;
             _animator = animator;
-            _targetPosition = targetPosition;
 
             _agentTransform = _agent.transform;
 
