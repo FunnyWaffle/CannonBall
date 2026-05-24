@@ -13,6 +13,7 @@ using Assets.Scripts.Interaction;
 using Assets.Scripts.Placement;
 using Assets.Scripts.PlayerData;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Space;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
 using Assets.Scripts.Spawn.Projectile;
@@ -42,6 +43,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
@@ -49,7 +51,6 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo(typeof(SpawnRequesterCreationHandler<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
 
-        Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
@@ -80,6 +81,7 @@ public class SceneInstaller : MonoInstaller
 
         BindInteraction();
         BindCannon();
+        BindZombie();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -127,5 +129,11 @@ public class SceneInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<PlayerInteractionSystem>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
+    }
+
+    private void BindZombie()
+    {
+        Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
     }
 }

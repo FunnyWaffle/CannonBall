@@ -9,17 +9,24 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly NavMeshAgent _agent;
         private readonly Transform _agentTransform;
         private readonly Animator _animator;
-        private readonly Vector3 _targetPosition;
+        private readonly ZombieTargetSearch _zombieTargetSearch;
 
-        public ZombieMover(NavMeshAgent agent, Animator animator, Vector3 targetPosition)
+        private readonly float _findTargetDelay = 1f;
+        private float _findTargetTimer;
+
+        private Vector3 _target;
+
+        public ZombieMover(
+            NavMeshAgent agent,
+            Animator animator,
+            ZombieTargetSearch zombieTargetSearch)
         {
             _agent = agent;
             _animator = animator;
-            _targetPosition = targetPosition;
-
+            _zombieTargetSearch = zombieTargetSearch;
             _agentTransform = _agent.transform;
 
-            _agent.SetDestination(_targetPosition);
+            FindTarget();
         }
 
         public Vector3 Position => _agentTransform.position;
@@ -34,7 +41,7 @@ namespace Assets.Scripts.Creations.Zombie
         {
             _agent.enabled = true;
             _animator.enabled = true;
-            _agent.SetDestination(_targetPosition);
+            FindTarget();
         }
 
         public void DisableAgent()
@@ -49,12 +56,34 @@ namespace Assets.Scripts.Creations.Zombie
 
         public void Update()
         {
+            _findTargetTimer += Time.deltaTime;
+
+            if (_findTargetTimer >= _findTargetDelay)
+            {
+                _findTargetTimer -= _findTargetDelay;
+                FindTarget();
+            }
+
             UpdateAnimations(_agent.velocity.z, _agent.desiredVelocity.z);
         }
 
         private void UpdateAnimations(float currentForwardSpeed, float maxForwardSpeed)
         {
-            _animator.SetFloat(ZombieAnimatorParameters.ForwardSpeed, currentForwardSpeed / maxForwardSpeed);
+            _animator.SetFloat(ZombieAnimatorParameters.ForwardSpeed,
+                currentForwardSpeed / maxForwardSpeed);
+        }
+
+        private void FindTarget()
+        {
+            if (_zombieTargetSearch.HasPossibleTargets &&
+                _zombieTargetSearch.TryGetTarget(Position, out var target))
+            {
+                if (_target == target)
+                    return;
+
+                _target = target;
+                _agent.SetDestination(target);
+            }
         }
     }
 }

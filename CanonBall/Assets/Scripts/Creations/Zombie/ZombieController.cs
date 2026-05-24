@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Creations.Zombie
 {
-    public class ZombieController : ISpawnable, IPoolableObject, IUpdatable, ILateUpdatable
+    public class ZombieController : ISpawnable, IPoolableObject,
+        IUpdatable, ILateUpdatable
     {
         private readonly ZombieView _view;
         private readonly ZombieMover _mover;
