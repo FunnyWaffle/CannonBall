@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Space;
+using Assets.Scripts.Systems;
 using UnityEngine;
 
 namespace Assets.Scripts.Spawn.Factories
@@ -8,10 +10,20 @@ namespace Assets.Scripts.Spawn.Factories
     public class ZombieFactory : IFactory<ZombieController>
     {
         private readonly ExplosionHandler _explosionHandler;
+        private readonly SpatialGrid _spatialGrid;
+        private readonly SpatialSearchShape _spatialSearchShape;
+        private readonly Updater _updater;
 
-        public ZombieFactory(ExplosionHandler explosionHandler)
+        public ZombieFactory(
+            ExplosionHandler explosionHandler,
+            SpatialGrid spatialGrid,
+            SpatialSearchShape spatialSearchShape,
+            Updater updater)
         {
             _explosionHandler = explosionHandler;
+            _spatialGrid = spatialGrid;
+            _spatialSearchShape = spatialSearchShape;
+            _updater = updater;
         }
 
         public ItemTypes CreationType => ItemTypes.Zombie;
@@ -20,7 +32,9 @@ namespace Assets.Scripts.Spawn.Factories
         {
             var view = GameObject.Instantiate(prefab, position, rotation, parent).GetComponent<ZombieView>();
 
-            var mover = new ZombieMover(view.Agent, view.Animator, view.TargetPosition);
+            var targetSearch = new ZombieTargetSearch(_spatialGrid,
+                _spatialSearchShape, 50f);
+            var mover = new ZombieMover(view.Agent, view.Animator, targetSearch);
             var ragdoll = new ZombieRagdoll(view.Rigidbodies);
             var model = new ZombieModel(view.ModelTransform);
             var hitbox = new ZombieHitbox(view.Collider);
@@ -28,6 +42,10 @@ namespace Assets.Scripts.Spawn.Factories
             _explosionHandler.AddExplosionReceiver(view.Collider, hitbox);
 
             var controller = new ZombieController(view, mover, ragdoll, model, hitbox);
+
+            _updater.SetUpdatable(controller);
+            _updater.SetLateUpdatable(controller);
+
             return controller;
         }
     }

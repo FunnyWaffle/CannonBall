@@ -9,6 +9,7 @@ namespace Assets.Scripts.Systems
     {
         private List<IUpdatable> _updatables = new();
         private List<IFixedUpdatable> _fixedUpdatables = new();
+        private List<ILateUpdatable> _lateUpdatables = new();
 
         [Inject]
         public void SetUpdatables(List<IUpdatable> updatables)
@@ -22,14 +23,25 @@ namespace Assets.Scripts.Systems
         }
 
         [Inject]
-        public void SetUpdatables(List<IFixedUpdatable> updatables)
+        public void SetFixedUpdatables(List<IFixedUpdatable> updatables)
         {
             _fixedUpdatables = new(updatables);
         }
 
-        public void SetUpdatable(IFixedUpdatable updatable)
+        public void SetFixedUpdatable(IFixedUpdatable updatable)
         {
             _fixedUpdatables.Add(updatable);
+        }
+
+        [Inject]
+        public void SetLateUpdatables(List<ILateUpdatable> updatables)
+        {
+            _lateUpdatables = new(updatables);
+        }
+
+        public void SetLateUpdatable(ILateUpdatable updatable)
+        {
+            _lateUpdatables.Add(updatable);
         }
 
         private void Update()
@@ -40,11 +52,19 @@ namespace Assets.Scripts.Systems
             }
         }
 
-        private void LateUpdate()
+        private void FixedUpdate()
         {
             foreach (var updatable in _fixedUpdatables)
             {
                 updatable.FixedUpdate();
+            }
+        }
+
+        private void LateUpdate()
+        {
+            foreach (var updatable in _lateUpdatables)
+            {
+                updatable.LateUpdate();
             }
         }
     }

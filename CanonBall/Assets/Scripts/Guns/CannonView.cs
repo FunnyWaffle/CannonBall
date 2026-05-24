@@ -24,6 +24,8 @@ namespace Assets.Scripts.Guns
 
         public CameraPresetHandler CameraPresetHandler { get; private set; }
 
+        public Vector3 Position => transform.position;
+
         public Quaternion BarrelLocalRotation => _barrel.localRotation;
         public float RotationSpeed => _rotationSpeed;
         public float PitchAngleLimit => _pitchAngleLimit;

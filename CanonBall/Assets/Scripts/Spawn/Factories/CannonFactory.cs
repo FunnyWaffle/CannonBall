@@ -2,6 +2,7 @@
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Space;
 using UnityEngine;
 using Zenject;
 
@@ -11,13 +12,18 @@ namespace Assets.Scripts.Spawn.Factories
     {
         private readonly DiContainer _container;
         private readonly CannonColliderMap _cannonColliderMap;
+        private readonly SpatialGrid _spatialGrid;
 
         public ItemTypes CreationType => ItemTypes.Cannon;
 
-        public CannonFactory(DiContainer container, CannonColliderMap cannonColliderMap)
+        public CannonFactory(
+            DiContainer container,
+            CannonColliderMap cannonColliderMap,
+            SpatialGrid spatialGrid)
         {
             _container = container;
             _cannonColliderMap = cannonColliderMap;
+            _spatialGrid = spatialGrid;
         }
 
         public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
@@ -31,6 +37,7 @@ namespace Assets.Scripts.Spawn.Factories
             var controller = _container.Instantiate<CannonController>(new object[] { view, rotator, shooter });
 
             _cannonColliderMap.Register(view.Colliders, controller);
+            _spatialGrid.Add(controller);
 
             return controller;
         }

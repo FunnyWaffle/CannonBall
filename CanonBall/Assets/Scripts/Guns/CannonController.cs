@@ -2,13 +2,15 @@
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Space;
 using Assets.Scripts.Spawn;
 using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonController : ICannonController, ISpawnable, IPoolableObject
+    public class CannonController : ICannonController, ISpawnable, IPoolableObject,
+        ISpatialObject
     {
         private readonly CannonView _view;
         private readonly CannonRotator _rotator;
@@ -21,7 +23,10 @@ namespace Assets.Scripts.Guns
             _shooter = shooter;
         }
 
+        public Vector3 Position => _view.Position;
+
         public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<Vector3> PositionChanged;
 
         public void Enable()
         {

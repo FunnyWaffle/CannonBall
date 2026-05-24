@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Creations
+namespace Assets.Scripts.Space
 {
     public class SpatialGrid : MonoBehaviour
     {
@@ -11,6 +11,9 @@ namespace Assets.Scripts.Creations
         private readonly Dictionary<Vector3Int, List<ISpatialObject>> _grid = new();
         private readonly Dictionary<ISpatialObject, Vector3Int> _objectCells = new();
         private readonly Queue<List<ISpatialObject>> _listPool = new();
+
+        public float CellSize => _cellSize;
+        public bool HasObjects => _grid.Count > 0;
 
         public void Add(ISpatialObject spatialObject)
         {
@@ -24,6 +27,17 @@ namespace Assets.Scripts.Creations
             spatialObject.PositionChanged += UpdateCell;
         }
 
+        public bool TryGetObjects(Vector3Int cell, List<ISpatialObject> objects)
+        {
+            if (_grid.TryGetValue(cell, out var spatialObjects))
+            {
+                objects.AddRange(spatialObjects);
+                return true;
+            }
+
+            return false;
+        }
+
         public void Remove(ISpatialObject spatialObject)
         {
             var cell = _objectCells[spatialObject];
@@ -35,50 +49,13 @@ namespace Assets.Scripts.Creations
             spatialObject.PositionChanged -= UpdateCell;
         }
 
-        public bool TryGetObjects(
-            Vector3 center,
-            float radius,
-            List<ISpatialObject> objects)
+        public Vector3Int CalculateCell(Vector3 position)
         {
-            var centerCell = CalculateCell(center);
-
-            var radiusInCells = Mathf.CeilToInt(radius / _cellSize);
-
-            for (int r = 0; r < radiusInCells; r++)
-            {
-                var found = false;
-
-                for (int x = -r; x <= r; x++)
-                    for (int y = -r; y <= r; y++)
-                        for (int z = -r; z <= r; z++)
-                        {
-                            if (Mathf.Max(
-                                Mathf.Abs(x),
-                                Mathf.Abs(y),
-                                Mathf.Abs(z)) != r)
-                            {
-                                continue;
-                            }
-
-                            var cell = new Vector3Int(
-                                centerCell.x + x,
-                                centerCell.y + y,
-                                centerCell.z + z);
-
-                            if (_grid.TryGetValue(cell, out var privateObjects))
-                            {
-                                if (privateObjects.Count > 0)
-                                {
-                                    objects.AddRange(privateObjects);
-                                    found = true;
-                                }
-                            }
-                        }
-
-                if (found)
-                    return true;
-            }
-            return false;
+            var scaledPosition = position / _cellSize;
+            return new Vector3Int(
+                Mathf.FloorToInt(scaledPosition.x),
+                Mathf.FloorToInt(scaledPosition.y),
+                Mathf.FloorToInt(scaledPosition.z));
         }
 
         private void UpdateCell(object sender, Vector3 position)
@@ -112,15 +89,6 @@ namespace Assets.Scripts.Creations
             }
 
             return objects;
-        }
-
-        private Vector3Int CalculateCell(Vector3 position)
-        {
-            var scaledPosition = position / _cellSize;
-            return new Vector3Int(
-                Mathf.FloorToInt(scaledPosition.x),
-                Mathf.FloorToInt(scaledPosition.y),
-                Mathf.FloorToInt(scaledPosition.z));
         }
 
         private void RemoveFromObjects(Vector3Int cell, ISpatialObject spatialObject)
