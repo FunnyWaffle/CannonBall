@@ -1,13 +1,11 @@
 ﻿using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using System;
-using Unity.Profiling;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Zombie
 {
-    public class ZombieController : ISpawnable, IPoolableObject,
-        IUpdatable, ILateUpdatable
+    public class ZombieController : ISpawnable, IPoolableObject
     {
         private readonly ZombieView _view;
         private readonly ZombieMover _mover;
@@ -75,23 +73,19 @@ namespace Assets.Scripts.Creations.Zombie
             }
         }
 
-        static ProfilerMarker _profilerMarker = new ProfilerMarker("Zombie.Update");
-
         public void Update()
         {
-            using (_profilerMarker.Auto())
-            {
-                var modelCenterPosition = _view.ModelCenterPosition;
-                if (_zombieTargetSearch.TrySearchTarget(modelCenterPosition))
-                {
-                    if (_attacker.CanAttack(modelCenterPosition))
-                        _view.EnableAttackAnimation();
+            if (_attacker.CanAttack(_view.ModelCenterPosition))
+                _view.EnableAttackAnimation();
 
-                    _mover.StartMovement();
-                }
+            _mover.StartMovement();
 
-                _mover.UpdateMovementAnimation();
-            }
+            _mover.UpdateMovementAnimation();
+        }
+
+        public void ResearchTarget()
+        {
+            _zombieTargetSearch.TrySearchTarget(_view.ModelCenterPosition);
         }
 
         private void OnRagdollFellAsleep()
