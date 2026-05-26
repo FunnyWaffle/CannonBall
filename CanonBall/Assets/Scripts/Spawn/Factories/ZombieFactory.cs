@@ -3,7 +3,6 @@ using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Space;
-using Assets.Scripts.Systems;
 using UnityEngine;
 
 namespace Assets.Scripts.Spawn.Factories
@@ -15,7 +14,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly SpatialSearchShape _spatialSearchShape;
         private readonly DamageSystem _damageSystem;
         private readonly SpatialObjectsMap _spatialObjectsMap;
-        private readonly Updater _updater;
+        private readonly ZombieUpdater _updater;
 
         public ZombieFactory(
             ExplosionHandler explosionHandler,
@@ -23,7 +22,7 @@ namespace Assets.Scripts.Spawn.Factories
             SpatialSearchShape spatialSearchShape,
             DamageSystem damageSystem,
             SpatialObjectsMap spatialObjectsMap,
-            Updater updater)
+            ZombieUpdater updater)
         {
             _explosionHandler = explosionHandler;
             _spatialGrid = spatialGrid;
@@ -53,8 +52,7 @@ namespace Assets.Scripts.Spawn.Factories
             var controller = new ZombieController(view, mover, ragdoll,
                 model, hitbox, attacker, targetSearch);
 
-            _updater.SetUpdatable(controller);
-            _updater.SetLateUpdatable(controller);
+            _updater.Add(controller);
 
             return controller;
         }

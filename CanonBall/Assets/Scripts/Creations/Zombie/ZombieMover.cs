@@ -32,6 +32,9 @@ namespace Assets.Scripts.Creations.Zombie
 
         public void StartMovement()
         {
+            if (!_agent.enabled)
+                return;
+
             var targetPosition = _zombieTarget.TargetPosition;
 
             if (_agent.hasPath &&

@@ -2,6 +2,7 @@ using Assets.Scripts.Camera;
 using Assets.Scripts.Combat;
 using Assets.Scripts.Creations.Player;
 using Assets.Scripts.Creations.Player.Components;
+using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Curency;
 using Assets.Scripts.Explosion;
@@ -44,7 +45,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<ZombieUpdater>().AsSingle();
 
         Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
@@ -148,5 +149,6 @@ public class SceneInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpatialObjectsMap>().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
     }
 }
