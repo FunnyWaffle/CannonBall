@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using System;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Zombie
@@ -13,6 +14,8 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly ZombieRagdoll _ragdoll;
         private readonly ZombieModel _model;
         private readonly ZombieHitbox _hitbox;
+        private readonly ZombieAttacker _attacker;
+        private readonly ZombieTargetSearch _zombieTargetSearch;
 
         private Vector3 _ragdollRootOffsetPosition;
         private Vector3 _hitboxOffsetPosition;
@@ -21,13 +24,17 @@ namespace Assets.Scripts.Creations.Zombie
             ZombieMover zombieMover,
             ZombieRagdoll zombieRagdoll,
             ZombieModel zombieModel,
-            ZombieHitbox zombieHitbox)
+            ZombieHitbox zombieHitbox,
+            ZombieAttacker zombieAttacker,
+            ZombieTargetSearch zombieTargetSearch)
         {
             _view = view;
             _mover = zombieMover;
             _ragdoll = zombieRagdoll;
             _model = zombieModel;
             _hitbox = zombieHitbox;
+            _attacker = zombieAttacker;
+            _zombieTargetSearch = zombieTargetSearch;
 
             _ragdollRootOffsetPosition = _ragdoll.Position - _mover.Position;
             _hitboxOffsetPosition = _hitbox.Position - _mover.Position;
@@ -68,9 +75,23 @@ namespace Assets.Scripts.Creations.Zombie
             }
         }
 
+        static ProfilerMarker _profilerMarker = new ProfilerMarker("Zombie.Update");
+
         public void Update()
         {
-            _mover.Update();
+            using (_profilerMarker.Auto())
+            {
+                var modelCenterPosition = _view.ModelCenterPosition;
+                if (_zombieTargetSearch.TrySearchTarget(modelCenterPosition))
+                {
+                    if (_attacker.CanAttack(modelCenterPosition))
+                        _view.EnableAttackAnimation();
+
+                    _mover.StartMovement();
+                }
+
+                _mover.UpdateMovementAnimation();
+            }
         }
 
         private void OnRagdollFellAsleep()

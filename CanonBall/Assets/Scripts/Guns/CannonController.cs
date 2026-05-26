@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Creations;
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Shop;
@@ -10,7 +11,7 @@ using UnityEngine;
 namespace Assets.Scripts.Guns
 {
     public class CannonController : ICannonController, ISpawnable, IPoolableObject,
-        ISpatialObject
+        ISpatialObject, IDamageable
     {
         private readonly CannonView _view;
         private readonly CannonRotator _rotator;
@@ -57,6 +58,11 @@ namespace Assets.Scripts.Guns
         public CameraPresetHandler GetCameraTransformPreset()
         {
             return _view.CameraPresetHandler;
+        }
+
+        public void TakeDamage(float value)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -70,7 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Zombie.ZombieCore
   _agent: {fileID: 6495623056014396539}
   _animator: {fileID: 9151341169845229349}
-  _targetPosition: {x: 53.02, y: 300, z: 47.1}
   _collider: {fileID: 417209429076257184}
   _rigidbodies:
   - {fileID: 7625539027623967657}
@@ -85,6 +84,38 @@ MonoBehaviour:
   - {fileID: 9046249019285207428}
   - {fileID: 3297695186648434415}
   _modelTransform: {fileID: 3017469587885493599}
+  _modelCenter: {fileID: 2238405769074505311}
+--- !u!1 &6784220438328370060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2238405769074505311}
+  m_Layer: 0
+  m_Name: ModelCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2238405769074505311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6784220438328370060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.528, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3017469587885493599}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7310608010682404596
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,6 +253,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7162207349917270156}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2238405769074505311}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1

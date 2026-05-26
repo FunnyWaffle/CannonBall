@@ -6,32 +6,45 @@ namespace Assets.Scripts.Creations.Zombie
 {
     public class ZombieTargetSearch
     {
+        private readonly List<ISpatialObject> _foundObjects = new();
+
+        private readonly ZombieTarget _zombieTarget;
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
-
-        private readonly List<ISpatialObject> _foundObjects = new();
+        private readonly SpatialObjectsMap _spatialObjectsMap;
 
         private readonly float _radius;
 
+        private readonly float _findTargetDelay = 1f;
+        private float _findTargetTimer;
+
         public ZombieTargetSearch(
+            ZombieTarget zombieTarget,
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
+            SpatialObjectsMap spatialObjectsMap,
             float radius)
         {
+            _zombieTarget = zombieTarget;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
+            _spatialObjectsMap = spatialObjectsMap;
+
             _radius = radius;
 
             spatialSearchShape.BuldSearchingShape(
                 Mathf.CeilToInt(radius / _spatialGrid.CellSize));
         }
 
-        public bool HasPossibleTargets => _spatialGrid.HasObjects;
-
-        public bool TryGetTarget(
-            Vector3 center,
-            out Vector3 target)
+        public bool TrySearchTarget(Vector3 center)
         {
+            if (!_spatialGrid.HasObjects)
+                return false;
+
+            if (!HasDelayToSearchPassed()
+                && IsCurrentTargetSuitable())
+                return true;
+
             var cellSize = _spatialGrid.CellSize;
             var radiusInCells = Mathf.CeilToInt(_radius / cellSize);
 
@@ -39,7 +52,6 @@ namespace Assets.Scripts.Creations.Zombie
 
             for (int r = 0; r < radiusInCells; r++)
             {
-
                 _foundObjects.Clear();
 
                 var offsets = _spatialSearchShape.GetShape(r);
@@ -53,34 +65,65 @@ namespace Assets.Scripts.Creations.Zombie
 
                 if (_foundObjects.Count > 0)
                 {
-                    target = FindNearestTarget(center);
+                    FindNearestTarget(center);
+                    _findTargetTimer -= _findTargetDelay;
                     return true;
                 }
             }
 
-
-            target = Vector3.zero;
             return false;
         }
 
-        private Vector3 FindNearestTarget(Vector3 center)
+        private void FindNearestTarget(Vector3 center)
         {
-            var target = Vector3.zero;
+            var closestTargetPosition = Vector3.zero;
+            ISpatialObject target = null;
             var minDistance = float.PositiveInfinity;
 
             foreach (var @object in _foundObjects)
             {
-                Vector3 objectPosition = @object.Position;
-                var currentDistance = Vector3.Distance(center, objectPosition);
+                Vector3 targetPosition;
+                if (_spatialObjectsMap.TryGetHitBox(@object, out var hitbox))
+                {
+                    targetPosition = hitbox.GetClosestPoint(center);
+                }
+                else
+                {
+                    targetPosition = @object.Position;
+                }
 
+                var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
                 if (currentDistance < minDistance)
                 {
                     minDistance = currentDistance;
-                    target = objectPosition;
+                    closestTargetPosition = targetPosition;
+                    target = @object;
                 }
             }
+            _zombieTarget.Set(closestTargetPosition);
+            _zombieTarget.Set(target);
+        }
 
-            return target;
+        private bool IsCurrentTargetSuitable()
+        {
+            var target = _zombieTarget.Target;
+            if (target == null)
+                return false;
+
+            if (_zombieTarget.HasMoved)
+                return false;
+
+            return true;
+        }
+
+        private bool HasDelayToSearchPassed()
+        {
+            _findTargetTimer += Time.deltaTime;
+
+            if (_findTargetTimer < _findTargetDelay)
+                return false;
+
+            return true;
         }
     }
 }
