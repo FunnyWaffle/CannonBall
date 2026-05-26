@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Space
@@ -102,12 +101,5 @@ namespace Assets.Scripts.Space
                 _listPool.Enqueue(objects);
             }
         }
-    }
-
-    public interface ISpatialObject
-    {
-        public Vector3 Position { get; }
-
-        public event EventHandler<Vector3> PositionChanged;
     }
 }

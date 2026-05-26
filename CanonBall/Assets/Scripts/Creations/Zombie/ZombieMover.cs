@@ -9,24 +9,17 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly NavMeshAgent _agent;
         private readonly Transform _agentTransform;
         private readonly Animator _animator;
-        private readonly ZombieTargetSearch _zombieTargetSearch;
-
-        private readonly float _findTargetDelay = 1f;
-        private float _findTargetTimer;
-
-        private Vector3 _target;
+        private readonly ZombieTarget _zombieTarget;
 
         public ZombieMover(
             NavMeshAgent agent,
             Animator animator,
-            ZombieTargetSearch zombieTargetSearch)
+            ZombieTarget zombieTarget)
         {
             _agent = agent;
             _animator = animator;
-            _zombieTargetSearch = zombieTargetSearch;
+            _zombieTarget = zombieTarget;
             _agentTransform = _agent.transform;
-
-            FindTarget();
         }
 
         public Vector3 Position => _agentTransform.position;
@@ -37,11 +30,21 @@ namespace Assets.Scripts.Creations.Zombie
             _agentTransform.position = position;
         }
 
+        public void StartMovement()
+        {
+            var targetPosition = _zombieTarget.TargetPosition;
+
+            if (_agent.hasPath &&
+                !_zombieTarget.HasMoved)
+                return;
+
+            _agent.SetDestination(targetPosition);
+        }
+
         public void EnableAgent()
         {
             _agent.enabled = true;
             _animator.enabled = true;
-            FindTarget();
         }
 
         public void DisableAgent()
@@ -54,16 +57,8 @@ namespace Assets.Scripts.Creations.Zombie
             _animator.enabled = false;
         }
 
-        public void Update()
+        public void UpdateMovementAnimation()
         {
-            _findTargetTimer += Time.deltaTime;
-
-            if (_findTargetTimer >= _findTargetDelay)
-            {
-                _findTargetTimer -= _findTargetDelay;
-                FindTarget();
-            }
-
             UpdateAnimations(_agent.velocity.z, _agent.desiredVelocity.z);
         }
 
@@ -71,19 +66,6 @@ namespace Assets.Scripts.Creations.Zombie
         {
             _animator.SetFloat(ZombieAnimatorParameters.ForwardSpeed,
                 currentForwardSpeed / maxForwardSpeed);
-        }
-
-        private void FindTarget()
-        {
-            if (_zombieTargetSearch.HasPossibleTargets &&
-                _zombieTargetSearch.TryGetTarget(Position, out var target))
-            {
-                if (_target == target)
-                    return;
-
-                _target = target;
-                _agent.SetDestination(target);
-            }
         }
     }
 }

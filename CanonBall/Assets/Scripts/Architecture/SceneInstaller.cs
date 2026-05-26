@@ -1,4 +1,5 @@
 using Assets.Scripts.Camera;
+using Assets.Scripts.Combat;
 using Assets.Scripts.Creations.Player;
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Crosshairs;
@@ -82,6 +83,8 @@ public class SceneInstaller : MonoInstaller
         BindInteraction();
         BindCannon();
         BindZombie();
+        BindCombat();
+        BindSpatial();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -133,7 +136,17 @@ public class SceneInstaller : MonoInstaller
 
     private void BindZombie()
     {
-        Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
         Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
+    }
+
+    private void BindCombat()
+    {
+        Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
+    }
+
+    public void BindSpatial()
+    {
+        Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpatialObjectsMap>().AsSingle();
     }
 }

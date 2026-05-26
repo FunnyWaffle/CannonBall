@@ -7,7 +7,7 @@ namespace Assets.Scripts.Space
     {
         private readonly Dictionary<int, List<Vector3Int>> _searchingRings = new();
 
-        public IEnumerable<Vector3Int> GetShape(int radiusInCells)
+        public List<Vector3Int> GetShape(int radiusInCells)
         {
             return _searchingRings[radiusInCells];
         }
