@@ -35,12 +35,11 @@ namespace Assets.Scripts.Creations.Zombie
             if (!_agent.enabled)
                 return;
 
-            var targetPosition = _zombieTarget.TargetPosition;
-
             if (_agent.hasPath &&
                 !_zombieTarget.HasMoved)
                 return;
 
+            var targetPosition = _zombieTarget.TargetPosition;
             _agent.SetDestination(targetPosition);
         }
 
