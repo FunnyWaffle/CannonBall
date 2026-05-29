@@ -27,6 +27,7 @@ namespace Assets.Scripts.Creations.Zombie
 
         public Vector3 Position => _modelTransform.position;
         public Vector3 ModelCenterPosition => _modelCenter.position;
+        public float AgentRadius => _agent.radius;
 
         public void Enable()
             => gameObject.SetActive(true);

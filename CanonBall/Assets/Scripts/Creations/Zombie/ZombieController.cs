@@ -85,7 +85,7 @@ namespace Assets.Scripts.Creations.Zombie
 
         public void ResearchTarget()
         {
-            _zombieTargetSearch.TrySearchTarget(_view.ModelCenterPosition);
+            _zombieTargetSearch.TrySearchTarget(_view.ModelCenterPosition, _view.AgentRadius);
         }
 
         private void OnRagdollFellAsleep()

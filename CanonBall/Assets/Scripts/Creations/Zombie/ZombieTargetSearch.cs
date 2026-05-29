@@ -36,7 +36,7 @@ namespace Assets.Scripts.Creations.Zombie
                 Mathf.CeilToInt(radius / _spatialGrid.CellSize));
         }
 
-        public bool TrySearchTarget(Vector3 center)
+        public bool TrySearchTarget(Vector3 center, float searcherRadius)
         {
             if (!_spatialGrid.HasObjects)
                 return false;
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Creations.Zombie
 
                 if (_foundObjects.Count > 0)
                 {
-                    FindNearestTarget(center);
+                    FindNearestTarget(center, searcherRadius);
                     _findTargetTimer -= _findTargetDelay;
                     return true;
                 }
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Creations.Zombie
             return false;
         }
 
-        private void FindNearestTarget(Vector3 center)
+        private void FindNearestTarget(Vector3 center, float searcherRadius)
         {
             var closestTargetPosition = Vector3.zero;
             ISpatialObject target = null;
@@ -82,15 +82,9 @@ namespace Assets.Scripts.Creations.Zombie
 
             foreach (var @object in _foundObjects)
             {
-                Vector3 targetPosition;
-                if (_spatialObjectsMap.TryGetHitBox(@object, out var hitbox))
-                {
-                    targetPosition = hitbox.GetClosestPoint(center);
-                }
-                else
-                {
-                    targetPosition = @object.Position;
-                }
+                if (!_spatialObjectsMap.TryGetHitBox(@object, out var hitbox)
+                    || !hitbox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition))
+                    continue;
 
                 var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
                 if (currentDistance < minDistance)
@@ -100,6 +94,10 @@ namespace Assets.Scripts.Creations.Zombie
                     target = @object;
                 }
             }
+
+            if (target == null)
+                return;
+
             _zombieTarget.Set(closestTargetPosition);
             _zombieTarget.Set(target);
         }

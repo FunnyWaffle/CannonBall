@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Combat;
 using Assets.Scripts.Wrappers;
 using System;
 using UnityEngine;
@@ -7,7 +8,6 @@ namespace Assets.Scripts.Guns
 {
     public class CannonView : MonoBehaviour
     {
-        public Collider[] Colliders;
 
         [Header("Rotation")]
         [SerializeField] private Transform _barrel;
@@ -22,6 +22,10 @@ namespace Assets.Scripts.Guns
         [Header("Camera")]
         [SerializeField] private SerializableDictionary<ViewType, CameraTransformPreset> _cameraViewPresets;
 
+        [Header("HitBox")]
+        [SerializeField] private Collider[] _colliders;
+        [SerializeField] private AttackZoneEdge[] _attackZoneEdges;
+
         public CameraPresetHandler CameraPresetHandler { get; private set; }
 
         public Vector3 Position => transform.position;
@@ -35,6 +39,9 @@ namespace Assets.Scripts.Guns
         public Vector3 BarrelExitPosition => _barrelExit.position;
         public float ShootPower => _shootPower;
         public float ShootDelay => _shootDelay;
+
+        public Collider[] Colliders => _colliders;
+        public AttackZoneEdge[] AttackZoneEdges => _attackZoneEdges;
 
         public event Action<float> RotationSpeedChanged;
         public event Action<float> PitchLimitChanged;

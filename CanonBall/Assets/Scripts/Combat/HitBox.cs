@@ -4,9 +4,11 @@ namespace Assets.Scripts.Combat
 {
     public class HitBox
     {
-        private readonly Collider[] _collider;
 
-        public HitBox(Collider[] colliders)
+        private readonly Collider[] _collider;
+        private readonly AttackZoneEdge[] _attackEdges;
+
+        public HitBox(Collider[] colliders, AttackZoneEdge[] attackEdges)
         {
             _collider = new Collider[colliders.Length];
 
@@ -14,6 +16,15 @@ namespace Assets.Scripts.Combat
             {
                 var collider = colliders[i];
                 _collider[i] = collider;
+            }
+
+            _attackEdges = new AttackZoneEdge[attackEdges.Length];
+
+            for (int i = 0; i < attackEdges.Length; i++)
+            {
+                var edge = attackEdges[i];
+                edge.Initialize();
+                _attackEdges[i] = edge;
             }
         }
 
@@ -34,5 +45,44 @@ namespace Assets.Scripts.Combat
 
             return closestPoint;
         }
+
+        public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position)
+        {
+            AttackZoneEdge closestAttackZoneEdge = _attackEdges[0];
+            var distance = float.MaxValue;
+
+            var diameter = radius * 2;
+
+            foreach (var edge in _attackEdges)
+            {
+                var currentDistance = Vector3.SqrMagnitude(edge.Center - source);
+                if (currentDistance < distance
+                    && edge.HasFreeSpace(diameter))
+                {
+                    closestAttackZoneEdge = edge;
+                    distance = currentDistance;
+                }
+            }
+
+            position = closestAttackZoneEdge.GetFreePosition(radius, source);
+            return false;
+        }
+
+        //public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position)
+        //{
+        //    AttackZoneEdge closestAttackZoneEdge = _attackEdges[0];
+        //    var distance = float.MaxValue;
+
+        //    var diameter = radius * 2;
+
+        //    foreach (var edge in _attackEdges)
+        //    {
+        //        if (closestAttackZoneEdge.TryGetFreePosition(radius, source, out position))
+        //            return true;
+        //    }
+
+        //    position = default;
+        //    return false;
+        //}
     }
 }
