@@ -7,33 +7,55 @@ namespace Assets.Scripts.Creations.Player.Components
     {
         private readonly CameraSystem _cameraSystem;
 
-        private float _speed;
-        private Vector3 _velocity;
+        private float _verticalSpeed;
+        private Vector3 _horizontalVelocity;
 
         public PlayerAvatarMover(CameraSystem cameraSystem)
         {
             _cameraSystem = cameraSystem;
         }
 
-        public void SetSpeed(float speed)
+        public float Speed { get; set; }
+        public float JumpPower { get; set; }
+        public float MaxVelocity { get; set; }
+
+        public Vector3 GetVelocity()
         {
-            _speed = speed;
+            return new Vector3(_horizontalVelocity.x, _verticalSpeed, _horizontalVelocity.z);
         }
 
-        public Vector3 UpdateVelocity(Vector2 input)
+        public void UpdateHorizontalVelocity(Vector2 input)
         {
-            _velocity = new Vector3(input.x, 0, input.y) * _speed;
-
             var mainCamera = _cameraSystem.MainCamera;
+
             var flatForward = Vector3.Normalize(Vector3.ProjectOnPlane(mainCamera.Forward, Vector3.up));
             var flatRight = Vector3.Normalize(Vector3.ProjectOnPlane(mainCamera.Right, Vector3.up));
 
-            return flatForward * _velocity.z + flatRight * _velocity.x;
+            var direction = flatForward * input.y + flatRight * input.x;
+
+            var targetVelocity = direction * Speed;
+
+            _horizontalVelocity = Vector3.MoveTowards(_horizontalVelocity, targetVelocity, 1);
+            _horizontalVelocity = Vector3.ClampMagnitude(_horizontalVelocity, MaxVelocity);
+        }
+
+        public void UpdateVerticalSpeed(bool isGrounded)
+        {
+            if (!isGrounded)
+                _verticalSpeed += Physics.gravity.y * Time.deltaTime;
+        }
+
+        public void ApplyJumpToVelocity(bool isGrounded)
+        {
+            if (!isGrounded)
+                return;
+
+            _verticalSpeed = JumpPower;
         }
 
         public void Stop()
         {
-            _velocity = Vector3.zero;
+            _horizontalVelocity = Vector3.zero;
         }
     }
 }

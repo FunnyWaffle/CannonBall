@@ -12,13 +12,12 @@ namespace Assets.Scripts.Input
         public PlayerAvatarInput(InputSystem_Actions.PlayerActions inputActions)
         {
             _actions = inputActions;
-
-            _actions.Jump.performed += context => JumpActionPerformed?.Invoke();
-            _actions.Attack.performed += OnAttack;
             _actions.Interact.performed += context => InteractionActionPerformed?.Invoke();
             _actions.FirstPersonView.performed += context => ViewModeActionPerformed?.Invoke(0);
             _actions.ThirdPersonView.performed += context => ViewModeActionPerformed?.Invoke(1);
             _actions.Back.performed += context => BackActionPerformed?.Invoke();
+            _actions.Attack.performed += OnAttack;
+            _actions.Jump.performed += OnJumpPerform;
             _actions.Inventory.performed += OnInventoryActionPerformed;
         }
 
@@ -52,6 +51,11 @@ namespace Assets.Scripts.Input
         private void OnInventoryActionPerformed(InputAction.CallbackContext context)
         {
             InventoryActionPerformed?.Invoke();
+        }
+
+        private void OnJumpPerform(InputAction.CallbackContext context)
+        {
+            JumpActionPerformed?.Invoke();
         }
     }
 }

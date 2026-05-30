@@ -19,8 +19,7 @@ namespace Assets.Scripts.Creations.Player
 
         public CameraPresetHandler CameraPresetHandler { get; private set; }
         public Vector3 ModelPosition => _model.position;
-        public Vector3 ModelForwad => _model.forward;
-        public Vector3 ModelRight => _model.right;
+        public bool IsGrounded => _characterController.isGrounded;
 
         public void Initialize()
         {
@@ -43,6 +42,11 @@ namespace Assets.Scripts.Creations.Player
         public void Stop()
         {
             SetAnimationVelocity(Vector3.zero);
+        }
+
+        public void EnableJumpAnimation()
+        {
+            _animator.SetTrigger(SoldierAnimatorParameters.Jumped);
         }
 
         private void RotateBody(Quaternion rotation)

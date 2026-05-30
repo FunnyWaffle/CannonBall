@@ -23,6 +23,8 @@ namespace Assets.Scripts.GameStateMachine
             _aimer = aimer;
             _cameraSystem = cameraSystem;
             _currentController = currentController;
+
+            _input.JumpActionPerformed += OnJumpPerform;
         }
 
         public void Update()
@@ -39,6 +41,14 @@ namespace Assets.Scripts.GameStateMachine
             controller.Rotate(position);
             var movementInput = _input.Movement;
             controller.Move(movementInput);
+        }
+
+        private void OnJumpPerform()
+        {
+            if (!_currentController.TryGetController(out var controller))
+                return;
+
+            controller.Jump();
         }
     }
 }
