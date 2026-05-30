@@ -24,7 +24,7 @@ namespace Assets.Scripts.Guns
 
         [Header("HitBox")]
         [SerializeField] private Collider[] _colliders;
-        [SerializeField] private AttackZoneEdge[] _attackZoneEdges;
+        [SerializeField] private Transform[] _attackZoneCorners;
 
         public CameraPresetHandler CameraPresetHandler { get; private set; }
 
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Guns
         public float ShootDelay => _shootDelay;
 
         public Collider[] Colliders => _colliders;
-        public AttackZoneEdge[] AttackZoneEdges => _attackZoneEdges;
+        public Transform[] AttackZoneCorners => _attackZoneCorners;
 
         public event Action<float> RotationSpeedChanged;
         public event Action<float> PitchLimitChanged;

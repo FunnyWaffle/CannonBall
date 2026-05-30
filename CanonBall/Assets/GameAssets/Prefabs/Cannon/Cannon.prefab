@@ -523,15 +523,15 @@ MonoBehaviour:
   _colliders:
   - {fileID: 5432423614679217822}
   - {fileID: 7609956016851433321}
-  _attackZoneEdges:
-  - _startCorner: {fileID: 5105739901650317067}
-    _endCorner: {fileID: 3376897687845930089}
-  - _startCorner: {fileID: 758469202370495693}
-    _endCorner: {fileID: 568945931307276562}
-  - _startCorner: {fileID: 1540512814848404041}
-    _endCorner: {fileID: 7922011568897304537}
-  - _startCorner: {fileID: 3753635576999999647}
-    _endCorner: {fileID: 881494830177955192}
+  _attackZoneCorners:
+  - {fileID: 5105739901650317067}
+  - {fileID: 3376897687845930089}
+  - {fileID: 758469202370495693}
+  - {fileID: 568945931307276562}
+  - {fileID: 1540512814848404041}
+  - {fileID: 7922011568897304537}
+  - {fileID: 3753635576999999647}
+  - {fileID: 881494830177955192}
 --- !u!1 &4035753778525157025
 GameObject:
   m_ObjectHideFlags: 0
