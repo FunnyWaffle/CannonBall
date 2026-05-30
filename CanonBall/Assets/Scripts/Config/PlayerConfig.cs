@@ -8,5 +8,8 @@ namespace Assets.Scripts.Config
     {
         public float Sensitivity = 10f;
         public float Speed = 5f;
+        public float JumpPower = 5f;
+        public float MaxVelocity = 5f;
+
     }
 }

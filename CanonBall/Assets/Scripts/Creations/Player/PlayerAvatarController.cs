@@ -2,7 +2,6 @@
 using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.Systems;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
@@ -20,14 +19,16 @@ namespace Assets.Scripts.Creations.Player
             _view.Initialize();
 
             _mover = mover;
-            _mover.SetSpeed(config.Speed);
+            _mover.Speed = config.Speed;
+            _mover.JumpPower = config.JumpPower;
+            _mover.MaxVelocity = config.MaxVelocity;
         }
-
-        public CrosshairTypes CrosshairType => CrosshairTypes.Player;
 
         public void Move(Vector2 movementInput)
         {
-            var velocity = _mover.UpdateVelocity(movementInput);
+            _mover.UpdateHorizontalVelocity(movementInput);
+            _mover.UpdateVerticalSpeed(_view.IsGrounded);
+            var velocity = _mover.GetVelocity();
             _view.Move(velocity);
         }
 
@@ -55,6 +56,11 @@ namespace Assets.Scripts.Creations.Player
         {
             _mover.Stop();
             _view.Stop();
+        }
+
+        public void Jump()
+        {
+            _mover.ApplyJumpToVelocity(_view.IsGrounded);
         }
     }
 }

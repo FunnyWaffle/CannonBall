@@ -10,5 +10,6 @@ namespace Assets.Scripts.GameStateMachine
         public void Attack();
         public CameraPresetHandler GetCameraTransformPreset();
         public void Stop();
+        public void Jump();
     }
 }

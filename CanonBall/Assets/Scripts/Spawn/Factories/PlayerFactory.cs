@@ -25,7 +25,7 @@ namespace Assets.Scripts.Spawn.Factories
             var instance = GameObject.Instantiate(prefab, position, rotation, parent);
             var view = instance.GetComponent<PlayerAvatarView>();
 
-            var mover = new PlayerAvatarMover(_cameraSystem);
+            var mover = new PlayerAvatarMover(cameraSystem: _cameraSystem);
             return new PlayerAvatarController(view, mover, _config);
         }
     }
