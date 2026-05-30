@@ -41,7 +41,7 @@ namespace Assets.Scripts.Spawn.Factories
 
             var rotator = CreateRotator(view);
             var shooter = CreateShooter(view);
-            var hitBox = new HitBox(view.Colliders, view.AttackZoneEdges);
+            var hitBox = new HitBox(view.Colliders, view.AttackZoneCorners);
             var controller = _container.Instantiate<CannonController>(
                 new object[] { view, rotator, shooter });
 

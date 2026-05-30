@@ -4,11 +4,10 @@ using UnityEngine;
 
 namespace Assets.Scripts.Combat
 {
-    [Serializable]
     public class AttackZoneEdge
     {
-        [SerializeField] private Transform _startCorner;
-        [SerializeField] private Transform _endCorner;
+        private readonly Transform _startCorner;
+        private readonly Transform _endCorner;
 
         private readonly List<FreeSegment> _freeSegments = new();
 
@@ -16,8 +15,11 @@ namespace Assets.Scripts.Combat
 
         private float _largestSegmentLength;
 
-        public void Initialize()
+        public AttackZoneEdge(Transform startCorner, Transform endCorner)
         {
+            _startCorner = startCorner;
+            _endCorner = endCorner;
+
             var segment = new FreeSegment(0, Vector3.Distance(_endCorner.position, _startCorner.position));
             _freeSegments.Add(segment);
             _largestSegmentLength = segment.Length;
@@ -114,6 +116,72 @@ namespace Assets.Scripts.Combat
             }
         }
 
+        private float ProjectDistanceOnEdge(
+            Vector3 point,
+            Vector3 start,
+            Vector3 edge,
+            float length)
+        {
+            var sqrLength = length * length;
+
+            float t =
+                Vector3.Dot(point - start, edge)
+                / sqrLength;
+
+            t = Mathf.Clamp01(t);
+
+            return length * t;
+        }
+
+        private float ClampPoint(float radius, float closestPoint, float lenght)
+        {
+            return Mathf.Clamp(closestPoint, radius, lenght - radius);
+        }
+
+        private FreeSegment FindNearestFreeSegment(float point, float radius, out int index)
+        {
+            var pointStart = point - radius;
+            var diameter = radius * radius;
+
+            var insertIndex = FindInsertionIndex(pointStart);
+
+            var left = insertIndex - 1;
+            var right = insertIndex;
+
+            var segmentCount = _freeSegments.Count;
+
+            while (left >= 0 || right < segmentCount)
+            {
+                if (left >= 0)
+                {
+                    var tempSegment = _freeSegments[left];
+
+                    if (diameter <= tempSegment.Length)
+                    {
+                        index = left;
+                        return tempSegment;
+                    }
+
+                    left--;
+                }
+
+                if (right < segmentCount)
+                {
+                    var tempSegment = _freeSegments[right];
+
+                    if (diameter <= tempSegment.Length)
+                    {
+                        index = right;
+                        return tempSegment;
+                    }
+
+                    right++;
+                }
+            }
+
+            throw new Exception("Segment that can contains an object not found! Must be called HasFreeSpace method before.");
+        }
+
         private Vector3 StickPositionInSegment
             (float radius,
             Vector3 start,
@@ -176,80 +244,6 @@ namespace Assets.Scripts.Combat
                     _largestSegmentLength = length;
                 }
             }
-        }
-
-        private float ClampPoint(float radius, float closestPoint, float lenght)
-        {
-            return Mathf.Clamp(closestPoint, radius, lenght - radius);
-        }
-
-        private FreeSegment FindNearestFreeSegment(float point, float radius, out int index)
-        {
-            var insertIndex = FindInsertionIndex(point - radius); // point - radius = start
-
-            var left = insertIndex - 1;
-            var right = insertIndex;
-
-            var pointStart = point - radius;
-            var pointEnd = point + radius;
-
-            var segmentCount = _freeSegments.Count;
-
-            while (left >= 0 || right < segmentCount)
-            {
-                if (left >= 0)
-                {
-                    var tempSegment = _freeSegments[left];
-
-                    var end = tempSegment.End;
-                    var start = tempSegment.Start;
-
-                    if (pointStart >= start
-                        && pointEnd <= end)
-                    {
-                        index = left;
-                        return tempSegment;
-                    }
-
-                    left--;
-                }
-
-                if (right < segmentCount)
-                {
-                    var tempSegment = _freeSegments[right];
-
-                    var end = tempSegment.End;
-                    var start = tempSegment.Start;
-
-                    if (pointStart >= start
-                        && pointEnd <= end)
-                    {
-                        index = right;
-                        return tempSegment;
-                    }
-
-                    right++;
-                }
-            }
-
-            throw new Exception("Segment that can contains an object not found! Must be called HasFreeSpace method before.");
-        }
-
-        private float ProjectDistanceOnEdge(
-            Vector3 point,
-            Vector3 start,
-            Vector3 edge,
-            float length)
-        {
-            var sqrLength = length * length;
-
-            float t =
-                Vector3.Dot(point - start, edge)
-                / sqrLength;
-
-            t = Mathf.Clamp01(t);
-
-            return length * t;
         }
 
         private int FindInsertionIndex(float start)

@@ -8,7 +8,7 @@ namespace Assets.Scripts.Combat
         private readonly Collider[] _collider;
         private readonly AttackZoneEdge[] _attackEdges;
 
-        public HitBox(Collider[] colliders, AttackZoneEdge[] attackEdges)
+        public HitBox(Collider[] colliders, Transform[] attackCorners)
         {
             _collider = new Collider[colliders.Length];
 
@@ -18,13 +18,24 @@ namespace Assets.Scripts.Combat
                 _collider[i] = collider;
             }
 
-            _attackEdges = new AttackZoneEdge[attackEdges.Length];
+            _attackEdges = new AttackZoneEdge[attackCorners.Length];
+            InitializeEdges(attackCorners);
+        }
 
-            for (int i = 0; i < attackEdges.Length; i++)
+        private void InitializeEdges(Transform[] attackCorners)
+        {
+            int length = attackCorners.Length;
+            for (int i = 0; i < length; i++)
             {
-                var edge = attackEdges[i];
-                edge.Initialize();
-                _attackEdges[i] = edge;
+                var startCorner = attackCorners[i];
+                Transform endCorner;
+
+                if (i == length - 1)
+                    endCorner = attackCorners[0];
+                else
+                    endCorner = attackCorners[i + 1];
+
+                _attackEdges[i] = new AttackZoneEdge(startCorner, endCorner);
             }
         }
 
@@ -48,7 +59,7 @@ namespace Assets.Scripts.Combat
 
         public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position)
         {
-            AttackZoneEdge closestAttackZoneEdge = _attackEdges[0];
+            AttackZoneEdge closestAttackZoneEdge = null;
             var distance = float.MaxValue;
 
             var diameter = radius * 2;
@@ -64,25 +75,14 @@ namespace Assets.Scripts.Combat
                 }
             }
 
-            position = closestAttackZoneEdge.GetFreePosition(radius, source);
-            return false;
+            if (closestAttackZoneEdge == null)
+            {
+                position = default;
+                return false;
+            }
+
+            position = closestAttackZoneEdge.GetFreePosition(radius, source, out var reservation);
+            return true;
         }
-
-        //public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position)
-        //{
-        //    AttackZoneEdge closestAttackZoneEdge = _attackEdges[0];
-        //    var distance = float.MaxValue;
-
-        //    var diameter = radius * 2;
-
-        //    foreach (var edge in _attackEdges)
-        //    {
-        //        if (closestAttackZoneEdge.TryGetFreePosition(radius, source, out position))
-        //            return true;
-        //    }
-
-        //    position = default;
-        //    return false;
-        //}
     }
 }
