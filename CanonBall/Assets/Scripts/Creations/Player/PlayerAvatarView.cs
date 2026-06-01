@@ -46,7 +46,7 @@ namespace Assets.Scripts.Creations.Player
 
         public void EnableJumpAnimation()
         {
-            _animator.SetTrigger(SoldierAnimatorParameters.Jumped);
+            _animator.SetTrigger(SoldierAnimatorParameters.Jump);
         }
 
         private void RotateBody(Quaternion rotation)

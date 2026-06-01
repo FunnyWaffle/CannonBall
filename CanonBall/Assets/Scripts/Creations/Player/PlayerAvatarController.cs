@@ -65,7 +65,9 @@ namespace Assets.Scripts.Creations.Player
 
         public void Jump()
         {
-            _mover.ApplyJumpToVelocity(_view.IsGrounded);
+            var jumped = _mover.ApplyJumpToVelocity(_view.IsGrounded);
+            if (jumped)
+                _view.EnableJumpAnimation();
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Assets.Scripts.Config
     {
         public readonly static int ForwardSpeed = Animator.StringToHash(nameof(ForwardSpeed));
         public readonly static int SideSpeed = Animator.StringToHash(nameof(SideSpeed));
-        public readonly static int Jumped = Animator.StringToHash(nameof(Jumped));
+        public readonly static int Jump = Animator.StringToHash(nameof(Jump));
     }
 }

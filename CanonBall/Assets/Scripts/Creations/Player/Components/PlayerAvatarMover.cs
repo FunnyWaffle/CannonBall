@@ -51,12 +51,13 @@ namespace Assets.Scripts.Creations.Player.Components
                 _verticalSpeed += Physics.gravity.y * Time.deltaTime;
         }
 
-        public void ApplyJumpToVelocity(bool isGrounded)
+        public bool ApplyJumpToVelocity(bool isGrounded)
         {
             if (!isGrounded)
-                return;
+                return false;
 
             _verticalSpeed = JumpPower;
+            return true;
         }
 
         public void Stop()
