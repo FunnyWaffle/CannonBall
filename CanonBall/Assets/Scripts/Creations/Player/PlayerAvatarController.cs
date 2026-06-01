@@ -22,12 +22,17 @@ namespace Assets.Scripts.Creations.Player
             _mover.Speed = config.Speed;
             _mover.JumpPower = config.JumpPower;
             _mover.MaxVelocity = config.MaxVelocity;
+            _mover.MovementAcceleration = config.MovementAcceleration;
+            _mover.MovementDeceleration = config.MovementDeceleration;
+            _mover.MovementAirAcceleration = config.MovementAirAcceleration;
+            _mover.MovementAirDeceleration = config.MovementAirDeceleration;
         }
 
         public void Move(Vector2 movementInput)
         {
-            _mover.UpdateHorizontalVelocity(movementInput);
-            _mover.UpdateVerticalSpeed(_view.IsGrounded);
+            var isGrounded = _view.IsGrounded;
+            _mover.UpdateHorizontalVelocity(movementInput, isGrounded);
+            _mover.UpdateVerticalSpeed(isGrounded);
             var velocity = _mover.GetVelocity();
             _view.Move(velocity);
         }

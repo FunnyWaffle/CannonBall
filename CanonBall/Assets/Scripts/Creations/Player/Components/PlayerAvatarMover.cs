@@ -18,13 +18,17 @@ namespace Assets.Scripts.Creations.Player.Components
         public float Speed { get; set; }
         public float JumpPower { get; set; }
         public float MaxVelocity { get; set; }
+        public float MovementAcceleration { get; set; }
+        public float MovementDeceleration { get; set; }
+        public float MovementAirAcceleration { get; set; }
+        public float MovementAirDeceleration { get; set; }
 
         public Vector3 GetVelocity()
         {
             return new Vector3(_horizontalVelocity.x, _verticalSpeed, _horizontalVelocity.z);
         }
 
-        public void UpdateHorizontalVelocity(Vector2 input)
+        public void UpdateHorizontalVelocity(Vector2 input, bool isGrounded)
         {
             var mainCamera = _cameraSystem.MainCamera;
 
@@ -35,7 +39,9 @@ namespace Assets.Scripts.Creations.Player.Components
 
             var targetVelocity = direction * Speed;
 
-            _horizontalVelocity = Vector3.MoveTowards(_horizontalVelocity, targetVelocity, 1);
+            var speedDelta = GetSpeedDelta(input == Vector2.zero, isGrounded);
+
+            _horizontalVelocity = Vector3.MoveTowards(_horizontalVelocity, targetVelocity, speedDelta);
             _horizontalVelocity = Vector3.ClampMagnitude(_horizontalVelocity, MaxVelocity);
         }
 
@@ -56,6 +62,14 @@ namespace Assets.Scripts.Creations.Player.Components
         public void Stop()
         {
             _horizontalVelocity = Vector3.zero;
+        }
+
+        private float GetSpeedDelta(bool isMoving, bool isGrounded)
+        {
+            if (!isGrounded)
+                return isMoving ? MovementAirAcceleration : MovementAirDeceleration;
+
+            return isMoving ? MovementAcceleration : MovementDeceleration;
         }
     }
 }
