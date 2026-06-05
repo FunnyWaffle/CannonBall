@@ -5,6 +5,7 @@
         None,
         Cannon,
         CannonProjection,
+        BrokenCannon,
         Ball,
         Zombie,
         PlayerAvatar,

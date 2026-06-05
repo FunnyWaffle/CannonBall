@@ -12,7 +12,6 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly Animator _animator;
         private readonly ZombieTarget _zombieTarget;
 
-        private bool _isMoving = false;
         private bool _hadPath = false;
 
         public ZombieMover(
@@ -101,7 +100,6 @@ namespace Assets.Scripts.Creations.Zombie
             if (_hadPath)
             {
                 _hadPath = false;
-                _isMoving = false;
                 PathCompleted?.Invoke();
             }
         }

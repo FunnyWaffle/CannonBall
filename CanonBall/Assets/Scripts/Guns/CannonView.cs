@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Combat;
 using Assets.Scripts.Wrappers;
 using System;
 using UnityEngine;
@@ -62,6 +61,11 @@ namespace Assets.Scripts.Guns
         public void Enable()
         {
             gameObject.SetActive(true);
+        }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
         }
 
         public void SetPosition(Vector3 position)
