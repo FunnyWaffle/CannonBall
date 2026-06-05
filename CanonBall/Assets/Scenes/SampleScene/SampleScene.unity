@@ -2502,7 +2502,7 @@ MonoBehaviour:
   _enemySpawnZones:
   - {fileID: 952820537}
   - {fileID: 905086466}
-  _firstWaveEnemiesCount: 20
+  _firstWaveEnemiesCount: 5
 --- !u!1 &1983552887
 GameObject:
   m_ObjectHideFlags: 0
