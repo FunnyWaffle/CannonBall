@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Creations;
+using Assets.Scripts.Combat;
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Shop;
@@ -11,17 +11,23 @@ using UnityEngine;
 namespace Assets.Scripts.Guns
 {
     public class CannonController : ICannonController, ISpawnable, IPoolableObject,
-        ISpatialObject, IDamageable
+        ISpatialObject
     {
         private readonly CannonView _view;
         private readonly CannonRotator _rotator;
         private readonly CannonShooter _shooter;
+        private readonly Health _health;
 
-        public CannonController(CannonView cannonView, CannonRotator cannonRotator, CannonShooter shooter)
+        public CannonController(
+            CannonView cannonView,
+            CannonRotator cannonRotator,
+            CannonShooter shooter,
+            Health health)
         {
             _view = cannonView;
             _rotator = cannonRotator;
             _shooter = shooter;
+            _health = health;
         }
 
         public Vector3 Position => _view.Position;
@@ -32,6 +38,7 @@ namespace Assets.Scripts.Guns
         public void Enable()
         {
             _view.Enable();
+            _health.Died += OnDead;
         }
 
         public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
@@ -52,7 +59,6 @@ namespace Assets.Scripts.Guns
         public void Shoot()
         {
             _ = _shooter.Shoot(_view.BarrelExitPosition, _view.BarrelExitRotation, _view.Colliders);
-
         }
 
         public CameraPresetHandler GetCameraTransformPreset()
@@ -60,9 +66,15 @@ namespace Assets.Scripts.Guns
             return _view.CameraPresetHandler;
         }
 
-        public void TakeDamage(float value)
+        private void OnDead()
         {
-            throw new NotImplementedException();
+            Disable();
+        }
+
+        private void Disable()
+        {
+            _health.Died -= OnDead;
+            Disabled?.Invoke(this, ItemTypes.Cannon);
         }
     }
 }
