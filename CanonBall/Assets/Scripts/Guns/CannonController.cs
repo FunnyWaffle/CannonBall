@@ -28,10 +28,13 @@ namespace Assets.Scripts.Guns
             _rotator = cannonRotator;
             _shooter = shooter;
             _health = health;
+
+            _health.Died += OnDead;
         }
 
         public Vector3 Position => _view.Position;
 
+        public event Action<Vector3, Quaternion> Died;
         public event EventHandler<ItemTypes> Disabled;
         public event EventHandler<Vector3> PositionChanged;
 
@@ -69,11 +72,13 @@ namespace Assets.Scripts.Guns
         private void OnDead()
         {
             Disable();
+            Died?.Invoke(_view.Position, _view.BarrelLocalRotation);
         }
 
         private void Disable()
         {
             _health.Died -= OnDead;
+            _view.Disable();
             Disabled?.Invoke(this, ItemTypes.Cannon);
         }
     }

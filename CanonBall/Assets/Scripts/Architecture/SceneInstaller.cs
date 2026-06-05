@@ -5,6 +5,7 @@ using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Curency;
+using Assets.Scripts.Destruction;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
@@ -41,19 +42,9 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Vendor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerCrosshair>().FromComponentInHierarchy().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ZombieUpdater>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
-        Container.BindInterfacesAndSelfTo(typeof(Spawner<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo(typeof(SpawnRequesterCreationHandler<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
-
-        Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
@@ -86,6 +77,7 @@ public class SceneInstaller : MonoInstaller
         BindZombie();
         BindCombat();
         BindSpatial();
+        BindSpawn();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -150,5 +142,21 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpatialObjectsMap>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
+    }
+
+    public void BindSpawn()
+    {
+        Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
+        Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo(typeof(Spawner<>)).AsTransient();
+        Container.BindInterfacesAndSelfTo(typeof(SpawnRequesterCreationHandler<>)).AsTransient();
+        Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
+
+        Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<CannonDestructionHandler>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Combat;
+using Assets.Scripts.Destruction;
 using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Interaction;
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialObjectsMap _spatialObjectsMap;
         private readonly DamageSystem _damageSystem;
+        private readonly CannonDestructionHandler _cannonDestructionHandler;
 
         public ItemTypes CreationType => ItemTypes.Cannon;
 
@@ -24,13 +26,15 @@ namespace Assets.Scripts.Spawn.Factories
             CannonColliderMap cannonColliderMap,
             SpatialGrid spatialGrid,
             SpatialObjectsMap spatialObjectsMap,
-            DamageSystem damageSystem)
+            DamageSystem damageSystem,
+            CannonDestructionHandler cannonDestructionHandler)
         {
             _container = container;
             _cannonColliderMap = cannonColliderMap;
             _spatialGrid = spatialGrid;
             _spatialObjectsMap = spatialObjectsMap;
             _damageSystem = damageSystem;
+            _cannonDestructionHandler = cannonDestructionHandler;
         }
 
         public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
@@ -50,6 +54,7 @@ namespace Assets.Scripts.Spawn.Factories
             _damageSystem.Register(view.Colliders, health);
             _spatialGrid.Add(controller);
             _spatialObjectsMap.Register(controller, hitBox);
+            _cannonDestructionHandler.Register(controller);
 
             return controller;
         }
