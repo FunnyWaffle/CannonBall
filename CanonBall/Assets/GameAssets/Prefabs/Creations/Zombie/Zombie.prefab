@@ -85,6 +85,8 @@ MonoBehaviour:
   - {fileID: 3297695186648434415}
   _modelTransform: {fileID: 3017469587885493599}
   _modelCenter: {fileID: 2238405769074505311}
+  _rightHandCollisionNitifier: {fileID: 66354821393000815}
+  _leftHandCollisionNitifier: {fileID: 7805642102641975690}
 --- !u!1 &6784220438328370060
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,6 +242,10 @@ PrefabInstance:
       value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 5b641c853ee84da4fae47b0ebe537b2c, type: 2}
@@ -326,6 +332,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3948933247560734027, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8814265966526343225}
+    - targetCorrespondingSourceObject: {fileID: -4728426434207774260, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7805642102641975690}
+    - targetCorrespondingSourceObject: {fileID: -4728426434207774260, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4566678292105147915}
     - targetCorrespondingSourceObject: {fileID: -1781356600409242780, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5757137002395344749}
@@ -353,6 +365,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -290750445479886849, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8211465320049810775}
+    - targetCorrespondingSourceObject: {fileID: 2715566404302941441, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1321567902702378713}
+    - targetCorrespondingSourceObject: {fileID: 2715566404302941441, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 66354821393000815}
   m_SourcePrefab: {fileID: 100100000, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
 --- !u!1 &303716857972549812 stripped
 GameObject:
@@ -556,6 +574,82 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &848133200210216885 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+  m_PrefabInstance: {fileID: 3344641697170123444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &1321567902702378713
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848133200210216885}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &66354821393000815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848133200210216885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5edf5c9b33523f44977308af45f471c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Combat.TriggerCollisionNotifier
+--- !u!1 &1156242935938966392 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4728426434207774260, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}
+  m_PrefabInstance: {fileID: 3344641697170123444}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7805642102641975690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156242935938966392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5edf5c9b33523f44977308af45f471c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Combat.TriggerCollisionNotifier
+--- !u!135 &4566678292105147915
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156242935938966392}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1776635121531535359 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3948933247560734027, guid: ac50a24d198e32b4b97c9ac542f9cb27, type: 3}

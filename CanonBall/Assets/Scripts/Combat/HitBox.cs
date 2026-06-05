@@ -6,7 +6,7 @@ namespace Assets.Scripts.Combat
     {
 
         private readonly Collider[] _collider;
-        private readonly AttackZoneEdge[] _attackEdges;
+        private readonly EdgeChain _edgeChain;
 
         public HitBox(Collider[] colliders, Transform[] attackCorners)
         {
@@ -18,25 +18,7 @@ namespace Assets.Scripts.Combat
                 _collider[i] = collider;
             }
 
-            _attackEdges = new AttackZoneEdge[attackCorners.Length];
-            InitializeEdges(attackCorners);
-        }
-
-        private void InitializeEdges(Transform[] attackCorners)
-        {
-            int length = attackCorners.Length;
-            for (int i = 0; i < length; i++)
-            {
-                var startCorner = attackCorners[i];
-                Transform endCorner;
-
-                if (i == length - 1)
-                    endCorner = attackCorners[0];
-                else
-                    endCorner = attackCorners[i + 1];
-
-                _attackEdges[i] = new AttackZoneEdge(startCorner, endCorner);
-            }
+            _edgeChain = new EdgeChain(attackCorners);
         }
 
         public Vector3 GetClosestPoint(Vector3 position)
@@ -63,6 +45,8 @@ namespace Assets.Scripts.Combat
             var distance = float.MaxValue;
 
             var diameter = radius * 2;
+
+            var _attackEdges = _edgeChain.Edges;
 
             foreach (var edge in _attackEdges)
             {
