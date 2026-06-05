@@ -32,6 +32,23 @@ namespace Assets.Scripts.Combat
             return _largestSegmentLength >= diameter;
         }
 
+        public bool TryGetFreePosition(
+            float radius,
+            Vector3 source,
+            out Vector3 position,
+            out Reservation reservation)
+        {
+            if (!HasFreeSpace(radius * 2))
+            {
+                position = Vector3.zero;
+                reservation = default;
+                return false;
+            }
+
+            position = GetFreePosition(radius, source, out reservation);
+            return true;
+        }
+
         public Vector3 GetFreePosition(
             float radius,
             Vector3 source,
@@ -141,7 +158,7 @@ namespace Assets.Scripts.Combat
         private FreeSegment FindNearestFreeSegment(float point, float radius, out int index)
         {
             var pointStart = point - radius;
-            var diameter = radius * radius;
+            var diameter = radius * 2;
 
             var insertIndex = FindInsertionIndex(pointStart);
 
