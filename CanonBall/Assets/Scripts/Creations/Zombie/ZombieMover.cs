@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Config;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,9 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly Animator _animator;
         private readonly ZombieTarget _zombieTarget;
 
+        private bool _isMoving = false;
+        private bool _hadPath = false;
+
         public ZombieMover(
             NavMeshAgent agent,
             Animator animator,
@@ -21,6 +25,8 @@ namespace Assets.Scripts.Creations.Zombie
             _zombieTarget = zombieTarget;
             _agentTransform = _agent.transform;
         }
+
+        public event Action PathCompleted;
 
         public Vector3 Position => _agentTransform.position;
         public bool IsAgentEnable => _agent.enabled;
@@ -35,7 +41,10 @@ namespace Assets.Scripts.Creations.Zombie
             if (!_agent.enabled)
                 return;
 
-            if (_agent.hasPath &&
+            if (_zombieTarget.Target == null)
+                return;
+
+            if (_agent.hasPath ||
                 !_zombieTarget.HasMoved)
                 return;
 
@@ -57,6 +66,44 @@ namespace Assets.Scripts.Creations.Zombie
             _agent.ResetPath();
             _agent.enabled = false;
             _animator.enabled = false;
+        }
+
+        private GameObject _reserved = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        private GameObject _target = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+
+        public void UpdatePath()
+        {
+            if (!_agent.enabled)
+                return;
+
+            if (_agent.pathPending)
+                return;
+
+            if (_agent.hasPath)
+            {
+                _hadPath = true;
+                Debug.Log(Vector3.Distance(_zombieTarget.TargetPosition, _agent.destination));
+
+                var renderer = _reserved.GetComponent<MeshRenderer>();
+                renderer.material.color = Color.green;
+                _reserved.transform.localScale = Vector3.one * _agent.radius;
+                _reserved.transform.position = _agent.destination;
+
+                var renderer1 = _target.GetComponent<MeshRenderer>();
+                renderer1.material.color = Color.red;
+                _target.transform.localScale = Vector3.one * _agent.radius;
+                Vector3 targetPosition = _zombieTarget.TargetPosition;
+                targetPosition.y = _agent.destination.y;
+                _target.transform.position = targetPosition;
+                return;
+            }
+
+            if (_hadPath)
+            {
+                _hadPath = false;
+                _isMoving = false;
+                PathCompleted?.Invoke();
+            }
         }
 
         public void UpdateMovementAnimation()

@@ -7,6 +7,8 @@ namespace Assets.Scripts.Creations.Zombie
     {
         private readonly ZombieTarget _zombieTarget;
         private readonly DamageSystem _damageSystem;
+        private readonly CollisionNotifier _rigthHandcollisionNotifier;
+        private readonly CollisionNotifier _leftHandcollisionNotifier;
 
         private readonly float _damage = 10f;
         private readonly float _attackRange = .5f;
@@ -14,10 +16,14 @@ namespace Assets.Scripts.Creations.Zombie
 
         public ZombieAttacker(
             ZombieTarget zombieTarget,
-            DamageSystem damageSystem)
+            DamageSystem damageSystem,
+            CollisionNotifier rigthHandcollisionNotifier,
+            CollisionNotifier leftHandcollisionNotifier)
         {
             _zombieTarget = zombieTarget;
             _damageSystem = damageSystem;
+            _rigthHandcollisionNotifier = rigthHandcollisionNotifier;
+            _leftHandcollisionNotifier = leftHandcollisionNotifier;
 
             _attackRangeSqrt = _attackRange * _attackRange;
         }
@@ -28,7 +34,10 @@ namespace Assets.Scripts.Creations.Zombie
             if (target == null)
                 return false;
 
-            var distanceSqrt = Vector3.SqrMagnitude(_zombieTarget.TargetPosition - currentPosition);
+            var targetPosition = _zombieTarget.TargetPosition;
+            targetPosition.y = currentPosition.y;
+
+            var distanceSqrt = Vector3.SqrMagnitude(targetPosition - currentPosition);
             if (distanceSqrt > _attackRangeSqrt)
                 return false;
 
@@ -38,6 +47,18 @@ namespace Assets.Scripts.Creations.Zombie
         public void Attack(Collider collider)
         {
             _damageSystem.DealDamage(collider, _damage);
+        }
+
+        public void Enable()
+        {
+            _rigthHandcollisionNotifier.TriggerEntered += Attack;
+            _leftHandcollisionNotifier.TriggerEntered += Attack;
+        }
+
+        public void Disable()
+        {
+            _rigthHandcollisionNotifier.TriggerEntered -= Attack;
+            _leftHandcollisionNotifier.TriggerEntered -= Attack;
         }
     }
 }

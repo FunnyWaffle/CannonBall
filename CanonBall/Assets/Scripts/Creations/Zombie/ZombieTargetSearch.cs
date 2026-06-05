@@ -42,7 +42,7 @@ namespace Assets.Scripts.Creations.Zombie
                 return false;
 
             if (!HasDelayToSearchPassed()
-                && IsCurrentTargetSuitable())
+                || IsCurrentTargetSuitable())
                 return true;
 
             var cellSize = _spatialGrid.CellSize;

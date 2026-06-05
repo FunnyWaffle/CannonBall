@@ -79,6 +79,7 @@ namespace Assets.Scripts.Creations.Zombie
                 _view.EnableAttackAnimation();
 
             _mover.StartMovement();
+            _mover.UpdatePath();
 
             _mover.UpdateMovementAnimation();
         }
@@ -96,6 +97,7 @@ namespace Assets.Scripts.Creations.Zombie
         private void OnExplosion(float force, Vector3 position, float radius)
         {
             _mover.DisableAgent();
+            _attacker.Disable();
             _ragdoll.ApplyExplosion(force, position, radius);
             _hitbox.SetTrigger(true);
 
@@ -118,6 +120,7 @@ namespace Assets.Scripts.Creations.Zombie
             _hitbox.SetPosition(ragdollPosition + _hitboxOffsetPosition);
 
             _mover.EnableAgent();
+            _attacker.Enable();
             _hitbox.SetTrigger(true);
         }
     }

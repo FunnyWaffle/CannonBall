@@ -45,7 +45,11 @@ namespace Assets.Scripts.Spawn.Factories
             var ragdoll = new ZombieRagdoll(view.Rigidbodies);
             var model = new ZombieModel(view.ModelTransform);
             var hitbox = new ZombieHitbox(view.Collider);
-            var attacker = new ZombieAttacker(target, _damageSystem);
+            var attacker = new ZombieAttacker(target, _damageSystem,
+                view.RightHandCollisionNitifier, view.LeftHandCollisionNitifier);
+            var rotator = new ZombieRotator(view, target);
+
+            mover.PathCompleted += rotator.RotateToTarget;
 
             _explosionHandler.AddExplosionReceiver(view.Collider, hitbox);
 
