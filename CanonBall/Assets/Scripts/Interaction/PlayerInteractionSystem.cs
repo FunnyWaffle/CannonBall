@@ -3,6 +3,7 @@ using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
+using Assets.Scripts.Space;
 using Assets.Scripts.Systems;
 using UnityEngine;
 using Zenject;
@@ -16,7 +17,7 @@ namespace Assets.Scripts.Interaction
         private PlayerAvatarInput _playerInput;
         [Inject] private CameraSystem _cameraSystem;
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
-        [Inject] private CannonColliderMap _colliderMap;
+        [Inject] private World _world;
         [Inject] private PlayerAvatarMovementInputProvider _playerAvatarInputProvider;
         [Inject] private ActiveCannonControllerContainer _activeCannonControllerContainer;
         [Inject] private UIController _uIController;
@@ -55,10 +56,12 @@ namespace Assets.Scripts.Interaction
             if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
                 return;
 
-            if (_colliderMap.TryGet(collider, out var cannonController))
+            if (_world.SpatialObjectsMap.TryGetValue(collider, out var spatialObject)
+                && _world.EntityComponents.TryGetValue(spatialObject, out var components)
+                && components.TryGet<ICannonController>(out var controller))
             {
                 _currentPlayerAvatarController.ClearController();
-                _activeCannonControllerContainer.SetController(cannonController);
+                _activeCannonControllerContainer.SetController(controller);
                 _inputSystem.SwitchTo(InputType.Cannon);
             }
             else if (_interactionObjectsRepositiory.TryGetUIWindow(collider, out var uIWindow))
