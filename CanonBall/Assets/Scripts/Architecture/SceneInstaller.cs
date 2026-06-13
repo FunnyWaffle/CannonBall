@@ -1,7 +1,5 @@
 using Assets.Scripts.Camera;
 using Assets.Scripts.Combat;
-using Assets.Scripts.Creations.Player;
-using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Curency;
@@ -35,7 +33,6 @@ public class SceneInstaller : MonoInstaller
         //    Container.BindInterfacesAndSelfTo(dependency.GetType()).FromInstance(dependency).AsSingle();
 
         //}
-        Container.BindInterfacesAndSelfTo<PlayerAvatarView>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<MainCamera>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<InventoryView>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ShopView>().FromComponentInHierarchy().AsSingle();
@@ -59,18 +56,11 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
         Container.BindInterfacesAndSelfTo<ItemAdder>().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
-
         Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.UIActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarMovementInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarAttackInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ActivePlayerAvatarControllerContainer>().AsSingle();
 
         BindInteraction();
         BindCannon();
@@ -78,6 +68,7 @@ public class SceneInstaller : MonoInstaller
         BindCombat();
         BindSpatial();
         BindSpawn();
+        BindPlayer();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -97,12 +88,12 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<UIOpener>();
 
         Container.Resolve<CannonExit>();
+
+        Container.Resolve<PlayerSpawner>();
     }
 
     private void BindCannon()
     {
-        Container.BindInterfacesAndSelfTo<CannonColliderMap>().AsSingle();
-
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.CannonActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<ActiveCannonControllerContainer>().AsSingle();
@@ -139,8 +130,8 @@ public class SceneInstaller : MonoInstaller
 
     public void BindSpatial()
     {
+        Container.BindInterfacesAndSelfTo<World>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpatialObjectsMap>().AsSingle();
         Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
     }
 
@@ -158,5 +149,21 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
+    }
+
+    public void BindPlayer()
+    {
+        Container.BindInterfacesAndSelfTo<PlayerAvatarMovementInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarAttackInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ActivePlayerAvatarControllerContainer>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerAvatarInput>().AsSingle();
+
+        //Container.BindInterfacesAndSelfTo<PlayerAvatarView>().FromComponentInHierarchy().AsSingle();
+        //Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
+        //Container.BindInterfacesAndSelfTo<SpatialObject>().AsSingle();
+        //Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
     }
 }

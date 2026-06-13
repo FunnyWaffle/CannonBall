@@ -20,6 +20,9 @@ namespace Assets.Scripts.Systems
 
         public void RotateCameraPivot(Quaternion rotation)
         {
+            if (_presetHandler == null)
+                return;
+
             var preset = _presetHandler.GetPreset(_viewType);
             preset.Pivot.rotation = rotation;
         }

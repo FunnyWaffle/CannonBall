@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Creations;
+using UnityEngine;
 
 namespace Assets.Scripts.Combat
 {
-    public class HitBox
+    public class HitBox : IComponent
     {
 
         private readonly Collider[] _collider;
         private readonly EdgeChain _edgeChain;
 
-        public HitBox(Collider[] colliders, Transform[] attackCorners)
+        public HitBox(Transform[] attackCorners, params Collider[] colliders)
         {
+            _edgeChain = new EdgeChain(attackCorners);
+
             _collider = new Collider[colliders.Length];
 
             for (int i = 0; i < colliders.Length; i++)
@@ -17,8 +20,6 @@ namespace Assets.Scripts.Combat
                 var collider = colliders[i];
                 _collider[i] = collider;
             }
-
-            _edgeChain = new EdgeChain(attackCorners);
         }
 
         public Vector3 GetClosestPoint(Vector3 position)
@@ -39,34 +40,59 @@ namespace Assets.Scripts.Combat
             return closestPoint;
         }
 
-        public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position)
+        public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position, out HitBoxAttackPlaceReservation reservation)
         {
             AttackZoneEdge closestAttackZoneEdge = null;
             var distance = float.MaxValue;
+            var id = 0;
 
             var diameter = radius * 2;
 
-            var _attackEdges = _edgeChain.Edges;
+            var attackEdges = _edgeChain.Edges;
 
-            foreach (var edge in _attackEdges)
+            for (int i = 0; i < attackEdges.Count; i++)
             {
+                var edge = attackEdges[i];
+
                 var currentDistance = Vector3.SqrMagnitude(edge.Center - source);
                 if (currentDistance < distance
                     && edge.HasFreeSpace(diameter))
                 {
                     closestAttackZoneEdge = edge;
                     distance = currentDistance;
+                    id = i;
                 }
             }
 
             if (closestAttackZoneEdge == null)
             {
                 position = default;
+                reservation = default;
                 return false;
             }
 
-            position = closestAttackZoneEdge.GetFreePosition(radius, source, out var reservation);
+            position = closestAttackZoneEdge.GetFreePosition(radius, source, out var endgeReservation);
+            reservation = new(endgeReservation, id);
             return true;
+        }
+
+        public void ReleaseReservation(HitBoxAttackPlaceReservation reservation)
+        {
+            var edges = _edgeChain.Edges;
+            var edge = edges[reservation.EdgeIndex];
+            edge.Release(reservation.Reservation);
+        }
+    }
+
+    public readonly struct HitBoxAttackPlaceReservation
+    {
+        public Reservation Reservation { get; }
+        public int EdgeIndex { get; }
+
+        public HitBoxAttackPlaceReservation(Reservation reservation, int edgeIndex)
+        {
+            Reservation = reservation;
+            EdgeIndex = edgeIndex;
         }
     }
 }
