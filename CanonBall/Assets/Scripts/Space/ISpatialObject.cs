@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Creations;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Space
 {
-    public interface ISpatialObject
+    public interface ISpatialObject : IHasPosition
     {
-        public Vector3 Position { get; }
 
         public event EventHandler<Vector3> PositionChanged;
     }
