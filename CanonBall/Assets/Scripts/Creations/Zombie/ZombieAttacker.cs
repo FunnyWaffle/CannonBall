@@ -30,11 +30,10 @@ namespace Assets.Scripts.Creations.Zombie
 
         public bool CanAttack(Vector3 currentPosition)
         {
-            var target = _zombieTarget.Target;
-            if (target == null)
+            if (!_zombieTarget.IsSuitable)
                 return false;
 
-            var targetPosition = _zombieTarget.TargetPosition;
+            var targetPosition = _zombieTarget.AttackPosition;
             targetPosition.y = currentPosition.y;
 
             var distanceSqrt = Vector3.SqrMagnitude(targetPosition - currentPosition);
