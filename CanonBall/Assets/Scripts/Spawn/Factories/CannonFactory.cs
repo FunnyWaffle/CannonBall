@@ -1,8 +1,8 @@
 ﻿using Assets.Scripts.Combat;
+using Assets.Scripts.Creations;
 using Assets.Scripts.Destruction;
 using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Components;
-using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Space;
 using UnityEngine;
@@ -13,27 +13,21 @@ namespace Assets.Scripts.Spawn.Factories
     public class CannonFactory : IFactory<CannonController>
     {
         private readonly DiContainer _container;
-        private readonly CannonColliderMap _cannonColliderMap;
+        private readonly World _world;
         private readonly SpatialGrid _spatialGrid;
-        private readonly SpatialObjectsMap _spatialObjectsMap;
-        private readonly DamageSystem _damageSystem;
         private readonly CannonDestructionHandler _cannonDestructionHandler;
 
         public ItemTypes CreationType => ItemTypes.Cannon;
 
         public CannonFactory(
             DiContainer container,
-            CannonColliderMap cannonColliderMap,
+            World world,
             SpatialGrid spatialGrid,
-            SpatialObjectsMap spatialObjectsMap,
-            DamageSystem damageSystem,
             CannonDestructionHandler cannonDestructionHandler)
         {
             _container = container;
-            _cannonColliderMap = cannonColliderMap;
+            _world = world;
             _spatialGrid = spatialGrid;
-            _spatialObjectsMap = spatialObjectsMap;
-            _damageSystem = damageSystem;
             _cannonDestructionHandler = cannonDestructionHandler;
         }
 
@@ -45,15 +39,27 @@ namespace Assets.Scripts.Spawn.Factories
 
             var rotator = CreateRotator(view);
             var shooter = CreateShooter(view);
-            var hitBox = new HitBox(view.Colliders, view.AttackZoneCorners);
+            var hitBox = new HitBox(view.AttackZoneCorners, view.Colliders);
             var health = new Health(50, 50);
+
             var controller = _container.Instantiate<CannonController>(
                 new object[] { view, rotator, shooter, health });
 
-            _cannonColliderMap.Register(view.Colliders, controller);
-            _damageSystem.Register(view.Colliders, health);
+            var components = new EntityComponents();
+            components.Add(rotator);
+            components.Add(shooter);
+            components.Add(hitBox);
+            components.Add(health);
+            components.Add(controller);
+            components.Add(view);
+            _world.EntityComponents[controller] = components;
+
+            foreach (var collider in view.Colliders)
+            {
+                _world.SpatialObjectsMap[collider] = controller;
+            }
+
             _spatialGrid.Add(controller);
-            _spatialObjectsMap.Register(controller, hitBox);
             _cannonDestructionHandler.Register(controller);
 
             return controller;

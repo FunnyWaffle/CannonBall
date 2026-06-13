@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Space;
+﻿using Assets.Scripts.Combat;
+using Assets.Scripts.Space;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly ZombieTarget _zombieTarget;
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
-        private readonly SpatialObjectsMap _spatialObjectsMap;
+        private readonly World _world;
 
         private readonly float _radius;
 
@@ -22,13 +23,13 @@ namespace Assets.Scripts.Creations.Zombie
             ZombieTarget zombieTarget,
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
-            SpatialObjectsMap spatialObjectsMap,
+            World world,
             float radius)
         {
             _zombieTarget = zombieTarget;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
-            _spatialObjectsMap = spatialObjectsMap;
+            _world = world;
 
             _radius = radius;
 
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Creations.Zombie
                 if (_foundObjects.Count > 0)
                 {
                     FindNearestTarget(center, searcherRadius);
-                    _findTargetTimer -= _findTargetDelay;
+                    _findTargetTimer = Time.time + _findTargetDelay;
                     return true;
                 }
             }
@@ -77,13 +78,17 @@ namespace Assets.Scripts.Creations.Zombie
         private void FindNearestTarget(Vector3 center, float searcherRadius)
         {
             var closestTargetPosition = Vector3.zero;
-            ISpatialObject target = null;
-            var minDistance = float.PositiveInfinity;
+            ISpatialObject bestTarget = null;
+            HitBox bestHitBox = null;
+            EntityComponents bestTargetComponents = null;
+            var minDistance = float.MaxValue;
+            HitBoxAttackPlaceReservation bestReservation = default;
 
             foreach (var @object in _foundObjects)
             {
-                if (!_spatialObjectsMap.TryGetHitBox(@object, out var hitbox)
-                    || !hitbox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition))
+                if (!_world.EntityComponents.TryGetValue(@object, out var components)
+                    || !components.TryGet<HitBox>(out var hitBox)
+                    || !hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var reservation))
                     continue;
 
                 var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
@@ -91,24 +96,25 @@ namespace Assets.Scripts.Creations.Zombie
                 {
                     minDistance = currentDistance;
                     closestTargetPosition = targetPosition;
-                    target = @object;
+                    bestReservation = reservation;
+                    bestTarget = @object;
+                    bestHitBox = hitBox;
+                    bestTargetComponents = components;
                 }
             }
 
-            if (target == null)
+            if (bestTarget == null)
                 return;
 
-            _zombieTarget.Set(closestTargetPosition);
-            _zombieTarget.Set(target);
+            _zombieTarget.Set(
+                bestTargetComponents,
+                bestHitBox,
+                bestReservation, closestTargetPosition);
         }
 
         private bool IsCurrentTargetSuitable()
         {
-            var target = _zombieTarget.Target;
-            if (target == null)
-                return false;
-
-            if (_zombieTarget.HasMoved)
+            if (!_zombieTarget.IsSuitable)
                 return false;
 
             return true;
@@ -116,9 +122,7 @@ namespace Assets.Scripts.Creations.Zombie
 
         private bool HasDelayToSearchPassed()
         {
-            _findTargetTimer += Time.deltaTime;
-
-            if (_findTargetTimer < _findTargetDelay)
+            if (Time.timeSinceLevelLoad <= _findTargetTimer)
                 return false;
 
             return true;

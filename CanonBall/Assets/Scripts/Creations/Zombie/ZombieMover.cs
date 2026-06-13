@@ -35,22 +35,6 @@ namespace Assets.Scripts.Creations.Zombie
             _agentTransform.position = position;
         }
 
-        public void StartMovement()
-        {
-            if (!_agent.enabled)
-                return;
-
-            if (_zombieTarget.Target == null)
-                return;
-
-            if (_agent.hasPath ||
-                !_zombieTarget.HasMoved)
-                return;
-
-            var targetPosition = _zombieTarget.TargetPosition;
-            _agent.SetDestination(targetPosition);
-        }
-
         public void EnableAgent()
         {
             _agent.enabled = true;
@@ -67,13 +51,12 @@ namespace Assets.Scripts.Creations.Zombie
             _animator.enabled = false;
         }
 
-        private GameObject _reserved = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        private GameObject _target = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
         public void UpdatePath()
         {
             if (!_agent.enabled)
                 return;
+
+            StartMovement();
 
             if (_agent.pathPending)
                 return;
@@ -81,19 +64,6 @@ namespace Assets.Scripts.Creations.Zombie
             if (_agent.hasPath)
             {
                 _hadPath = true;
-                Debug.Log(Vector3.Distance(_zombieTarget.TargetPosition, _agent.destination));
-
-                var renderer = _reserved.GetComponent<MeshRenderer>();
-                renderer.material.color = Color.green;
-                _reserved.transform.localScale = Vector3.one * _agent.radius;
-                _reserved.transform.position = _agent.destination;
-
-                var renderer1 = _target.GetComponent<MeshRenderer>();
-                renderer1.material.color = Color.red;
-                _target.transform.localScale = Vector3.one * _agent.radius;
-                Vector3 targetPosition = _zombieTarget.TargetPosition;
-                targetPosition.y = _agent.destination.y;
-                _target.transform.position = targetPosition;
                 return;
             }
 
@@ -107,6 +77,15 @@ namespace Assets.Scripts.Creations.Zombie
         public void UpdateMovementAnimation()
         {
             UpdateAnimations(_agent.velocity.z, _agent.desiredVelocity.z);
+        }
+
+        private void StartMovement()
+        {
+            if (!_zombieTarget.IsSuitable)
+                return;
+
+            var targetPosition = _zombieTarget.AttackPosition;
+            _agent.SetDestination(targetPosition);
         }
 
         private void UpdateAnimations(float currentForwardSpeed, float maxForwardSpeed)

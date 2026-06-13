@@ -78,7 +78,6 @@ namespace Assets.Scripts.Creations.Zombie
             if (_attacker.CanAttack(_view.ModelCenterPosition))
                 _view.EnableAttackAnimation();
 
-            _mover.StartMovement();
             _mover.UpdatePath();
 
             _mover.UpdateMovementAnimation();

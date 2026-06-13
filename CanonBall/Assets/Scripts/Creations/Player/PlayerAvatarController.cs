@@ -1,31 +1,29 @@
 ﻿using Assets.Scripts.Camera;
-using Assets.Scripts.Config;
 using Assets.Scripts.Creations.Player.Components;
 using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.Shop;
+using Assets.Scripts.Spawn;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player
 {
-    public class PlayerAvatarController : IPlayerAvatarController
+    public class PlayerAvatarController : IPlayerAvatarController, ISpawnable, IPoolableObject, IComponent
     {
-        private readonly PlayerAvatarMover _mover;
         private readonly PlayerAvatarView _view;
+        private readonly PlayerAvatarMover _mover;
+        private readonly SpatialObject _spatialObject;
+
+        public event EventHandler<ItemTypes> Disabled;
 
         public PlayerAvatarController(PlayerAvatarView view,
             PlayerAvatarMover mover,
-            PlayerConfig config)
+            SpatialObject spatialObject)
         {
             _view = view;
-            _view.Initialize();
 
             _mover = mover;
-            _mover.Speed = config.Speed;
-            _mover.JumpPower = config.JumpPower;
-            _mover.MaxVelocity = config.MaxVelocity;
-            _mover.MovementAcceleration = config.MovementAcceleration;
-            _mover.MovementDeceleration = config.MovementDeceleration;
-            _mover.MovementAirAcceleration = config.MovementAirAcceleration;
-            _mover.MovementAirDeceleration = config.MovementAirDeceleration;
+            _spatialObject = spatialObject;
         }
 
         public void Move(Vector2 movementInput)
@@ -35,6 +33,8 @@ namespace Assets.Scripts.Creations.Player
             _mover.UpdateVerticalSpeed(isGrounded);
             var velocity = _mover.GetVelocity();
             _view.Move(velocity);
+
+            _spatialObject.ChangePosition(_view.Position);
         }
 
         public void Rotate(Vector3 positionToRotation)
@@ -68,6 +68,18 @@ namespace Assets.Scripts.Creations.Player
             var jumped = _mover.ApplyJumpToVelocity(_view.IsGrounded);
             if (jumped)
                 _view.EnableJumpAnimation();
+        }
+
+        public void Enable()
+        {
+            _view.Enable();
+        }
+
+        public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
+        {
+            _view.SetPosition(position);
+            _view.SetRotation(rotation);
+            _view.SetParent(parent);
         }
     }
 }

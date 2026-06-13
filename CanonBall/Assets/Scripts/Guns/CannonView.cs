@@ -1,11 +1,12 @@
 ﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Creations;
 using Assets.Scripts.Wrappers;
 using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns
 {
-    public class CannonView : MonoBehaviour
+    public class CannonView : MonoBehaviour, IHasPosition, IRotationChangeNotifier
     {
 
         [Header("Rotation")]
@@ -48,6 +49,8 @@ namespace Assets.Scripts.Guns
         public event Action<float> ShootPowerChanged;
         public event Action<float> ShootDelayChanged;
 
+        public event Action<Quaternion> RotationChanged;
+
         public void Initialize()
         {
             CameraPresetHandler = new CameraPresetHandler(_cameraViewPresets);
@@ -56,6 +59,7 @@ namespace Assets.Scripts.Guns
         public void SetBarrelRotation(Quaternion rotation)
         {
             _barrel.localRotation = rotation;
+            RotationChanged?.Invoke(rotation);
         }
 
         public void Enable()

@@ -3,7 +3,7 @@ using System;
 
 namespace Assets.Scripts.Combat
 {
-    public class Health : IDamageable
+    public class Health : IDamageable, IHasHealth, IDeathNotifier
     {
         private readonly float _maxHealth;
 
@@ -14,6 +14,8 @@ namespace Assets.Scripts.Combat
             _maxHealth = maxHealth;
             _health = health;
         }
+
+        float IHasHealth.Health => _health;
 
         public event Action Died;
 

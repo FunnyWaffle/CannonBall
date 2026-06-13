@@ -1,10 +1,11 @@
-﻿using Assets.Scripts.Spawn.Projectile;
+﻿using Assets.Scripts.Creations;
+using Assets.Scripts.Spawn.Projectile;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns.Components
 {
-    public class CannonShooter
+    public class CannonShooter : IComponent
     {
         private readonly ProjectileSpawner _spawner;
 

@@ -11,21 +11,16 @@ namespace Assets.Scripts.GameStateMachine
         private IPlayerAvatarController _lastController;
 
         public ActivePlayerAvatarControllerContainer(
-            IPlayerAvatarController controller,
             CameraSystem cameraSystem,
             CrosshairSystem crosshairSystem)
         {
-            _controller = controller;
             _cameraSystem = cameraSystem;
             _crosshairSystem = crosshairSystem;
-
-            PrivateSet(controller);
-            _cameraSystem.ChangeCameraViewType(Camera.ViewType.FirstPerson);
         }
 
         public void SetController(IPlayerAvatarController controller)
         {
-            _controller.Stop();
+            _controller?.Stop();
             _lastController = _controller;
             PrivateSet(controller);
         }

@@ -13,7 +13,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
         private readonly DamageSystem _damageSystem;
-        private readonly SpatialObjectsMap _spatialObjectsMap;
+        private readonly World _world;
         private readonly ZombieUpdater _updater;
 
         public ZombieFactory(
@@ -21,14 +21,14 @@ namespace Assets.Scripts.Spawn.Factories
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
             DamageSystem damageSystem,
-            SpatialObjectsMap spatialObjectsMap,
+            World world,
             ZombieUpdater updater)
         {
             _explosionHandler = explosionHandler;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
             _damageSystem = damageSystem;
-            _spatialObjectsMap = spatialObjectsMap;
+            _world = world;
             _updater = updater;
         }
 
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Spawn.Factories
 
             var target = new ZombieTarget();
             var targetSearch = new ZombieTargetSearch(target, _spatialGrid,
-                _spatialSearchShape, _spatialObjectsMap, 50f);
+                 _spatialSearchShape, _world, 50f);
             var mover = new ZombieMover(view.Agent, view.Animator, target);
             var ragdoll = new ZombieRagdoll(view.Rigidbodies);
             var model = new ZombieModel(view.ModelTransform);

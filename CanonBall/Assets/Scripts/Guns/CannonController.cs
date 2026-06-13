@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Combat;
+using Assets.Scripts.Destruction;
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.Guns.Components;
 using Assets.Scripts.Shop;
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Guns
 
         public Vector3 Position => _view.Position;
 
-        public event Action<Vector3, Quaternion> Died;
+        public event EventHandler<CannonDeathEventArgs> Died;
         public event EventHandler<ItemTypes> Disabled;
         public event EventHandler<Vector3> PositionChanged;
 
@@ -72,7 +73,11 @@ namespace Assets.Scripts.Guns
         private void OnDead()
         {
             Disable();
-            Died?.Invoke(_view.Position, _view.BarrelLocalRotation);
+            Died?.Invoke(this, new CannonDeathEventArgs
+            {
+                Position = _view.Position,
+                Rotation = _view.BarrelLocalRotation
+            });
         }
 
         private void Disable()

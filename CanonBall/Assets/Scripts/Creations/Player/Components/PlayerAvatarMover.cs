@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Creations.Player.Components
 {
-    public class PlayerAvatarMover
+    public class PlayerAvatarMover : IComponent
     {
         private readonly CameraSystem _cameraSystem;
 

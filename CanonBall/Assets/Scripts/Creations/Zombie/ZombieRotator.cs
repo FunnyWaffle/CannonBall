@@ -19,7 +19,10 @@ namespace Assets.Scripts.Creations.Zombie
 
         public void RotateToTarget()
         {
-            var direction = _zombieTarget.Target.Position - _view.Position;
+            if (!_zombieTarget.IsSuitable)
+                return;
+
+            var direction = _zombieTarget.Position - _view.Position;
             var rotation = Quaternion.LookRotation(direction, Vector3.up);
 
             if (_coroutine != null)

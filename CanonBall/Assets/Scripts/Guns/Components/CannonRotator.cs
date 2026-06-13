@@ -1,17 +1,18 @@
-﻿using Assets.Scripts.Systems;
+﻿using Assets.Scripts.Creations;
+using Assets.Scripts.Systems;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Guns.Components
 {
-    public class CannonRotator
+    public class CannonRotator : IHasRotation
     {
         private readonly CrosshairSystem _crosshairSystem;
 
         private float _rotationSpeed = 1f;
         private float _pitchAngleLimit = 15;
 
-        private Quaternion _rotation;
+        public Quaternion Rotation { get; private set; }
 
         public CannonRotator(
             CrosshairSystem crosshairSystem,
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Guns.Components
             _crosshairSystem = crosshairSystem;
             _rotationSpeed = rotationSpeed;
             _pitchAngleLimit = pitchAngleLimit;
-            _rotation = startRotation;
+            Rotation = startRotation;
         }
 
         public void SetRotationSpeed(float value)
@@ -42,8 +43,8 @@ namespace Assets.Scripts.Guns.Components
 
             Quaternion targetRotationQuaternion = ClampDirection(velocityToTarget);
 
-            _rotation = Quaternion.RotateTowards(
-                _rotation,
+            Rotation = Quaternion.RotateTowards(
+                Rotation,
                 targetRotationQuaternion,
                 _rotationSpeed * Time.deltaTime);
 
@@ -54,7 +55,7 @@ namespace Assets.Scripts.Guns.Components
 
             VisualizeTrajectory(trajectory);
 
-            return _rotation;
+            return Rotation;
         }
 
         private List<Vector3> GetCurrentTrajectoryPrediction(Vector3 barrelExitPosition, Vector3 barrelForward, float shootPower)
