@@ -9,5 +9,8 @@
         Ball,
         Zombie,
         PlayerAvatar,
+        Builder,
+        CannonToBuild,
+        BuildCarriage,
     }
 }
