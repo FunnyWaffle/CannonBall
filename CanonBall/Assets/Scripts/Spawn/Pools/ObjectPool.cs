@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Shop;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Spawn
+namespace Assets.Scripts.Spawn.Pools
 {
     public class ObjectPool<T>
                 where T : IPoolableObject
