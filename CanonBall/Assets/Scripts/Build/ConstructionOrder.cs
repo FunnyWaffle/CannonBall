@@ -17,7 +17,6 @@ namespace Assets.Scripts.Build
 
         private readonly Vector3 _position;
         private readonly Quaternion _rotation;
-        private readonly float _positionForCarriageOffset;
 
         private EntityComponents _carriageComponents;
         private EntityComponents _constructionComponents;
@@ -25,13 +24,11 @@ namespace Assets.Scripts.Build
         public ConstructionOrder(
             Vector3 position,
             Quaternion rotation,
-            float positionForCarriageOffset,
             BuilderSpawnZone builderSpawnZone,
             UniversalSpawner spawner)
         {
             _position = position;
             _rotation = rotation;
-            _positionForCarriageOffset = positionForCarriageOffset;
             _builderSpawnZone = builderSpawnZone;
             _spawner = spawner;
         }
