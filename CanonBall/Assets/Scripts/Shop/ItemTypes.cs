@@ -12,5 +12,6 @@
         Builder,
         CannonToBuild,
         BuildCarriage,
+        NotForVehicleZone,
     }
 }
