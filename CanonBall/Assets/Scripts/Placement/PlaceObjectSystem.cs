@@ -3,7 +3,6 @@ using Assets.Scripts.Config;
 using Assets.Scripts.Creations;
 using Assets.Scripts.Creations.Placement;
 using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.Guns.Projections;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
@@ -12,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using static Assets.Scripts.Build.BuildSystem;
 
 namespace Assets.Scripts.Placement
 {
@@ -66,9 +66,9 @@ namespace Assets.Scripts.Placement
 
             var hasPosition = _spawnedProjectionComponents.Get<IHasPosition>();
             var hasRotation = _spawnedProjectionComponents.Get<IHasRotation>();
-            var constructionProjection = _spawnedProjectionComponents.Get<IConstructionProjection>();
+            var hasSize = _spawnedProjectionComponents.Get<IHasSize>();
 
-            var order = await _buildSystem.OrderConstruction(hasPosition.Position, hasRotation.Rotation, constructionProjection.BuildCarriageOffset);
+            var order = await _buildSystem.OrderConstruction(hasPosition.Position, hasRotation.Rotation, hasSize.Size, Shape2D.Circle);
 
             order.ConstructionStarted += OnConstructionStart;
 
