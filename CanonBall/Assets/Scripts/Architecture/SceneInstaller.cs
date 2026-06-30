@@ -70,6 +70,7 @@ public class SceneInstaller : MonoInstaller
         BindSpawn();
         BindPlayer();
         BindConstruction();
+        BindNavigation();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -139,6 +140,8 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<NotForVehicleZoneFactiory>().AsSingle();
+
         Container.BindInterfacesAndSelfTo<CannonDestructionHandler>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<UniversalSpawner>().AsSingle();
@@ -170,5 +173,10 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<BuilderFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<BuildCarriageFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<BuilderSpawnZone>().FromComponentInHierarchy().AsSingle();
+    }
+
+    public void BindNavigation()
+    {
+        Container.BindInterfacesAndSelfTo<CustomPathFinder>().AsSingle();
     }
 }
