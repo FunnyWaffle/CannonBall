@@ -10,23 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Creations
+  m_Name: Vehicles
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Creations
-  m_GUID: cbd115bbaffe47d4eaa9bb77a5f554e1
+  m_GroupName: Vehicles
+  m_GUID: 77952b31b8ad9844ab35345e83f8bb27
   m_SerializeEntries:
-  - m_GUID: 8609f8b75bdccd74c9acfb36aa6fa421
-    m_Address: Zombie
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a52229cae426b2e46b725916238eaa4a
-    m_Address: Builder
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df5e5ddfb21cac74ab14d7dd54ad20c4
-    m_Address: Player
+  - m_GUID: 6652b105f2b3bbd47af3ba8cda70b32b
+    m_Address: Carriage
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -34,5 +24,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 0be49d4d9097ba742889e700f9c2bb10, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 995cc34baf356df40ac40a7f7423dc2b, type: 2}
-    - {fileID: 11400000, guid: f832d3e0b31f156448045cfde38055dd, type: 2}
+    - {fileID: 11400000, guid: 28d28edbc286b74409e4dde94c4b3971, type: 2}
+    - {fileID: 11400000, guid: cf2c0d18a3635de46927152f3f2a38a3, type: 2}
