@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Combat;
 using Assets.Scripts.Creations.Zombie;
+using Assets.Scripts.EnemyAttractionObjects;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Space;
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly ExplosionHandler _explosionHandler;
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
+        private readonly EnemyAttractionObject _enemyAttractionObject;
         private readonly DamageSystem _damageSystem;
         private readonly World _world;
         private readonly ZombieUpdater _updater;
@@ -20,6 +22,7 @@ namespace Assets.Scripts.Spawn.Factories
             ExplosionHandler explosionHandler,
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
+            EnemyAttractionObject enemyAttractionObject,
             DamageSystem damageSystem,
             World world,
             ZombieUpdater updater)
@@ -27,6 +30,7 @@ namespace Assets.Scripts.Spawn.Factories
             _explosionHandler = explosionHandler;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
+            _enemyAttractionObject = enemyAttractionObject;
             _damageSystem = damageSystem;
             _world = world;
             _updater = updater;
@@ -40,7 +44,7 @@ namespace Assets.Scripts.Spawn.Factories
 
             var target = new ZombieTarget();
             var targetSearch = new ZombieTargetSearch(target, _spatialGrid,
-                 _spatialSearchShape, _world, 50f);
+                 _spatialSearchShape, _enemyAttractionObject, _world, 50f);
             var mover = new ZombieMover(view.Agent, view.Animator, target);
             var ragdoll = new ZombieRagdoll(view.Rigidbodies);
             var model = new ZombieModel(view.ModelTransform);
