@@ -1,25 +1,27 @@
-﻿using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.Input;
+﻿using Assets.Scripts.Input;
 
-namespace Assets.Scripts.UI
+namespace Assets.Scripts.GameStateMachine
 {
-    public class UIOpener
+    public class InventoryInputProvider
     {
         private readonly PlayerAvatarInput _playerInput;
-        private readonly UIInput _uIInput;
+        private readonly CannonInput _cannonInput;
+        private readonly InventoryInput _inventoryInput;
         private readonly UIController _uIController;
         private readonly InputSystem _inputSystem;
 
-        public UIOpener(PlayerAvatarInput playerInput, UIInput uIInput, UIController uIController, InputSystem inputSystem)
+        public InventoryInputProvider(PlayerAvatarInput playerInput, CannonInput cannonInput, InventoryInput uIInput, UIController uIController, InputSystem inputSystem)
         {
             _playerInput = playerInput;
-            _uIInput = uIInput;
+            _cannonInput = cannonInput;
+            _inventoryInput = uIInput;
             _uIController = uIController;
             _inputSystem = inputSystem;
 
             _playerInput.InventoryActionPerformed += OnInventoryActionPerform;
+            _cannonInput.InventoryActionPerformed += OnInventoryActionPerform;
 
-            _uIInput.CancelPefromed += OnCancel;
+            _inventoryInput.ClosePefromed += OnCancel;
         }
 
         private void OnInventoryActionPerform()
@@ -28,7 +30,7 @@ namespace Assets.Scripts.UI
             if (!openWindow.HasValue && openWindow != UIWindowTypes.Inventory)
             {
                 _uIController.Open(UIWindowTypes.Inventory);
-                _inputSystem.SwitchTo(InputType.UI);
+                _inputSystem.SwitchTo(InputType.Inventory);
             }
             else
             {
@@ -40,6 +42,7 @@ namespace Assets.Scripts.UI
         private void OnCancel()
         {
             _uIController.ClearOpenWindow();
+            _inputSystem.SwitchToLast();
         }
     }
 }
