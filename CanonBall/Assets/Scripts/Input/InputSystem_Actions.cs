@@ -1157,6 +1157,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""First Person View"",
+                    ""type"": ""Button"",
+                    ""id"": ""bc893e54-4b86-459b-9156-a7a6a0232383"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Third Person View"",
+                    ""type"": ""Button"",
+                    ""id"": ""6668f4d4-7b69-4ac3-91bb-01fa27ac0342"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1190,6 +1208,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7496830-a294-4ba1-9a58-2cdf29c703ac"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Third Person View"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5aeb6672-55fc-44e3-a092-9b2902f41c28"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""First Person View"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1290,6 +1330,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Cannon_Look = m_Cannon.FindAction("Look", throwIfNotFound: true);
         m_Cannon_Shoot = m_Cannon.FindAction("Shoot", throwIfNotFound: true);
         m_Cannon_Exit = m_Cannon.FindAction("Exit", throwIfNotFound: true);
+        m_Cannon_FirstPersonView = m_Cannon.FindAction("First Person View", throwIfNotFound: true);
+        m_Cannon_ThirdPersonView = m_Cannon.FindAction("Third Person View", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1787,6 +1829,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Cannon_Look;
     private readonly InputAction m_Cannon_Shoot;
     private readonly InputAction m_Cannon_Exit;
+    private readonly InputAction m_Cannon_FirstPersonView;
+    private readonly InputAction m_Cannon_ThirdPersonView;
     /// <summary>
     /// Provides access to input actions defined in input action map "Cannon".
     /// </summary>
@@ -1810,6 +1854,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Cannon/Exit".
         /// </summary>
         public InputAction @Exit => m_Wrapper.m_Cannon_Exit;
+        /// <summary>
+        /// Provides access to the underlying input action "Cannon/FirstPersonView".
+        /// </summary>
+        public InputAction @FirstPersonView => m_Wrapper.m_Cannon_FirstPersonView;
+        /// <summary>
+        /// Provides access to the underlying input action "Cannon/ThirdPersonView".
+        /// </summary>
+        public InputAction @ThirdPersonView => m_Wrapper.m_Cannon_ThirdPersonView;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1845,6 +1897,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Exit.started += instance.OnExit;
             @Exit.performed += instance.OnExit;
             @Exit.canceled += instance.OnExit;
+            @FirstPersonView.started += instance.OnFirstPersonView;
+            @FirstPersonView.performed += instance.OnFirstPersonView;
+            @FirstPersonView.canceled += instance.OnFirstPersonView;
+            @ThirdPersonView.started += instance.OnThirdPersonView;
+            @ThirdPersonView.performed += instance.OnThirdPersonView;
+            @ThirdPersonView.canceled += instance.OnThirdPersonView;
         }
 
         /// <summary>
@@ -1865,6 +1923,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Exit.started -= instance.OnExit;
             @Exit.performed -= instance.OnExit;
             @Exit.canceled -= instance.OnExit;
+            @FirstPersonView.started -= instance.OnFirstPersonView;
+            @FirstPersonView.performed -= instance.OnFirstPersonView;
+            @FirstPersonView.canceled -= instance.OnFirstPersonView;
+            @ThirdPersonView.started -= instance.OnThirdPersonView;
+            @ThirdPersonView.performed -= instance.OnThirdPersonView;
+            @ThirdPersonView.canceled -= instance.OnThirdPersonView;
         }
 
         /// <summary>
@@ -2161,5 +2225,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnExit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "First Person View" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFirstPersonView(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Third Person View" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnThirdPersonView(InputAction.CallbackContext context);
     }
 }

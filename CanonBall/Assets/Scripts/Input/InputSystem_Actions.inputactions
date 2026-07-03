@@ -1071,6 +1071,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "First Person View",
+                    "type": "Button",
+                    "id": "bc893e54-4b86-459b-9156-a7a6a0232383",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Third Person View",
+                    "type": "Button",
+                    "id": "6668f4d4-7b69-4ac3-91bb-01fa27ac0342",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1104,6 +1122,28 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7496830-a294-4ba1-9a58-2cdf29c703ac",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Third Person View",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5aeb6672-55fc-44e3-a092-9b2902f41c28",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "First Person View",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
