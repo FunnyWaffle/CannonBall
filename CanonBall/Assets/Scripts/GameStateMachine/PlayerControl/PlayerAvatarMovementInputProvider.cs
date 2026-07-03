@@ -5,7 +5,7 @@ using Assets.Scripts.Input;
 using Assets.Scripts.Systems;
 using UnityEngine;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.PlayerControl
 {
     public class PlayerAvatarMovementInputProvider : IUpdatable
     {
@@ -31,14 +31,14 @@ namespace Assets.Scripts.GameStateMachine
 
         public void Update()
         {
+            if (!_currentController.TryGetController(out var controller))
+                return;
+
             var lookInput = _input.Look;
             var rotation = _aimer.Aim(lookInput);
 
             _cameraSystem.RotateCameraPivot(rotation);
             var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
-
-            if (!_currentController.TryGetController(out var controller))
-                return;
 
             controller.Rotate(position);
             var movementInput = _input.Movement;

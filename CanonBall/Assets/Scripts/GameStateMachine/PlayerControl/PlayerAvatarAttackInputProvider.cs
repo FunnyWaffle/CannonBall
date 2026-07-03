@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Input;
 using Assets.Scripts.Placement;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.PlayerControl
 {
     public class PlayerAvatarAttackInputProvider
     {

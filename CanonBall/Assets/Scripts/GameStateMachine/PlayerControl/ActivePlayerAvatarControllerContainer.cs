@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Systems;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.PlayerControl
 {
     public class ActivePlayerAvatarControllerContainer
     {
