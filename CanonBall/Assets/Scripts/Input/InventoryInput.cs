@@ -15,7 +15,7 @@ namespace Assets.Scripts.Input
         }
 
         public InputType Type => InputType.Inventory;
-        public bool CanBeInQueue => false;
+        public bool CanBeInStack => false;
 
         public event Action ClosePefromed;
 
