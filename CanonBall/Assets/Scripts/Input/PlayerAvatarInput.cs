@@ -21,6 +21,7 @@ namespace Assets.Scripts.Input
         }
 
         public InputType Type => InputType.Player;
+        public bool CanBeInStack => true;
 
         public Vector2 Movement => _actions.Move.ReadValue<Vector2>();
         public Vector2 Look => _actions.Look.ReadValue<Vector2>();

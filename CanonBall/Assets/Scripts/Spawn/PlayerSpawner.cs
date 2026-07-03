@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Creations.Player;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Shop;
 using System.Threading.Tasks;
 using UnityEngine;

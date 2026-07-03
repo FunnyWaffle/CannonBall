@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Creations.Player.Components;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using System;

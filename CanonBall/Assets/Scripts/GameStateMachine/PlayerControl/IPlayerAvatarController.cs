@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Camera;
 using UnityEngine;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.PlayerControl
 {
     public interface IPlayerAvatarController
     {
