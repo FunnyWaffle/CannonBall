@@ -14,6 +14,8 @@ namespace Assets.Scripts.Input
 
             _actions.Shoot.performed += OnShoot;
             _actions.Exit.performed += OnExit;
+            _actions.FirstPersonView.performed += OnFirstPersonView;
+            _actions.ThirdPersonView.performed += OnPersonThirdView;
         }
 
         public InputType Type => InputType.Cannon;
@@ -22,6 +24,7 @@ namespace Assets.Scripts.Input
 
         public event Action ShootPerform;
         public event Action ExitPerform;
+        public event Action<int> ViewModeActionPerformed;
 
         public void Disable()
         {
@@ -41,6 +44,16 @@ namespace Assets.Scripts.Input
         private void OnExit(InputAction.CallbackContext context)
         {
             ExitPerform?.Invoke();
+        }
+
+        private void OnPersonThirdView(InputAction.CallbackContext context)
+        {
+            ViewModeActionPerformed?.Invoke(1);
+        }
+
+        private void OnFirstPersonView(InputAction.CallbackContext context)
+        {
+            ViewModeActionPerformed?.Invoke(0);
         }
     }
 }

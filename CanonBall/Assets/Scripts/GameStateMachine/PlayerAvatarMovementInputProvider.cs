@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Config;
+﻿using Assets.Scripts.Camera;
+using Assets.Scripts.Config;
 using Assets.Scripts.Creations;
 using Assets.Scripts.Input;
 using Assets.Scripts.Systems;
@@ -25,6 +26,7 @@ namespace Assets.Scripts.GameStateMachine
             _currentController = currentController;
 
             _input.JumpActionPerformed += OnJumpPerform;
+            _input.ViewModeActionPerformed += OnViewModePerformed;
         }
 
         public void Update()
@@ -49,6 +51,18 @@ namespace Assets.Scripts.GameStateMachine
                 return;
 
             controller.Jump();
+        }
+
+        private void OnViewModePerformed(int index)
+        {
+            var viewType = index switch
+            {
+                0 => ViewType.FirstPerson,
+                1 => ViewType.ThirdPerson,
+                _ => throw new System.NotImplementedException("There's no view mode asign by index: " + index),
+            };
+
+            _cameraSystem.ChangeCameraViewType(viewType);
         }
     }
 }

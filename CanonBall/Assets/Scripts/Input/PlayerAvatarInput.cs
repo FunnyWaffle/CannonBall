@@ -8,13 +8,12 @@ namespace Assets.Scripts.Input
     {
         private readonly InputSystem_Actions.PlayerActions _actions = new();
 
-
         public PlayerAvatarInput(InputSystem_Actions.PlayerActions inputActions)
         {
             _actions = inputActions;
             _actions.Interact.performed += context => InteractionActionPerformed?.Invoke();
-            _actions.FirstPersonView.performed += context => ViewModeActionPerformed?.Invoke(0);
-            _actions.ThirdPersonView.performed += context => ViewModeActionPerformed?.Invoke(1);
+            _actions.FirstPersonView.performed += OnFirstPersonView;
+            _actions.ThirdPersonView.performed += OnPersonThirdView;
             _actions.Back.performed += context => BackActionPerformed?.Invoke();
             _actions.Attack.performed += OnAttack;
             _actions.Jump.performed += OnJumpPerform;
@@ -56,6 +55,16 @@ namespace Assets.Scripts.Input
         private void OnJumpPerform(InputAction.CallbackContext context)
         {
             JumpActionPerformed?.Invoke();
+        }
+
+        private void OnPersonThirdView(InputAction.CallbackContext context)
+        {
+            ViewModeActionPerformed?.Invoke(1);
+        }
+
+        private void OnFirstPersonView(InputAction.CallbackContext context)
+        {
+            ViewModeActionPerformed?.Invoke(0);
         }
     }
 }
