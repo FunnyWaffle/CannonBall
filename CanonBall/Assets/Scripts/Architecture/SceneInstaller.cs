@@ -47,7 +47,6 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
         Container.BindInterfacesAndSelfTo<UIController>().AsSingle();
         Container.BindInterfacesAndSelfTo<Aimer>().AsSingle();
-        Container.BindInterfacesAndSelfTo<GameController>().AsSingle();
         Container.BindInterfacesAndSelfTo<CameraSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
         Container.BindInterfacesAndSelfTo<CrosshairSystem>().AsSingle();
