@@ -5,11 +5,11 @@ namespace Assets.Scripts.Input
     public class InputSystem
     {
         private readonly Dictionary<InputType, IInputActionMap> _shemes = new();
+        private readonly Stack<IInputActionMap> _lastInputActionMap = new();
 
         private readonly InputSystem_Actions _inputActions;
 
         private IInputActionMap _inputActionMap;
-        private IInputActionMap _lastInputActionMap;
 
         public InputSystem(InputSystem_Actions inputActions, params IInputActionMap[] inputActionMaps)
         {
@@ -27,20 +27,26 @@ namespace Assets.Scripts.Input
 
         public void SwitchTo(InputType inputType)
         {
-            _lastInputActionMap = _inputActionMap;
-            _inputActionMap.Disable();
+            DisableActualMap();
             EnableMap(inputType);
         }
 
         public void SwitchToLast()
         {
-            var last = _lastInputActionMap;
+            var last = _lastInputActionMap.Pop();
 
-            _inputActionMap.Disable();
-            _lastInputActionMap = _inputActionMap;
+            DisableActualMap();
 
             last.Enable();
             _inputActionMap = last;
+        }
+
+        private void DisableActualMap()
+        {
+            _inputActionMap.Disable();
+
+            if (_inputActionMap.CanBeInStack)
+                _lastInputActionMap.Push(_inputActionMap);
         }
 
         private void EnableMap(InputType inputType)
@@ -55,6 +61,6 @@ namespace Assets.Scripts.Input
         Player,
         Cannon,
         Placement,
-        UI,
+        Inventory,
     }
 }
