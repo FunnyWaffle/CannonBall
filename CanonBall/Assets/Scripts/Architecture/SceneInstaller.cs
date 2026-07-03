@@ -7,6 +7,7 @@ using Assets.Scripts.Destruction;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
+using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Guns;
 using Assets.Scripts.Guns.Projections;
 using Assets.Scripts.Input;
@@ -19,7 +20,6 @@ using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
 using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
-using Assets.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
@@ -57,8 +57,8 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions.UIActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<UIInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions.InventoryActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InventoryInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
 
         BindInteraction();
@@ -69,7 +69,7 @@ public class SceneInstaller : MonoInstaller
         BindSpawn();
         BindPlayer();
 
-        Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InventoryInputProvider>().AsSingle();
 
         Container.Resolve<ExplosionHandler>().Exploded +=
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
@@ -84,7 +84,7 @@ public class SceneInstaller : MonoInstaller
 
         Container.Resolve<InputSystem>();
 
-        Container.Resolve<UIOpener>();
+        Container.Resolve<InventoryInputProvider>();
 
         Container.Resolve<CannonExit>();
 
