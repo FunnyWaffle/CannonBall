@@ -4,6 +4,7 @@ using Assets.Scripts.Creations.Zombie;
 using Assets.Scripts.Crosshairs;
 using Assets.Scripts.Curency;
 using Assets.Scripts.Destruction;
+using Assets.Scripts.EnemyAttractionObjects;
 using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
@@ -69,6 +70,7 @@ public class SceneInstaller : MonoInstaller
         BindSpatial();
         BindSpawn();
         BindPlayer();
+        BindEnemyAttractionObjects();
 
         Container.BindInterfacesAndSelfTo<UIOpener>().AsSingle();
 
@@ -165,5 +167,10 @@ public class SceneInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
+    }
+
+    public void BindEnemyAttractionObjects()
+    {
+        Container.BindInterfacesAndSelfTo<EnemyAttractionObject>().FromComponentInHierarchy().AsSingle();
     }
 }

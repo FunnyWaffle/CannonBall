@@ -27,6 +27,10 @@ namespace Assets.Scripts.Combat
                 {
                     endCorner = attackCorners[0];
 
+                    if (Vector3.Normalize(startCorner.position - endCorner.position) ==
+                        Vector3.Normalize(attackCorners[1].position - endCorner.position))
+                        return;
+
                 }
                 else
                     endCorner = attackCorners[i + 1];

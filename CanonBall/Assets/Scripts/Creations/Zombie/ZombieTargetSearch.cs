@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Combat;
+using Assets.Scripts.EnemyAttractionObjects;
 using Assets.Scripts.Space;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly ZombieTarget _zombieTarget;
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
+        private readonly EnemyAttractionObject _enemyAttractionObject;
         private readonly World _world;
 
         private readonly float _radius;
@@ -23,12 +25,14 @@ namespace Assets.Scripts.Creations.Zombie
             ZombieTarget zombieTarget,
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
+            EnemyAttractionObject enemyAttractionObject,
             World world,
             float radius)
         {
             _zombieTarget = zombieTarget;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
+            _enemyAttractionObject = enemyAttractionObject;
             _world = world;
 
             _radius = radius;
@@ -64,9 +68,8 @@ namespace Assets.Scripts.Creations.Zombie
 
                 }
 
-                if (_foundObjects.Count > 0)
+                if (FindNearestTarget(center, searcherRadius))
                 {
-                    FindNearestTarget(center, searcherRadius);
                     _findTargetTimer = Time.time + _findTargetDelay;
                     return true;
                 }
@@ -75,7 +78,7 @@ namespace Assets.Scripts.Creations.Zombie
             return false;
         }
 
-        private void FindNearestTarget(Vector3 center, float searcherRadius)
+        private bool FindNearestTarget(Vector3 center, float searcherRadius)
         {
             var closestTargetPosition = Vector3.zero;
             ISpatialObject bestTarget = null;
@@ -84,32 +87,43 @@ namespace Assets.Scripts.Creations.Zombie
             var minDistance = float.MaxValue;
             HitBoxAttackPlaceReservation bestReservation = default;
 
-            foreach (var @object in _foundObjects)
-            {
-                if (!_world.EntityComponents.TryGetValue(@object, out var components)
-                    || !components.TryGet<HitBox>(out var hitBox)
-                    || !hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var reservation))
-                    continue;
-
-                var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
-                if (currentDistance < minDistance)
+            if (_foundObjects.Count > 0)
+                foreach (var @object in _foundObjects)
                 {
-                    minDistance = currentDistance;
-                    closestTargetPosition = targetPosition;
-                    bestReservation = reservation;
-                    bestTarget = @object;
-                    bestHitBox = hitBox;
-                    bestTargetComponents = components;
+                    if (!_world.EntityComponents.TryGetValue(@object, out var components)
+                        || !components.TryGet<HitBox>(out var hitBox)
+                        || !hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var reservation))
+                        continue;
+
+                    var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
+                    if (currentDistance < minDistance)
+                    {
+                        minDistance = currentDistance;
+                        closestTargetPosition = targetPosition;
+                        bestReservation = reservation;
+                        bestTarget = @object;
+                        bestHitBox = hitBox;
+                        bestTargetComponents = components;
+                    }
                 }
-            }
 
             if (bestTarget == null)
-                return;
+            {
+                var hitBox = _enemyAttractionObject.HitBox;
+
+                if (!hitBox.TryGetFreePoisitionAround(searcherRadius, center, out closestTargetPosition, out bestReservation))
+                    return false;
+
+                bestHitBox = hitBox;
+                bestTargetComponents = _enemyAttractionObject.Components;
+            }
 
             _zombieTarget.Set(
                 bestTargetComponents,
                 bestHitBox,
                 bestReservation, closestTargetPosition);
+
+            return true;
         }
 
         private bool IsCurrentTargetSuitable()
