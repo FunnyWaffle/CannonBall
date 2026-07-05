@@ -5,6 +5,7 @@ namespace Assets.Scripts.Creations.Zombie
 {
     public class ZombieTarget
     {
+        private EntityComponents _entityComponents;
         private IPositionChangeNotifier _positionChangeNotifier;
         private IRotationChangeNotifier _rotationChangeNotifier;
         private IDeathNotifier _deathNotifier;
@@ -32,6 +33,8 @@ namespace Assets.Scripts.Creations.Zombie
                 return;
             }
 
+            _entityComponents = components;
+
             AttackPosition = targetPosition;
 
             ResetPositionChangeNotifier(components);
@@ -44,6 +47,11 @@ namespace Assets.Scripts.Creations.Zombie
             _hitBox = hitBox;
 
             _hitBoxAttackPlaceReservation = hitBoxAttackPlaceReservation;
+        }
+
+        public bool Compare(EntityComponents components)
+        {
+            return _entityComponents == components;
         }
 
         private void ResetPositionChangeNotifier(EntityComponents components)

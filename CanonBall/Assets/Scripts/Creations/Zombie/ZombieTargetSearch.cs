@@ -46,8 +46,7 @@ namespace Assets.Scripts.Creations.Zombie
             if (!_spatialGrid.HasObjects)
                 return false;
 
-            if (!HasDelayToSearchPassed()
-                || IsCurrentTargetSuitable())
+            if (!HasDelayToSearchPassed())
                 return true;
 
             var cellSize = _spatialGrid.CellSize;
@@ -75,6 +74,18 @@ namespace Assets.Scripts.Creations.Zombie
                 }
             }
 
+
+            var hitBox = _enemyAttractionObject.HitBox;
+
+            if (hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var closestTargetPosition, out var bestReservation))
+            {
+                SetTarget(
+                    _enemyAttractionObject.Components,
+                    hitBox,
+                    bestReservation, closestTargetPosition);
+                return true;
+            }
+
             return false;
         }
 
@@ -95,41 +106,39 @@ namespace Assets.Scripts.Creations.Zombie
                         || !hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var reservation))
                         continue;
 
+
                     var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
                     if (currentDistance < minDistance)
                     {
                         minDistance = currentDistance;
                         closestTargetPosition = targetPosition;
-                        bestReservation = reservation;
                         bestTarget = @object;
-                        bestHitBox = hitBox;
                         bestTargetComponents = components;
+
+                        bestHitBox?.ReleaseReservation(bestReservation);
+
+                        bestHitBox = hitBox;
+                        bestReservation = reservation;
                     }
+                    else
+                        hitBox?.ReleaseReservation(reservation);
+
                 }
 
             if (bestTarget == null)
+                return false;
+
+            if (_zombieTarget.Compare(bestTargetComponents))
             {
-                var hitBox = _enemyAttractionObject.HitBox;
+                bestHitBox?.ReleaseReservation(bestReservation);
 
-                if (!hitBox.TryGetFreePoisitionAround(searcherRadius, center, out closestTargetPosition, out bestReservation))
-                    return false;
-
-                bestHitBox = hitBox;
-                bestTargetComponents = _enemyAttractionObject.Components;
+                return true;
             }
 
-            _zombieTarget.Set(
+            SetTarget(
                 bestTargetComponents,
                 bestHitBox,
                 bestReservation, closestTargetPosition);
-
-            return true;
-        }
-
-        private bool IsCurrentTargetSuitable()
-        {
-            if (!_zombieTarget.IsSuitable)
-                return false;
 
             return true;
         }
@@ -140,6 +149,14 @@ namespace Assets.Scripts.Creations.Zombie
                 return false;
 
             return true;
+        }
+
+        private void SetTarget(EntityComponents entityComponents, HitBox hitBox, HitBoxAttackPlaceReservation reservation, Vector3 position)
+        {
+            _zombieTarget.Set(
+                entityComponents,
+                hitBox,
+                reservation, position);
         }
     }
 }
