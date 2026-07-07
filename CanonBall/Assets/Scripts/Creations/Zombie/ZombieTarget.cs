@@ -112,17 +112,17 @@ namespace Assets.Scripts.Creations.Zombie
             AttackPosition = Position + newOffset;
         }
 
-        private void OnDeath()
-        {
-            Clear();
-        }
-
         private void OnPositionChange(Vector3 position)
         {
             var delta = position - _lastPosition;
             AttackPosition += delta;
 
             _lastPosition = position;
+        }
+
+        private void OnDeath()
+        {
+            Clear();
         }
 
         private void Clear()
