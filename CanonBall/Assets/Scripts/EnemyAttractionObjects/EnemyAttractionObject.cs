@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Combat;
 using Assets.Scripts.Creations;
+using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.Input;
 using Assets.Scripts.Space;
 using System;
 using UnityEngine;
@@ -15,6 +17,8 @@ namespace Assets.Scripts.EnemyAttractionObjects
         [SerializeField] private float _health;
 
         [Inject] private World _world;
+        [Inject] private UIController _controller;
+        [Inject] private InputSystem _inputSystem;
 
         public HitBox HitBox { get; private set; }
         public EntityComponents Components { get; private set; }
@@ -46,7 +50,8 @@ namespace Assets.Scripts.EnemyAttractionObjects
 
         private void OnDeath()
         {
-            Debug.Log("Gates destroyed");
+            _controller.Open(UIWindowTypes.GameOver);
+            _inputSystem.DisableCurrent();
         }
     }
 }

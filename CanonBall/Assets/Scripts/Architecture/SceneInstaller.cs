@@ -21,6 +21,7 @@ using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
 using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
+using Assets.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
@@ -70,6 +71,7 @@ public class SceneInstaller : MonoInstaller
         BindSpawn();
         BindPlayer();
         BindEnemyAttractionObjects();
+        BindUI();
 
         Container.BindInterfacesAndSelfTo<InventoryInputProvider>().AsSingle();
 
@@ -171,5 +173,10 @@ public class SceneInstaller : MonoInstaller
     public void BindEnemyAttractionObjects()
     {
         Container.BindInterfacesAndSelfTo<EnemyAttractionObject>().FromComponentInHierarchy().AsSingle();
+    }
+
+    public void BindUI()
+    {
+        Container.BindInterfacesAndSelfTo<GameOverMenu>().FromComponentInHierarchy().AsSingle();
     }
 }

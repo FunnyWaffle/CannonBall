@@ -41,8 +41,17 @@ namespace Assets.Scripts.Input
             _inputActionMap = last;
         }
 
+        public void DisableCurrent()
+        {
+            DisableActualMap();
+            _inputActionMap = null;
+        }
+
         private void DisableActualMap()
         {
+            if (_inputActionMap == null)
+                return;
+
             _inputActionMap.Disable();
 
             if (_inputActionMap.CanBeInStack)

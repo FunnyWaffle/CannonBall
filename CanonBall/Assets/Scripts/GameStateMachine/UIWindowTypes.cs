@@ -4,5 +4,6 @@
     {
         Inventory,
         Shop,
+        GameOver,
     }
 }
