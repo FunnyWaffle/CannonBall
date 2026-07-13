@@ -93,6 +93,7 @@ namespace Assets.Scripts.Creations.Zombie
                     distanceToTarget = currentDistance;
                     targetComponents = null;
                     targetHitbox?.ReleaseReservation(placeReservation);
+                    targetHitbox = null;
                 }
             }
 
@@ -100,7 +101,7 @@ namespace Assets.Scripts.Creations.Zombie
             {
                 var hitBox = _enemyAttractionObject.HitBox;
 
-                if (hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var position, out var reservation))
+                if (hitBox.TryGetFreeAttackPoisitionAround(searcherRadius, center, out var position, out var reservation))
                 {
                     var currentDistance = Vector3.SqrMagnitude(position - center);
                     if (currentDistance < distanceToTarget)
@@ -114,10 +115,16 @@ namespace Assets.Scripts.Creations.Zombie
                         placeReservation = reservation;
                     }
                     else if (currentTargetSuitable)
+                    {
+                        hitBox?.ReleaseReservation(reservation);
                         return true;
+                    }
                 }
                 else if (currentTargetSuitable)
+                {
+                    hitBox?.ReleaseReservation(reservation);
                     return true;
+                }
             }
 
             SetTarget(
@@ -146,7 +153,7 @@ namespace Assets.Scripts.Creations.Zombie
                     if (!_world.EntityComponents.TryGetValue(@object, out var currentComponents)
                         || _zombieTarget.Compare(currentComponents)
                         || !currentComponents.TryGet<HitBox>(out var currentHitBox)
-                        || !currentHitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var currentReservation))
+                        || !currentHitBox.TryGetFreeAttackPoisitionAround(searcherRadius, center, out var targetPosition, out var currentReservation))
                         continue;
 
                     var currentDistance = Vector3.SqrMagnitude(targetPosition - center);

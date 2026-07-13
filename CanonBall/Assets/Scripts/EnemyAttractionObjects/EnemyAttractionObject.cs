@@ -29,7 +29,7 @@ namespace Assets.Scripts.EnemyAttractionObjects
 
         private void Start()
         {
-            HitBox = new HitBox(_attackCorners, _colliders);
+            HitBox = new HitBox(this, _attackCorners, _colliders);
 
             var health = new Health(_health, _health);
             health.Died += OnDeath;
