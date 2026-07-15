@@ -14,7 +14,7 @@ namespace Assets.Scripts.Architecture
             ProjectContext.Instance.Container.BindInterfacesAndSelfTo<ConfigRepository>().FromInstance(configRepository).AsSingle();
             ProjectContext.Instance.Container.BindInterfacesAndSelfTo<PlayerConfig>().FromInstance(configRepository.PlayerConfig).AsSingle();
 
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
