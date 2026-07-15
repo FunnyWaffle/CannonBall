@@ -1,6 +1,6 @@
 using Assets.Scripts.GameStateMachine;
-using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
@@ -32,7 +32,7 @@ namespace Assets.Scripts.UI
 
         private void OnMainMenuButtonClicked()
         {
-            throw new NotImplementedException();
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }

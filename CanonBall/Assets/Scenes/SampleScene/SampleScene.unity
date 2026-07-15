@@ -1413,7 +1413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverMenu
   _newGameButton: {fileID: 1889331753}
   _mainMenuButton: {fileID: 1022552522}
-  _exitButton: {fileID: 1939855287}
+  _quitGameButton: {fileID: 1939855289}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
