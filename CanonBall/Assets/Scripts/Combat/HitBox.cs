@@ -11,11 +11,13 @@ namespace Assets.Scripts.Combat
         private readonly List<EdgeChain> _edgeChains = new();
         private readonly List<Vector3> _cornerOffsetVectors = new();
         private readonly IHasPosition _center;
+        private readonly Transform _cornersParent;
 
         public HitBox(IHasPosition center, Transform[] attackCorners, params Collider[] colliders)
         {
             _center = center;
 
+            _cornersParent = attackCorners[0].parent;
             _edgeChains.Add(new EdgeChain(attackCorners));
 
             _colliders = new Collider[colliders.Length];
@@ -94,6 +96,8 @@ namespace Assets.Scripts.Combat
                 var corner = new GameObject();
 
                 var cornerTransform = corner.transform;
+                cornerTransform.SetParent(_cornersParent);
+
                 cornerTransform.position = (center + cornerOffsetVector) + _edgeChains.Count * defaultLenthBetweenRings * cornerDirection;
 
                 corners[i] = cornerTransform;
