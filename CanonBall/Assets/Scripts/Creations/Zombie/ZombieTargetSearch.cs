@@ -78,7 +78,7 @@ namespace Assets.Scripts.Creations.Zombie
                     out placeReservation, out targetPosition,
                     out distanceToTarget))
                 {
-                    _findTargetTimer = Time.time + _findTargetDelay;
+                    _findTargetTimer = Time.timeSinceLevelLoad + _findTargetDelay;
                     break;
                 }
             }
