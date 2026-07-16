@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Combat;
+using Assets.Scripts.EnemyAttractionObjects;
 using Assets.Scripts.Space;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Creations.Zombie
         private readonly ZombieTarget _zombieTarget;
         private readonly SpatialGrid _spatialGrid;
         private readonly SpatialSearchShape _spatialSearchShape;
+        private readonly EnemyAttractionObject _enemyAttractionObject;
         private readonly World _world;
 
         private readonly float _radius;
@@ -23,12 +25,14 @@ namespace Assets.Scripts.Creations.Zombie
             ZombieTarget zombieTarget,
             SpatialGrid spatialGrid,
             SpatialSearchShape spatialSearchShape,
+            EnemyAttractionObject enemyAttractionObject,
             World world,
             float radius)
         {
             _zombieTarget = zombieTarget;
             _spatialGrid = spatialGrid;
             _spatialSearchShape = spatialSearchShape;
+            _enemyAttractionObject = enemyAttractionObject;
             _world = world;
 
             _radius = radius;
@@ -42,9 +46,14 @@ namespace Assets.Scripts.Creations.Zombie
             if (!_spatialGrid.HasObjects)
                 return false;
 
-            if (!HasDelayToSearchPassed()
-                || IsCurrentTargetSuitable())
+            if (!HasDelayToSearchPassed())
                 return true;
+
+            EntityComponents targetComponents = null;
+            HitBox targetHitbox = null;
+            HitBoxAttackPlaceReservation placeReservation = default;
+            Vector3 targetPosition = default;
+            float distanceToTarget = float.MaxValue;
 
             var cellSize = _spatialGrid.CellSize;
             var radiusInCells = Mathf.CeilToInt(_radius / cellSize);
@@ -64,57 +73,107 @@ namespace Assets.Scripts.Creations.Zombie
 
                 }
 
-                if (_foundObjects.Count > 0)
+                if (FindNearestTarget(center, searcherRadius,
+                    out targetComponents, out targetHitbox,
+                    out placeReservation, out targetPosition,
+                    out distanceToTarget))
                 {
-                    FindNearestTarget(center, searcherRadius);
-                    _findTargetTimer = Time.time + _findTargetDelay;
+                    _findTargetTimer = Time.timeSinceLevelLoad + _findTargetDelay;
+                    break;
+                }
+            }
+
+            var currentTargetSuitable = _zombieTarget.IsSuitable;
+            if (currentTargetSuitable)
+            {
+                var currentDistance = Vector3.SqrMagnitude(_zombieTarget.AttackPosition - center);
+
+                if (currentDistance < distanceToTarget)
+                {
+                    distanceToTarget = currentDistance;
+                    targetComponents = null;
+                    targetHitbox?.ReleaseReservation(placeReservation);
+                    targetHitbox = null;
+                }
+            }
+
+            if (targetComponents == null)
+            {
+                var hitBox = _enemyAttractionObject.HitBox;
+
+                if (hitBox.TryGetFreeAttackPoisitionAround(searcherRadius, center, out var position, out var reservation))
+                {
+                    var currentDistance = Vector3.SqrMagnitude(position - center);
+                    if (currentDistance < distanceToTarget)
+                    {
+                        targetPosition = position;
+                        targetComponents = _enemyAttractionObject.Components;
+
+                        targetHitbox?.ReleaseReservation(placeReservation);
+
+                        targetHitbox = hitBox;
+                        placeReservation = reservation;
+                    }
+                    else if (currentTargetSuitable)
+                    {
+                        hitBox?.ReleaseReservation(reservation);
+                        return true;
+                    }
+                }
+                else if (currentTargetSuitable)
+                {
+                    hitBox?.ReleaseReservation(reservation);
                     return true;
                 }
             }
 
+            SetTarget(
+                targetComponents,
+                targetHitbox,
+                placeReservation, targetPosition);
+
             return false;
         }
 
-        private void FindNearestTarget(Vector3 center, float searcherRadius)
+        private bool FindNearestTarget(Vector3 center, float searcherRadius,
+            out EntityComponents components, out HitBox hitBox,
+            out HitBoxAttackPlaceReservation reservation, out Vector3 position,
+            out float distanceToTarget)
         {
-            var closestTargetPosition = Vector3.zero;
-            ISpatialObject bestTarget = null;
-            HitBox bestHitBox = null;
-            EntityComponents bestTargetComponents = null;
-            var minDistance = float.MaxValue;
-            HitBoxAttackPlaceReservation bestReservation = default;
+            hitBox = null;
+            components = null;
+            reservation = default;
+            position = Vector3.zero;
 
-            foreach (var @object in _foundObjects)
-            {
-                if (!_world.EntityComponents.TryGetValue(@object, out var components)
-                    || !components.TryGet<HitBox>(out var hitBox)
-                    || !hitBox.TryGetFreePoisitionAround(searcherRadius, center, out var targetPosition, out var reservation))
-                    continue;
+            distanceToTarget = float.MaxValue;
 
-                var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
-                if (currentDistance < minDistance)
+            if (_foundObjects.Count > 0)
+                foreach (var @object in _foundObjects)
                 {
-                    minDistance = currentDistance;
-                    closestTargetPosition = targetPosition;
-                    bestReservation = reservation;
-                    bestTarget = @object;
-                    bestHitBox = hitBox;
-                    bestTargetComponents = components;
+                    if (!_world.EntityComponents.TryGetValue(@object, out var currentComponents)
+                        || _zombieTarget.Compare(currentComponents)
+                        || !currentComponents.TryGet<HitBox>(out var currentHitBox)
+                        || !currentHitBox.TryGetFreeAttackPoisitionAround(searcherRadius, center, out var targetPosition, out var currentReservation))
+                        continue;
+
+                    var currentDistance = Vector3.SqrMagnitude(targetPosition - center);
+                    if (currentDistance < distanceToTarget)
+                    {
+                        distanceToTarget = currentDistance;
+                        position = targetPosition;
+                        components = currentComponents;
+
+                        hitBox?.ReleaseReservation(reservation);
+
+                        hitBox = currentHitBox;
+                        reservation = currentReservation;
+                    }
+                    else
+                        currentHitBox?.ReleaseReservation(currentReservation);
+
                 }
-            }
 
-            if (bestTarget == null)
-                return;
-
-            _zombieTarget.Set(
-                bestTargetComponents,
-                bestHitBox,
-                bestReservation, closestTargetPosition);
-        }
-
-        private bool IsCurrentTargetSuitable()
-        {
-            if (!_zombieTarget.IsSuitable)
+            if (components == null)
                 return false;
 
             return true;
@@ -126,6 +185,21 @@ namespace Assets.Scripts.Creations.Zombie
                 return false;
 
             return true;
+        }
+
+        private void SetTarget(EntityComponents entityComponents, HitBox hitBox, HitBoxAttackPlaceReservation reservation, Vector3 position)
+        {
+            if (_zombieTarget.Compare(entityComponents))
+            {
+                hitBox?.ReleaseReservation(reservation);
+
+                return;
+            }
+
+            _zombieTarget.Set(
+            entityComponents,
+            hitBox,
+            reservation, position);
         }
     }
 }

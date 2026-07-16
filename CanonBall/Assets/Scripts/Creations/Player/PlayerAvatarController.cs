@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Camera;
 using Assets.Scripts.Creations.Player.Components;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using System;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Creations.Player
             flatDirection.y = 0;
 
             var rotation = Quaternion.LookRotation(flatDirection, Vector3.up);
-            _view.SetCameraPivotRotation(rotation);
+            _view.SetModelRotation(rotation);
         }
 
         public void Attack()

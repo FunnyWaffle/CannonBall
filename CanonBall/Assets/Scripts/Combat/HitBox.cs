@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Creations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Combat
@@ -6,19 +7,32 @@ namespace Assets.Scripts.Combat
     public class HitBox : IComponent
     {
 
-        private readonly Collider[] _collider;
-        private readonly EdgeChain _edgeChain;
+        private readonly Collider[] _colliders;
+        private readonly List<EdgeChain> _edgeChains = new();
+        private readonly List<Vector3> _cornerOffsetVectors = new();
+        private readonly IHasPosition _center;
+        private readonly Transform _cornersParent;
 
-        public HitBox(Transform[] attackCorners, params Collider[] colliders)
+        public HitBox(IHasPosition center, Transform[] attackCorners, params Collider[] colliders)
         {
-            _edgeChain = new EdgeChain(attackCorners);
+            _center = center;
 
-            _collider = new Collider[colliders.Length];
+            _cornersParent = attackCorners[0].parent;
+            _edgeChains.Add(new EdgeChain(attackCorners));
+
+            _colliders = new Collider[colliders.Length];
 
             for (int i = 0; i < colliders.Length; i++)
             {
                 var collider = colliders[i];
-                _collider[i] = collider;
+                _colliders[i] = collider;
+            }
+
+            var centerPosition = _center.Position;
+            foreach (var corner in attackCorners)
+            {
+                var projection = Vector3.ProjectOnPlane(corner.position - centerPosition, Vector3.up);
+                _cornerOffsetVectors.Add(projection);
             }
         }
 
@@ -26,7 +40,7 @@ namespace Assets.Scripts.Combat
         {
             Vector3 closestPoint = Vector3.zero;
             float closestDistance = float.MaxValue;
-            foreach (var collider in _collider)
+            foreach (var collider in _colliders)
             {
                 var point = collider.ClosestPoint(position);
                 var distance = Vector3.SqrMagnitude(point - position);
@@ -40,59 +54,68 @@ namespace Assets.Scripts.Combat
             return closestPoint;
         }
 
-        public bool TryGetFreePoisitionAround(float radius, Vector3 source, out Vector3 position, out HitBoxAttackPlaceReservation reservation)
+        public bool TryGetFreeAttackPoisitionAround(float radius, Vector3 source, out Vector3 position, out HitBoxAttackPlaceReservation reservation)
         {
-            AttackZoneEdge closestAttackZoneEdge = null;
-            var distance = float.MaxValue;
-            var id = 0;
-
-            var diameter = radius * 2;
-
-            var attackEdges = _edgeChain.Edges;
-
-            for (int i = 0; i < attackEdges.Count; i++)
+            var length = _edgeChains.Count;
+            for (int i = 0; i < length; i++)
             {
-                var edge = attackEdges[i];
+                var edgeChain = _edgeChains[i];
 
-                var currentDistance = Vector3.SqrMagnitude(edge.Center - source);
-                if (currentDistance < distance
-                    && edge.HasFreeSpace(diameter))
+                if (edgeChain.TryGetFreeAttackPoisitionAround(radius, source, out position, out var edgeReservation))
                 {
-                    closestAttackZoneEdge = edge;
-                    distance = currentDistance;
-                    id = i;
+                    reservation = new(edgeReservation, i);
+                    return true;
                 }
             }
 
-            if (closestAttackZoneEdge == null)
-            {
-                position = default;
-                reservation = default;
-                return false;
-            }
-
-            position = closestAttackZoneEdge.GetFreePosition(radius, source, out var endgeReservation);
-            reservation = new(endgeReservation, id);
-            return true;
+            ExpandEdgeChains();
+            return TryGetFreeAttackPoisitionAround(radius, source, out position, out reservation);
         }
 
         public void ReleaseReservation(HitBoxAttackPlaceReservation reservation)
         {
-            var edges = _edgeChain.Edges;
-            var edge = edges[reservation.EdgeIndex];
-            edge.Release(reservation.Reservation);
+            var edgeChain = _edgeChains[reservation.RingIndex];
+            edgeChain.ReleaseReservation(reservation.Reservation);
+        }
+
+        private void ExpandEdgeChains()
+        {
+            var defaultLenthBetweenRings = 0.5f;
+
+            var center = _center.Position;
+
+            var length = _cornerOffsetVectors.Count;
+
+            var corners = new Transform[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                var cornerOffsetVector = _cornerOffsetVectors[i];
+                var cornerDirection = Vector3.Normalize(cornerOffsetVector);
+
+                var corner = new GameObject();
+
+                var cornerTransform = corner.transform;
+                cornerTransform.SetParent(_cornersParent);
+
+                cornerTransform.position = (center + cornerOffsetVector) + _edgeChains.Count * defaultLenthBetweenRings * cornerDirection;
+
+                corners[i] = cornerTransform;
+            }
+
+            _edgeChains.Add(new EdgeChain(corners));
         }
     }
 
     public readonly struct HitBoxAttackPlaceReservation
     {
-        public Reservation Reservation { get; }
-        public int EdgeIndex { get; }
+        public EndgeChainPlaceReservation Reservation { get; }
+        public int RingIndex { get; }
 
-        public HitBoxAttackPlaceReservation(Reservation reservation, int edgeIndex)
+        public HitBoxAttackPlaceReservation(EndgeChainPlaceReservation reservation, int ringIndex)
         {
             Reservation = reservation;
-            EdgeIndex = edgeIndex;
+            RingIndex = ringIndex;
         }
     }
 }

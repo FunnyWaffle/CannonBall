@@ -39,7 +39,7 @@ namespace Assets.Scripts.Spawn.Factories
 
             var mover = CreateMover();
             var spatialObject = new SpatialObject(view.Position);
-            var hitbox = new HitBox(view.AttackCorners, view.Collider);
+            var hitbox = new HitBox(view, view.AttackCorners, view.Collider);
             var health = new Health(100, 100);
             var controller = new PlayerAvatarController(view, mover, spatialObject);
             var components = new EntityComponents();

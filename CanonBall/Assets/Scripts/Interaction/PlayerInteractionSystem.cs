@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Config;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
+using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Space;

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Input;
+﻿using Assets.Scripts.GameStateMachine.PlayerControl;
+using Assets.Scripts.Input;
 
 namespace Assets.Scripts.GameStateMachine.CannonControl
 {
