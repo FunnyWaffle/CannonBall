@@ -9,6 +9,7 @@ namespace Assets.Scripts.Config
         private static readonly string _player = "Player";
         private static readonly string _ground = "Ground";
 
+        public static int All => Physics.AllLayers;
         public static int Projectile { get; } = LayerMask.GetMask(nameof(Projectile));
         public static int BitMaskVendor { get; } = LayerMask.GetMask(_vendor);
         public static int IndexVendor { get; } = LayerMask.NameToLayer(_vendor);

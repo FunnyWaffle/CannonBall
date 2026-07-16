@@ -1,9 +1,10 @@
-﻿using Assets.Scripts.Shop;
+﻿using Assets.Scripts.Creations;
+using Assets.Scripts.Shop;
 using System;
 
 namespace Assets.Scripts.Spawn
 {
-    public interface IPoolableObject
+    public interface IPoolableObject : IComponent
     {
         public event EventHandler<ItemTypes> Disabled;
 
