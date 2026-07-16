@@ -1,3 +1,4 @@
+using Assets.Scripts.Build;
 using Assets.Scripts.Camera;
 using Assets.Scripts.Combat;
 using Assets.Scripts.Creations.Zombie;
@@ -19,6 +20,7 @@ using Assets.Scripts.Shop;
 using Assets.Scripts.Space;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
+using Assets.Scripts.Spawn.Pools;
 using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
 using Assets.Scripts.UI;
@@ -70,6 +72,8 @@ public class SceneInstaller : MonoInstaller
         BindSpatial();
         BindSpawn();
         BindPlayer();
+        BindConstruction();
+        BindNavigation();
         BindEnemyAttractionObjects();
         BindUI();
 
@@ -79,9 +83,6 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
 
         Container.Resolve<InventoryController>();
-
-        Container.Resolve<SpawnRequestHandler<CannonProjection>>();
-        Container.Resolve<SpawnRequestHandler<CannonController>>();
 
         Container.Resolve<WaveCurrencyAccruer>();
         Container.Resolve<PlayerAvatarAttackInputProvider>();
@@ -103,16 +104,9 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<CannonInputProvider>().AsSingle();
         Container.BindInterfacesAndSelfTo<CannonExit>().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
-
         Container.BindInterfacesAndSelfTo<CannonCrosshair>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<FirstPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<ThirdPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<CannonProjectionFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Spawner<CannonProjection>>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpawnRequestHandler<CannonProjection>>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpawnRequestHandler<CannonController>>().AsSingle();
     }
 
     private void BindInteraction()
@@ -143,12 +137,20 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
         Container.BindInterfacesAndSelfTo(typeof(Spawner<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo(typeof(SpawnRequesterCreationHandler<>)).AsTransient();
         Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
+
+        Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonConstructionFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CannonProjectionFactory>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<NotForVehicleZoneFactiory>().AsSingle();
+
         Container.BindInterfacesAndSelfTo<CannonDestructionHandler>().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<UniversalSpawner>().AsSingle();
+        Container.BindInterfacesAndSelfTo<UniversalPool>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
@@ -170,6 +172,17 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
     }
 
+    public void BindConstruction()
+    {
+        Container.BindInterfacesAndSelfTo<BuildSystem>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BuilderFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BuildCarriageFactory>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BuilderSpawnZone>().FromComponentInHierarchy().AsSingle();
+    }
+
+    public void BindNavigation()
+    {
+        Container.BindInterfacesAndSelfTo<CustomPathFinder>().AsSingle();
     public void BindEnemyAttractionObjects()
     {
         Container.BindInterfacesAndSelfTo<EnemyAttractionObject>().FromComponentInHierarchy().AsSingle();
