@@ -76,12 +76,15 @@ namespace Assets.Scripts.Placement
 
         public void ShowProjection(ItemTypes itemType)
         {
-            _itemType = itemType;
-            var projection = _projections[itemType];
+            if (!IsPlacingObject)
+            {
+                _itemType = itemType;
+                var projection = _projections[itemType];
 
-            var position = GetCameraFacedPosition();
+                var position = GetCameraFacedPosition();
 
-            _cannonProjectionSpawnRequest?.Invoke(this, new SpawnArguments(projection, position, rotation: Quaternion.identity));
+                _cannonProjectionSpawnRequest?.Invoke(this, new SpawnArguments(projection, position, rotation: Quaternion.identity));
+            }
 
             _uIController.ClearOpenWindow();
             _inputSystem.SwitchToLast();

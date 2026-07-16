@@ -1411,9 +1411,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365c0c4ae643b8941ac1db849fef7d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameOverMenu
-  _newGameButton: {fileID: 1889331750}
+  _newGameButton: {fileID: 1889331753}
   _mainMenuButton: {fileID: 1022552522}
-  _exitButton: {fileID: 1939855287}
+  _quitGameButton: {fileID: 1939855289}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,7 +4285,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: Quit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10922,8 +10922,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1889331749}
-  - component: {fileID: 1889331752}
+  - component: {fileID: 1889331753}
   - component: {fileID: 1889331750}
+  - component: {fileID: 1889331752}
   m_Layer: 0
   m_Name: New Game Button
   m_TagString: Untagged
@@ -11003,6 +11004,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1889331748}
   m_CullTransparentMesh: 1
+--- !u!114 &1889331753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889331748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8baf161766fee7948ac7787748ad3477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.NewGameButton
+  _button: {fileID: 1889331750}
 --- !u!1 &1892911525
 GameObject:
   m_ObjectHideFlags: 0
@@ -11366,10 +11380,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1939855286}
-  - component: {fileID: 1939855288}
+  - component: {fileID: 1939855289}
   - component: {fileID: 1939855287}
+  - component: {fileID: 1939855288}
   m_Layer: 0
-  m_Name: Exit Button
+  m_Name: Quit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11447,6 +11462,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939855285}
   m_CullTransparentMesh: 1
+--- !u!114 &1939855289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939855285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f95c44530500c4d90832bebdf8edd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.UI.QuitGameButton
+  _button: {fileID: 1939855287}
 --- !u!1 &1946778174
 GameObject:
   m_ObjectHideFlags: 0
@@ -11635,7 +11663,7 @@ MonoBehaviour:
   _enemySpawnZones:
   - {fileID: 952820537}
   - {fileID: 905086466}
-  _firstWaveEnemiesCount: 20
+  _firstWaveEnemiesCount: 40
 --- !u!1 &1968407741
 GameObject:
   m_ObjectHideFlags: 0

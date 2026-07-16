@@ -7,17 +7,17 @@ namespace Assets.Scripts.UI
 {
     public class GameOverMenu : MonoBehaviour, IUIWindow
     {
-        [SerializeField] private Button _newGameButton;
+        [SerializeField] private NewGameButton _newGameButton;
         [SerializeField] private Button _mainMenuButton;
-        [SerializeField] private Button _exitButton;
+        [SerializeField] private QuitGameButton _quitGameButton;
 
         public UIWindowTypes Type => UIWindowTypes.GameOver;
 
         private void Start()
         {
-            _newGameButton.onClick.AddListener(OnNewGameButtonClicked);
+            _newGameButton.Initialize();
+            _quitGameButton.Initialize();
             _mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
-            _exitButton.onClick.AddListener(OnExitButtonClicked);
         }
 
         public void Close()
@@ -28,16 +28,6 @@ namespace Assets.Scripts.UI
         public void Open()
         {
             gameObject.SetActive(true);
-        }
-
-        private void OnNewGameButtonClicked()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnExitButtonClicked()
-        {
-            throw new NotImplementedException();
         }
 
         private void OnMainMenuButtonClicked()
