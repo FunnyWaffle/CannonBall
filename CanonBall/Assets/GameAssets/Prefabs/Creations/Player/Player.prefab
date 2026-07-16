@@ -72,12 +72,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585267247344784421}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.635, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.651, z: 0.109}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 953803197741263966}
+  m_Father: {fileID: 4220764662379750852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1195876604433453939
 GameObject:
@@ -111,7 +111,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4220764662379750852}
-  - {fileID: 3371144505100794105}
   - {fileID: 8658777536080821850}
   - {fileID: 355646151141779212}
   m_Father: {fileID: 0}
@@ -128,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f5123732857bed49972c76cb05da1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Creations.Player.PlayerView
-  _model: {fileID: 3111433040623698153}
+  _model: {fileID: 4220764662379750852}
   _characterController: {fileID: 5644026111218980189}
   _animator: {fileID: 5247567473680681399}
   _cameraViewPresets:
@@ -202,6 +201,7 @@ Transform:
   m_Children:
   - {fileID: 3111433040623698153}
   - {fileID: 4176025153005237724}
+  - {fileID: 3371144505100794105}
   m_Father: {fileID: 953803197741263966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3296595420006795101
