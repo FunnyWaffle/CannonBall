@@ -45,7 +45,7 @@ namespace Assets.Scripts.Creations.Player
             flatDirection.y = 0;
 
             var rotation = Quaternion.LookRotation(flatDirection, Vector3.up);
-            _view.SetCameraPivotRotation(rotation);
+            _view.SetModelRotation(rotation);
         }
 
         public void Attack()

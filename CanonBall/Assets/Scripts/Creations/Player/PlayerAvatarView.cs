@@ -38,7 +38,7 @@ namespace Assets.Scripts.Creations.Player
             _transform = _characterController.transform;
         }
 
-        public void SetCameraPivotRotation(Quaternion rotation)
+        public void SetModelRotation(Quaternion rotation)
         {
             RotateBody(rotation);
         }
