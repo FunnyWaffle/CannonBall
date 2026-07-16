@@ -6,7 +6,7 @@ namespace Assets.Scripts.Input
     public class Aimer
     {
         private readonly float _sensitivity;
-        private readonly float _verticalEdge = 70;
+        private readonly float _verticalEdge = 60;
 
         private Vector2 _eulerRotation;
 
