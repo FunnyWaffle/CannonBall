@@ -15,7 +15,7 @@ MonoBehaviour:
   m_GroupName: Vehicles
   m_GUID: 77952b31b8ad9844ab35345e83f8bb27
   m_SerializeEntries:
-  - m_GUID: 6652b105f2b3bbd47af3ba8cda70b32b
+  - m_GUID: 4df076bac6cd51643bc1bde7f6360fec
     m_Address: Carriage
     m_ReadOnly: 0
     m_SerializedLabels: []
