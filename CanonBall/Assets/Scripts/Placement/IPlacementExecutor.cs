@@ -3,7 +3,7 @@ using System;
 
 namespace Assets.Scripts.Placement
 {
-    public interface IPlacementExecuter
+    public interface IPlacementExecutor
     {
         public event Action<ItemTypes> PlacementStarted;
     }

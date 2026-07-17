@@ -10,6 +10,7 @@ namespace Assets.Scripts.Camera
         [SerializeField] private Transform _position;
 
         public Transform Pivot => _pivot;
+        public Transform Slot => _position;
         public Vector3 Position => _position.position;
     }
 }

@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.PlayerData
 {
-    public class InventoryController : IUIWindow, ICurrencyReceiver<int>, IItemStorage, ICurrencyStorage, IPlacementExecuter
+    public class InventoryController : IUIWindow, ICurrencyReceiver<int>, IItemStorage, ICurrencyStorage, IPlacementExecutor
     {
         private readonly Inventory _core;
         private readonly InventoryView _view;

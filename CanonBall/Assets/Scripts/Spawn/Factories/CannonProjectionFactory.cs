@@ -15,7 +15,7 @@ namespace Assets.Scripts.Spawn.Factories
             var obj = GameObject.Instantiate(prefab, position, rotation, parent);
             var view = obj.GetComponent<CannonProjectionView>();
 
-            var hitBox = new HitBox(view.AttackCorners, view.Colliders);
+            var hitBox = new HitBox(view, view.AttackCorners, view.Colliders);
             var components = new EntityComponents();
 
             components.Add(view);

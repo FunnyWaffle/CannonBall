@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Combat;
 using Assets.Scripts.Creations;
+using Assets.Scripts.Creations.Placement;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.Input;
 using Assets.Scripts.Space;

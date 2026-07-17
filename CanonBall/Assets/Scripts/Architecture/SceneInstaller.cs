@@ -10,8 +10,6 @@ using Assets.Scripts.Explosion;
 using Assets.Scripts.GameStateMachine;
 using Assets.Scripts.GameStateMachine.CannonControl;
 using Assets.Scripts.GameStateMachine.PlayerControl;
-using Assets.Scripts.Guns;
-using Assets.Scripts.Guns.Projections;
 using Assets.Scripts.Input;
 using Assets.Scripts.Interaction;
 using Assets.Scripts.Placement;
@@ -72,8 +70,9 @@ public class SceneInstaller : MonoInstaller
         BindSpatial();
         BindSpawn();
         BindPlayer();
-        BindConstruction();
-        BindNavigation();
+        //BindConstruction();
+        //BindConstruction();
+        //BindNavigation();
         BindEnemyAttractionObjects();
         BindUI();
 
@@ -183,6 +182,8 @@ public class SceneInstaller : MonoInstaller
     public void BindNavigation()
     {
         Container.BindInterfacesAndSelfTo<CustomPathFinder>().AsSingle();
+    }
+
     public void BindEnemyAttractionObjects()
     {
         Container.BindInterfacesAndSelfTo<EnemyAttractionObject>().FromComponentInHierarchy().AsSingle();

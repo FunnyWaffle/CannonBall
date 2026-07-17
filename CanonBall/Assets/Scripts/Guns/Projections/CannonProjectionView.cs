@@ -8,7 +8,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Guns.Projections
 {
-    public class CannonProjectionView : MonoBehaviour, IPoolableObject, IPlaceable, IHasPosition, IHasRotation, IPositionable, IRotateable, IParentable, IDisabler, IConstructionProjection
+    public class CannonProjectionView : MonoBehaviour, IPoolableObject, IPlaceable, IHasPosition, IHasRotation,
+        IPositionable, IRotateable, IParentable, IEnableable, IDisabler, IConstructionProjection
     {
         [SerializeField] private Color _normalColor;
         [SerializeField] private Color _failureColor;

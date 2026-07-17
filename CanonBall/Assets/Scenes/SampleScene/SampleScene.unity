@@ -7612,7 +7612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Shop.Shop
   _transform: {fileID: 1268101112}
-  _butButton: {fileID: 0}
+  _butButton: {fileID: 637692459}
   _elements:
   - {fileID: 837010913}
 --- !u!1001 &1273716955
@@ -12330,7 +12330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7364934042873588125, guid: b88226f2df14a924f82017da0518e067, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 36.8
+      value: 37.34
       objectReference: {fileID: 0}
     - target: {fileID: 7364934042873588125, guid: b88226f2df14a924f82017da0518e067, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12625,4 +12625,3 @@ SceneRoots:
   - {fileID: 1950491593}
   - {fileID: 5658182634011746229}
   - {fileID: 1721002714}
-  - {fileID: 38679893}

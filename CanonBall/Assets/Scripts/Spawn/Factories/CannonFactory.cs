@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Assets.Scripts.Spawn.Factories
 {
-    public class CannonFactory : IFactory<CannonController>
+    public class CannonFactory : IUniversalFactory
     {
         private readonly DiContainer _container;
         private readonly World _world;
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Spawn.Factories
             _cannonDestructionHandler = cannonDestructionHandler;
         }
 
-        public CannonController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
+        public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             var obj = GameObject.Instantiate(prefab, position, rotation, parent);
             var view = obj.GetComponent<CannonView>();
@@ -62,7 +62,7 @@ namespace Assets.Scripts.Spawn.Factories
             _spatialGrid.Add(controller);
             _cannonDestructionHandler.Register(controller);
 
-            return controller;
+            return components;
         }
 
         private CannonRotator CreateRotator(CannonView view)

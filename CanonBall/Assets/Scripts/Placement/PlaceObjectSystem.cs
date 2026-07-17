@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Build;
-using Assets.Scripts.Config;
+﻿using Assets.Scripts.Config;
 using Assets.Scripts.Creations;
 using Assets.Scripts.Creations.Placement;
 using Assets.Scripts.GameStateMachine;
@@ -11,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using static Assets.Scripts.Build.BuildSystem;
 
 namespace Assets.Scripts.Placement
 {
@@ -21,15 +19,15 @@ namespace Assets.Scripts.Placement
         {
             [ItemTypes.Cannon] = ItemTypes.CannonProjection
         };
-        private readonly List<IPlacementExecuter> _placementExecuters = new();
+        private readonly List<IPlacementExecutor> _placementExecuters = new();
 
-        private readonly Dictionary<ConstructionOrder, EntityComponents> _existingProjections = new();
+        //private readonly Dictionary<ConstructionOrder, EntityComponents> _existingProjections = new();
 
         private readonly CameraSystem _cameraSystem;
         private readonly UIController _uIController;
         private readonly InputSystem _inputSystem;
         private readonly UniversalSpawner _spawner;
-        private readonly BuildSystem _buildSystem;
+        //private readonly BuildSystem _buildSystem;
 
         private EntityComponents _spawnedProjectionComponents;
         private ItemTypes _itemTipe;
@@ -39,19 +37,19 @@ namespace Assets.Scripts.Placement
             UIController uIController,
             InputSystem inputSystem,
             UniversalSpawner spawner,
-            BuildSystem buildSystem,
-            params IPlacementExecuter[] placementExecuters)
+            //BuildSystem buildSystem,
+            params IPlacementExecutor[] placementExecutors)
         {
             _cameraSystem = cameraSystem;
             _uIController = uIController;
             _inputSystem = inputSystem;
             _spawner = spawner;
-            _buildSystem = buildSystem;
+            //_buildSystem = buildSystem;
 
-            foreach (var executer in placementExecuters)
+            foreach (var executor in placementExecutors)
             {
-                executer.PlacementStarted += ShowProjection;
-                _placementExecuters.Add(executer);
+                executor.PlacementStarted += ShowProjection;
+                _placementExecuters.Add(executor);
             }
         }
 
@@ -66,44 +64,41 @@ namespace Assets.Scripts.Placement
 
             var hasPosition = _spawnedProjectionComponents.Get<IHasPosition>();
             var hasRotation = _spawnedProjectionComponents.Get<IHasRotation>();
-            var hasSize = _spawnedProjectionComponents.Get<IHasSize>();
+            //var hasSize = _spawnedProjectionComponents.Get<IHasSize>();
 
-            var order = await _buildSystem.OrderConstruction(hasPosition.Position, hasRotation.Rotation, hasSize.Size, Shape2D.Circle);
+            _ = _spawner.SpawnAsync(_itemTipe, hasPosition.Position, hasRotation.Rotation);
 
-            order.ConstructionStarted += OnConstructionStart;
+            //var order = await _buildSystem.OrderConstruction(hasPosition.Position, hasRotation.Rotation, hasSize.Size, Shape2D.Circle);
 
-            _existingProjections[order] = _spawnedProjectionComponents;
+            //order.ConstructionStarted += OnConstructionStart;
+
+            //_existingProjections[order] = _spawnedProjectionComponents;
+
+            var disabler = _spawnedProjectionComponents.Get<IDisabler>();
+            disabler.Disable();
 
             _spawnedProjectionComponents = null;
             IsPlacingObject = false;
-        public void ShowProjection(ItemTypes itemType)
-        {
-            if (!IsPlacingObject)
-            {
-                _itemType = itemType;
-                var projection = _projections[itemType];
-
-                var position = GetCameraFacedPosition();
-
-                _cannonProjectionSpawnRequest?.Invoke(this, new SpawnArguments(projection, position, rotation: Quaternion.identity));
-            }
 
             ObjectPlaced?.Invoke(_itemTipe);
         }
 
         public async void ShowProjection(ItemTypes itemType)
         {
-            _itemTipe = itemType;
-            var projectionType = _projections[itemType];
+            if (!IsPlacingObject)
+            {
+                _itemTipe = itemType;
+                var projectionType = _projections[itemType];
+
+                var position = GetCameraFacedPosition();
+
+                _spawnedProjectionComponents = await _spawner.SpawnAsync(projectionType, position, rotation: Quaternion.identity);
+
+                IsPlacingObject = true;
+            }
 
             _uIController.ClearOpenWindow();
             _inputSystem.SwitchToLast();
-
-            var position = GetCameraFacedPosition();
-
-            _spawnedProjectionComponents = await _spawner.SpawnAsync(projectionType, position, rotation: Quaternion.identity);
-
-            IsPlacingObject = true;
         }
 
         public void Update()
@@ -127,14 +122,14 @@ namespace Assets.Scripts.Placement
             return _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
         }
 
-        private void OnConstructionStart(object sender, EventArgs e)
-        {
-            var order = (ConstructionOrder)sender;
+        //private void OnConstructionStart(object sender, EventArgs e)
+        //{
+        //    var order = (ConstructionOrder)sender;
 
-            var projection = _existingProjections[order];
+        //    var projection = _existingProjections[order];
 
-            var disabler = projection.Get<IDisabler>();
-            disabler.Disable();
-        }
+        //    var disabler = projection.Get<IDisabler>();
+        //    disabler.Disable();
+        //}
     }
 }
