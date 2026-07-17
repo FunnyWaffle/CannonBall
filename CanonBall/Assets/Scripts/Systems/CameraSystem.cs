@@ -23,8 +23,12 @@ namespace Assets.Scripts.Systems
             if (_presetHandler == null)
                 return;
 
+            var angles = rotation.eulerAngles;
+            var yaw = new Vector3(0, angles.y, 0);
+
             var preset = _presetHandler.GetPreset(_viewType);
-            preset.Pivot.rotation = rotation;
+            preset.Pivot.rotation = Quaternion.Euler(yaw);
+            preset.Slot.rotation = rotation;
         }
 
         public void ApplyMainCameraPreset(CameraPresetHandler presetHandler)
@@ -54,7 +58,7 @@ namespace Assets.Scripts.Systems
             var preset = _presetHandler.GetPreset(_viewType);
 
             _mainCamera.SetPosition(preset.Position);
-            _mainCamera.SetParent(preset.Pivot);
+            _mainCamera.SetParent(preset.Slot);
             _mainCamera.SetRotation(preset.Pivot.rotation);
         }
     }
