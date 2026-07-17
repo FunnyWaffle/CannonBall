@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Creations;
 using Assets.Scripts.Shop;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Spawn.Pools
 {
@@ -39,6 +40,8 @@ namespace Assets.Scripts.Spawn.Pools
 
             if (components.TryGet<IEnableable>(out var enableable))
                 enableable.Enable();
+            else
+                Debug.Log($"Object {itemType} doesn't have IEnableable component, so in wont show up.");
 
             return true;
         }
