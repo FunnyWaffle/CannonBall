@@ -57,6 +57,10 @@ namespace Assets.Scripts.Creations.Zombie
         public void Place(Vector3 position, Quaternion rotation, Transform parent = null)
         {
             _view.Place(position, rotation, parent);
+
+            _mover.SetPosition(position);
+            _ragdoll.SetPosition(position + _ragdollRootOffsetPosition);
+            _hitbox.SetPosition(position + _hitboxOffsetPosition);
         }
 
         public void LateUpdate()
@@ -113,11 +117,6 @@ namespace Assets.Scripts.Creations.Zombie
 
         private void ResetState()
         {
-            var ragdollPosition = _ragdoll.Position;
-            _mover.SetPosition(ragdollPosition);
-            _ragdoll.SetPosition(ragdollPosition + _ragdollRootOffsetPosition);
-            _hitbox.SetPosition(ragdollPosition + _hitboxOffsetPosition);
-
             _mover.EnableAgent();
             _attacker.Enable();
             _hitbox.SetTrigger(true);
