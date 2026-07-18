@@ -119,7 +119,16 @@ namespace Assets.Scripts.Placement
 
         private Vector3 GetCameraFacedPosition()
         {
-            return _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
+            var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
+            return GetPositionUnder(position);
+        }
+
+        private Vector3 GetPositionUnder(Vector3 position)
+        {
+            if (Physics.Raycast(position, Vector3.down, out var hit, float.MaxValue, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor, QueryTriggerInteraction.Ignore))
+                return hit.point;
+            else
+                return position;
         }
 
         //private void OnConstructionStart(object sender, EventArgs e)
