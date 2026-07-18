@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Creations;
+﻿using Assets.Scripts.Combat;
+using Assets.Scripts.Creations;
 using Assets.Scripts.Creations.Placement;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
@@ -19,6 +20,8 @@ namespace Assets.Scripts.Guns.Projections
 
         [SerializeField] private Transform _buildCarriageSlot;
 
+        [SerializeField] private CollisionNotifier[] _collisionNotifier;
+
         private List<MeshRenderer> _renderers = new();
 
         public Quaternion Rotation => transform.rotation;
@@ -35,6 +38,12 @@ namespace Assets.Scripts.Guns.Projections
         {
             _renderers.AddRange(gameObject.GetComponentsInChildren<MeshRenderer>());
             SetRendererColor(_normalColor);
+
+            foreach (var notifier in _collisionNotifier)
+            {
+                notifier.TriggerEntered += OnTriggerEnter;
+                notifier.TriggerEntered += OnTriggerExit;
+            }
         }
 
         public void Enable()
