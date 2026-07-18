@@ -57,9 +57,9 @@ namespace Assets.Scripts.Systems
         {
             var preset = _presetHandler.GetPreset(_viewType);
 
-            _mainCamera.SetPosition(preset.Position);
-            _mainCamera.SetParent(preset.Slot);
-            _mainCamera.SetRotation(preset.Pivot.rotation);
+            _mainCamera.SetParent(preset.Slot, true);
+            _mainCamera.SetLocalPosition(Vector3.zero);
+            _mainCamera.SetRotation(preset.Slot.rotation);
         }
     }
 }

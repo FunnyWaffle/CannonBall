@@ -17,14 +17,19 @@ namespace Assets.Scripts.Camera
             _cameraTransform = _camera.transform;
         }
 
-        public void SetParent(Transform parent)
+        public void SetParent(Transform parent, bool worldPositionStays = true)
         {
-            _cameraTransform.SetParent(parent, true);
+            _cameraTransform.SetParent(parent, worldPositionStays);
         }
 
         public void SetPosition(Vector3 position)
         {
             _cameraTransform.position = position;
+        }
+
+        public void SetLocalPosition(Vector3 position)
+        {
+            _cameraTransform.localPosition = position;
         }
 
         public void SetRotation(Quaternion rotation)
