@@ -71,5 +71,6 @@ namespace Assets.Scripts.Input
         Cannon,
         Placement,
         Inventory,
+        Shop,
     }
 }

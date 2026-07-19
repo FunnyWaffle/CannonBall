@@ -71,6 +71,7 @@ namespace Assets.Scripts.Interaction
                     && _interactionObjectsRepositiory.TryGetItemSeller(collider, out var itemSeller))
                     _ = shopView.SetItemSeller(itemSeller);
 
+                _inputSystem.SwitchTo(InputType.Shop);
                 _uIController.Open(uIWindow);
             }
         }

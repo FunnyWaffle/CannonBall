@@ -60,7 +60,9 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem_Actions.InventoryActions>().AsSingle();
+        Container.BindInterfacesAndSelfTo<InputSystem_Actions.ShopActions>().AsSingle();
         Container.BindInterfacesAndSelfTo<InventoryInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ShopInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
 
         BindInteraction();
@@ -77,6 +79,7 @@ public class SceneInstaller : MonoInstaller
         BindUI();
 
         Container.BindInterfacesAndSelfTo<InventoryInputProvider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<ShopInputProvider>().AsSingle();
 
         Container.Resolve<ExplosionHandler>().Exploded +=
         Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
@@ -89,6 +92,7 @@ public class SceneInstaller : MonoInstaller
         Container.Resolve<InputSystem>();
 
         Container.Resolve<InventoryInputProvider>();
+        Container.Resolve<ShopInputProvider>();
 
         Container.Resolve<CannonExit>();
 
