@@ -16,13 +16,13 @@ namespace Assets.Scripts.GameStateMachine.CannonControl
         private readonly CrosshairSystem _crosshairSystem;
 
         public CannonInputProvider(
-            ActiveCannonControllerContainer _controllerContainer,
+            ActiveCannonControllerContainer controllerContainer,
             CannonInput input,
             Aimer aimer,
             CameraSystem cameraSystem,
             CrosshairSystem crosshairSystem)
         {
-            this._controllerContainer = _controllerContainer;
+            _controllerContainer = controllerContainer;
             _input = input;
             _aimer = aimer;
             _cameraSystem = cameraSystem;

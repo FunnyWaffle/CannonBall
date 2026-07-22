@@ -1,200 +1,42 @@
-using Assets.Scripts.Build;
-using Assets.Scripts.Camera;
-using Assets.Scripts.Combat;
-using Assets.Scripts.Creations.Zombie;
-using Assets.Scripts.Crosshairs;
-using Assets.Scripts.Curency;
-using Assets.Scripts.Destruction;
-using Assets.Scripts.EnemyAttractionObjects;
 using Assets.Scripts.Explosion;
-using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.GameStateMachine.CannonControl;
-using Assets.Scripts.GameStateMachine.PlayerControl;
-using Assets.Scripts.Input;
-using Assets.Scripts.Interaction;
-using Assets.Scripts.Placement;
-using Assets.Scripts.PlayerData;
-using Assets.Scripts.Shop;
-using Assets.Scripts.Space;
-using Assets.Scripts.Spawn;
-using Assets.Scripts.Spawn.Factories;
-using Assets.Scripts.Spawn.Pools;
-using Assets.Scripts.Spawn.Projectile;
 using Assets.Scripts.Systems;
-using Assets.Scripts.UI;
 using UnityEngine;
 using Zenject;
 
-public class SceneInstaller : MonoInstaller
+namespace Assets.Scripts.Architecture
 {
-    [SerializeField] private MonoBehaviour[] _dependencies;
-    public override void InstallBindings()
+    public class SceneInstaller : MonoInstaller
     {
-        //foreach (var dependency in _dependencies)
-        //{
-        //    Container.BindInterfacesAndSelfTo(dependency.GetType()).FromInstance(dependency).AsSingle();
+        [SerializeField] private MonoBehaviour[] _dependencies;
+        public override void InstallBindings()
+        {
+            //foreach (var dependency in _dependencies)
+            //{
+            //    Container.BindInterfacesAndSelfTo(dependency.GetType()).FromInstance(dependency).AsSingle();
 
-        //}
-        Container.BindInterfacesAndSelfTo<MainCamera>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<InventoryView>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<ShopView>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<Vendor>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerCrosshair>().FromComponentInHierarchy().AsSingle();
+            //}
 
-        Container.BindInterfacesAndSelfTo<WavesExecutor>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<ZombieUpdater>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Updater>().FromComponentInHierarchy().AsSingle();
+        }
 
-        Container.BindInterfacesAndSelfTo<WaveCurrencyAccruer>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ExplosionHandler>().AsSingle();
-        Container.BindInterfacesAndSelfTo<UIController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<Aimer>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CameraSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlaceObjectSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CrosshairSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PurchaseHandler>().AsSingle().NonLazy();
+        public override void Start()
+        {
+            Container.Resolve<ExplosionHandler>().Exploded +=
+            Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
 
-        Container.BindInterfacesAndSelfTo<InventoryController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ItemAdder>().AsSingle();
+            //Container.Resolve<InventoryController>();
 
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions.PlayerActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions.InventoryActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions.ShopActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InventoryInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ShopInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
+            //Container.Resolve<WaveCurrencyAccruer>();
+            //Container.Resolve<PlayerAvatarAttackInputProvider>();
 
-        BindInteraction();
-        BindCannon();
-        BindZombie();
-        BindCombat();
-        BindSpatial();
-        BindSpawn();
-        BindPlayer();
-        //BindConstruction();
-        //BindConstruction();
-        //BindNavigation();
-        BindEnemyAttractionObjects();
-        BindUI();
+            //Container.Resolve<InputSystem>();
 
-        Container.BindInterfacesAndSelfTo<InventoryInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ShopInputProvider>().AsSingle();
+            //Container.Resolve<InventoryInputProvider>();
+            //Container.Resolve<ShopInputProvider>();
 
-        Container.Resolve<ExplosionHandler>().Exploded +=
-        Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
+            //Container.Resolve<CannonExit>();
 
-        Container.Resolve<InventoryController>();
-
-        Container.Resolve<WaveCurrencyAccruer>();
-        Container.Resolve<PlayerAvatarAttackInputProvider>();
-
-        Container.Resolve<InputSystem>();
-
-        Container.Resolve<InventoryInputProvider>();
-        Container.Resolve<ShopInputProvider>();
-
-        Container.Resolve<CannonExit>();
-
-        Container.Resolve<PlayerSpawner>();
-    }
-
-    private void BindCannon()
-    {
-        Container.BindInterfacesAndSelfTo<InputSystem_Actions.CannonActions>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ActiveCannonControllerContainer>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonExit>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<CannonCrosshair>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<FirstPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<ThirdPersonCannonCrosshairPreview>().FromComponentInHierarchy().AsSingle();
-    }
-
-    private void BindInteraction()
-    {
-        Container.BindInterfacesAndSelfTo<PlayerInteractionSystem>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<InteractionObjectsRepositiory>().AsSingle();
-    }
-
-    private void BindZombie()
-    {
-        Container.BindInterfacesAndSelfTo<ZombieFactory>().AsSingle();
-    }
-
-    private void BindCombat()
-    {
-        Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
-    }
-
-    public void BindSpatial()
-    {
-        Container.BindInterfacesAndSelfTo<World>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpatialSearchShape>().AsSingle();
-        Container.BindInterfacesAndSelfTo<SpatialGrid>().FromComponentInHierarchy().AsSingle();
-    }
-
-    public void BindSpawn()
-    {
-        Container.BindInterfacesAndSelfTo(typeof(ObjectPool<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo<AssetLoader>().AsSingle();
-        Container.BindInterfacesAndSelfTo(typeof(Spawner<>)).AsTransient();
-        Container.BindInterfacesAndSelfTo<ProjectileSpawner>().AsTransient();
-
-        Container.BindInterfacesAndSelfTo<CannonFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonConstructionFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<CannonProjectionFactory>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<BallFactory>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<NotForVehicleZoneFactiory>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<CannonDestructionHandler>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<UniversalSpawner>().AsSingle();
-        Container.BindInterfacesAndSelfTo<UniversalPool>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<ParticleSpawnExecutor>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<EnemySpawnZone>().FromComponentInHierarchy().AsSingle();
-    }
-
-    public void BindPlayer()
-    {
-        Container.BindInterfacesAndSelfTo<PlayerAvatarMovementInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarAttackInputProvider>().AsSingle();
-        Container.BindInterfacesAndSelfTo<ActivePlayerAvatarControllerContainer>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerAvatarInput>().AsSingle();
-
-        //Container.BindInterfacesAndSelfTo<PlayerAvatarView>().FromComponentInHierarchy().AsSingle();
-        //Container.BindInterfacesAndSelfTo<PlayerAvatarMover>().AsSingle();
-        //Container.BindInterfacesAndSelfTo<SpatialObject>().AsSingle();
-        //Container.BindInterfacesAndSelfTo<PlayerAvatarController>().AsSingle();
-
-        Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<PlayerSpawner>().AsSingle();
-    }
-
-    public void BindConstruction()
-    {
-        Container.BindInterfacesAndSelfTo<BuildSystem>().AsSingle();
-        Container.BindInterfacesAndSelfTo<BuilderFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<BuildCarriageFactory>().AsSingle();
-        Container.BindInterfacesAndSelfTo<BuilderSpawnZone>().FromComponentInHierarchy().AsSingle();
-    }
-
-    public void BindNavigation()
-    {
-        Container.BindInterfacesAndSelfTo<CustomPathFinder>().AsSingle();
-    }
-
-    public void BindEnemyAttractionObjects()
-    {
-        Container.BindInterfacesAndSelfTo<EnemyAttractionObject>().FromComponentInHierarchy().AsSingle();
-    }
-
-    public void BindUI()
-    {
-        Container.BindInterfacesAndSelfTo<GameOverMenu>().FromComponentInHierarchy().AsSingle();
+            //Container.Resolve<PlayerSpawnExecutor>();
+        }
     }
 }
