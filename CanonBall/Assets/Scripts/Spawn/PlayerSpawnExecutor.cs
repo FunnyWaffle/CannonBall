@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Spawn
 {
-    public class PlayerSpawner
+    public class PlayerSpawnExecutor
     {
         private readonly Spawner<PlayerAvatarController> _spawner;
         private readonly ActivePlayerAvatarControllerContainer _activePlayerAvatarControllerContainer;
 
-        public PlayerSpawner(Spawner<PlayerAvatarController> spawner,
+        public PlayerSpawnExecutor(Spawner<PlayerAvatarController> spawner,
             ActivePlayerAvatarControllerContainer activePlayerAvatarControllerContainer)
         {
             _spawner = spawner;
