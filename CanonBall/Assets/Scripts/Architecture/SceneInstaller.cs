@@ -23,20 +23,6 @@ namespace Assets.Scripts.Architecture
         {
             Container.Resolve<ExplosionHandler>().Exploded +=
             Container.Resolve<ParticleSpawnExecutor>().ExecuteExplosionParticlesSpawn;
-
-            //Container.Resolve<InventoryController>();
-
-            //Container.Resolve<WaveCurrencyAccruer>();
-            //Container.Resolve<PlayerAvatarAttackInputProvider>();
-
-            //Container.Resolve<InputSystem>();
-
-            //Container.Resolve<InventoryInputProvider>();
-            //Container.Resolve<ShopInputProvider>();
-
-            //Container.Resolve<CannonExit>();
-
-            //Container.Resolve<PlayerSpawnExecutor>();
         }
     }
 }
