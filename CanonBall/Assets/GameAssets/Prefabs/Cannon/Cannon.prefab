@@ -611,11 +611,11 @@ MonoBehaviour:
     - _key: 1
       _value:
         _pivot: {fileID: 3674501121850709093}
-        _position: {fileID: 8207905036787185856}
+        _slot: {fileID: 8207905036787185856}
     - _key: 2
       _value:
         _pivot: {fileID: 5909995731470542774}
-        _position: {fileID: 5909995731470542774}
+        _slot: {fileID: 5909995731470542774}
   _colliders:
   - {fileID: 5432423614679217822}
   - {fileID: 7609956016851433321}

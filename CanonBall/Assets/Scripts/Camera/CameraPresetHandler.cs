@@ -7,13 +7,14 @@ namespace Assets.Scripts.Camera
     {
         private readonly SerializableDictionary<ViewType, CameraTransformPreset> _cameraViewPresets;
 
-        public CameraTransformPreset CurrentPreset { get; private set; }
+        private CameraTransformPreset _currentPreset;
+        public ICameraTransformPreset CurrentPreset => _currentPreset;
 
         public CameraPresetHandler(SerializableDictionary<ViewType, CameraTransformPreset> cameraViewPresets)
         {
             _cameraViewPresets = cameraViewPresets;
 
-            CurrentPreset = _cameraViewPresets[ViewType.FirstPerson];
+            _currentPreset = _cameraViewPresets[ViewType.FirstPerson];
             CurrentPreset.Pivot.gameObject.SetActive(true);
             CurrentPreset.Pivot.localRotation = Quaternion.identity;
         }
@@ -23,13 +24,23 @@ namespace Assets.Scripts.Camera
             var rotation = CurrentPreset.Pivot.rotation;
             CurrentPreset.Pivot.gameObject.SetActive(false);
 
-            CurrentPreset = _cameraViewPresets[cameraViewType];
+            _currentPreset = _cameraViewPresets[cameraViewType];
 
             CurrentPreset.Pivot.gameObject.SetActive(true);
             CurrentPreset.Pivot.rotation = rotation;
         }
 
-        public CameraTransformPreset GetPreset(ViewType cameraViewType)
+        public void SetCurrentPresetRotation(Quaternion rotation)
+        {
+            var angles = rotation.eulerAngles;
+            var yaw = new Vector3(0, angles.y, 0);
+
+            var preset = _currentPreset;
+            preset.SetPivotRotation(Quaternion.Euler(yaw));
+            preset.SetSlotRotation(rotation);
+        }
+
+        public ICameraTransformPreset GetPreset(ViewType cameraViewType)
         {
             return _cameraViewPresets[cameraViewType];
         }

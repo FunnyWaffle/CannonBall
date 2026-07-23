@@ -8,8 +8,6 @@ namespace Assets.Scripts.Systems
         private readonly MainCamera _mainCamera;
         private CameraPresetHandler _presetHandler;
 
-        private ViewType _viewType = ViewType.FirstPerson;
-
         public CameraSystem(MainCamera mainCamera)
         {
             _mainCamera = mainCamera;
@@ -23,12 +21,7 @@ namespace Assets.Scripts.Systems
             if (_presetHandler == null)
                 return;
 
-            var angles = rotation.eulerAngles;
-            var yaw = new Vector3(0, angles.y, 0);
-
-            var preset = _presetHandler.GetPreset(_viewType);
-            preset.Pivot.rotation = Quaternion.Euler(yaw);
-            preset.Slot.rotation = rotation;
+            _presetHandler.SetCurrentPresetRotation(rotation);
         }
 
         public void ApplyMainCameraPreset(CameraPresetHandler presetHandler)
@@ -39,7 +32,7 @@ namespace Assets.Scripts.Systems
 
         public void ChangeCameraViewType(ViewType viewType)
         {
-            _viewType = viewType;
+            _presetHandler.SetViewType(viewType);
             SetPreset();
         }
 
@@ -55,7 +48,7 @@ namespace Assets.Scripts.Systems
 
         private void SetPreset()
         {
-            var preset = _presetHandler.GetPreset(_viewType);
+            var preset = _presetHandler.CurrentPreset;
 
             _mainCamera.SetParent(preset.Slot, true);
             _mainCamera.SetLocalPosition(Vector3.zero);

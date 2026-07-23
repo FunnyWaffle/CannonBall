@@ -137,11 +137,11 @@ MonoBehaviour:
     - _key: 1
       _value:
         _pivot: {fileID: 7730745022269942809}
-        _position: {fileID: 3371144505100794105}
+        _slot: {fileID: 3371144505100794105}
     - _key: 2
       _value:
         _pivot: {fileID: 8658777536080821850}
-        _position: {fileID: 1145446073220769926}
+        _slot: {fileID: 1145446073220769926}
   _attackCorners:
   - {fileID: 1225296607514856959}
   - {fileID: 675568884686764604}
