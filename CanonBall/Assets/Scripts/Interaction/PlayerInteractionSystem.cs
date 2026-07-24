@@ -15,6 +15,8 @@ namespace Assets.Scripts.Interaction
     {
         [SerializeField] private RectTransform _interactionPrompt;
 
+        [SerializeField] private float _maxInteractionDistance = 1f;
+
         private PlayerAvatarInput _playerInput;
         [Inject] private CameraSystem _cameraSystem;
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
@@ -35,7 +37,7 @@ namespace Assets.Scripts.Interaction
 
         private void Update()
         {
-            if (_cameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+            if (_cameraSystem.TryGetMainCameraFacedCollider(out var collider, _maxInteractionDistance, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
             {
                 var gameObject = collider.gameObject;
                 var layer = gameObject.layer;
@@ -54,7 +56,7 @@ namespace Assets.Scripts.Interaction
 
         private void OnInteractionPerform()
         {
-            if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+            if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, _maxInteractionDistance, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
                 return;
 
             if (_world.SpatialObjectsMap.TryGetValue(collider, out var spatialObject)

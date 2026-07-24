@@ -42,18 +42,19 @@ namespace Assets.Scripts.Camera
             return _camera.WorldToScreenPoint(position);
         }
 
-        public Vector3 GetFacedPosition(QueryTriggerInteraction queryTriggerInteraction, int ignoreLayer = 0)
+        public Vector3 GetFacedPosition(QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide,
+            float maxDistance = float.MaxValue, int ignoreLayer = 0)
         {
-            Debug.DrawRay(Position, Forward * float.PositiveInfinity, Color.red, 0.1f);
-            if (Physics.Raycast(Position, Forward, out var hit, float.PositiveInfinity, ~ignoreLayer, queryTriggerInteraction))
+            Debug.DrawRay(Position, Forward * maxDistance, Color.red, 0.1f);
+            if (Physics.Raycast(Position, Forward, out var hit, maxDistance, ~ignoreLayer, queryTriggerInteraction))
                 return hit.point;
             else
                 return Position + Forward * 10f;
         }
 
-        public bool TryGetFacedCollider(out Collider collider, int ignoreLayer = 0)
+        public bool TryGetFacedCollider(out Collider collider, float maxDistance = float.MaxValue, int ignoreLayer = 0)
         {
-            if (Physics.Raycast(Position, Forward, out var hit, float.PositiveInfinity, ~ignoreLayer))
+            if (Physics.Raycast(Position, Forward, out var hit, maxDistance, ~ignoreLayer))
             {
                 collider = hit.collider;
                 return true;

@@ -119,7 +119,7 @@ namespace Assets.Scripts.Placement
 
         private Vector3 GetCameraFacedPosition()
         {
-            var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
+            var position = _cameraSystem.TryGetMainCameraFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer | LayerIds.BitMaskVendor);
             return GetPositionUnder(position);
         }
 

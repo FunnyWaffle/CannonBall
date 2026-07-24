@@ -38,7 +38,7 @@ namespace Assets.Scripts.GameStateMachine.PlayerControl
             var rotation = _aimer.Aim(lookInput);
 
             _cameraSystem.RotateCameraPivot(rotation);
-            var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
+            var position = _cameraSystem.TryGetMainCameraFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskPlayer);
 
             controller.Rotate(position);
             var movementInput = _input.Movement;

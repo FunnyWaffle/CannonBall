@@ -41,7 +41,7 @@ namespace Assets.Scripts.GameStateMachine.CannonControl
             var rotation = _aimer.Aim(lookInput);
 
             _cameraSystem.RotateCameraPivot(rotation);
-            var position = _cameraSystem.MainCamera.GetFacedPosition(QueryTriggerInteraction.Ignore, LayerIds.BitMaskGun);
+            var position = _cameraSystem.TryGetMainCameraFacedPosition(QueryTriggerInteraction.Ignore, float.MaxValue, LayerIds.BitMaskGun);
 
             controller.Rotate(position);
         }
