@@ -36,9 +36,15 @@ namespace Assets.Scripts.Systems
             SetPreset();
         }
 
-        public bool TryGetMainCameraFacedCollider(out Collider collider, int ignoreLayer = 0)
+        public bool TryGetMainCameraFacedCollider(out Collider collider, float maxDistance = float.MaxValue, int ignoreLayer = 0)
         {
-            return _mainCamera.TryGetFacedCollider(out collider, ignoreLayer);
+            return _mainCamera.TryGetFacedCollider(out collider, maxDistance, ignoreLayer);
+        }
+
+        public Vector3 TryGetMainCameraFacedPosition(QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Collide,
+            float maxDistance = float.MaxValue, int ignoreLayer = 0)
+        {
+            return _mainCamera.GetFacedPosition(queryTriggerInteraction, maxDistance, ignoreLayer);
         }
 
         public Vector3 ProjectOnMainCamera(Vector3 position)
