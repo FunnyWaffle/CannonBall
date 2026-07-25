@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.GameStateMachine;
-using Assets.Scripts.GameStateMachine.PlayerControl;
+﻿using Assets.Scripts.GameStateMachine.PlayerControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Shop;
 using System.Collections.Generic;
 using UnityEngine;

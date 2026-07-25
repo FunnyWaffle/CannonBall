@@ -1,29 +1,28 @@
 ﻿using Assets.Scripts.Config;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.Creations;
 using Assets.Scripts.GameStateMachine.CannonControl;
-using Assets.Scripts.GameStateMachine.PlayerControl;
+using Assets.Scripts.GameStateMachine.UIOverlayControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Input;
+using Assets.Scripts.Interaction;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Space;
 using Assets.Scripts.Systems;
-using UnityEngine;
 using Zenject;
 
-namespace Assets.Scripts.Interaction
+namespace Assets.Scripts.GameStateMachine.PlayerControl
 {
-    public class PlayerInteractionSystem : MonoBehaviour
+    public class PlayerAvatarInteractionInputProvider : IUpdatable
     {
-        [SerializeField] private RectTransform _interactionPrompt;
-
-        [SerializeField] private float _maxInteractionDistance = 1f;
-
         private PlayerAvatarInput _playerInput;
+        [Inject] private PlayerConfig _playerConfig;
         [Inject] private CameraSystem _cameraSystem;
         [Inject] private InteractionObjectsRepositiory _interactionObjectsRepositiory;
         [Inject] private World _world;
         [Inject] private PlayerAvatarMovementInputProvider _playerAvatarInputProvider;
         [Inject] private ActiveCannonControllerContainer _activeCannonControllerContainer;
         [Inject] private UIController _uIController;
+        [Inject] private UIOverlayController _uIOverlayController;
         [Inject] private InputSystem _inputSystem;
         [Inject] private ActivePlayerAvatarControllerContainer _currentPlayerAvatarController;
 
@@ -35,9 +34,11 @@ namespace Assets.Scripts.Interaction
             _playerInput.InteractionActionPerformed += OnInteractionPerform;
         }
 
-        private void Update()
+        public void Update()
         {
-            if (_cameraSystem.TryGetMainCameraFacedCollider(out var collider, _maxInteractionDistance, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+            if (_currentPlayerAvatarController.TryGetController(out var _)
+                && _cameraSystem.TryGetMainCameraFacedCollider(out var collider, _playerConfig.MaxInteractionDistance,
+                LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
             {
                 var gameObject = collider.gameObject;
                 var layer = gameObject.layer;
@@ -45,18 +46,19 @@ namespace Assets.Scripts.Interaction
                 if (layer == LayerIds.IndexVendor
                     || layer == LayerIds.IndexGun)
                 {
-                    _interactionPrompt.gameObject.SetActive(true);
+                    _uIOverlayController.Show(OverlayType.InteractionPrompt);
                 }
             }
             else
             {
-                _interactionPrompt.gameObject.SetActive(false);
+                _uIOverlayController.Hide(OverlayType.InteractionPrompt);
             }
         }
 
         private void OnInteractionPerform()
         {
-            if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, _maxInteractionDistance, LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
+            if (!_cameraSystem.TryGetMainCameraFacedCollider(out var collider, _playerConfig.MaxInteractionDistance,
+                LayerIds.BitMaskPlayer | LayerIds.BitMaskGround))
                 return;
 
             if (_world.SpatialObjectsMap.TryGetValue(collider, out var spatialObject)
