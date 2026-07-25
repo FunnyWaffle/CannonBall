@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GameStateMachine;
+﻿using Assets.Scripts.GameStateMachine.UIControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Interaction;
 using Assets.Scripts.Spawn;
 using System;

@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Crosshairs;
 using Assets.Scripts.GameStateMachine.PlayerControl;
 using Assets.Scripts.Input;
-using Assets.Scripts.Interaction;
 using Assets.Scripts.Spawn;
 using Assets.Scripts.Spawn.Factories;
 using Zenject;
@@ -20,8 +19,7 @@ namespace Assets.Scripts.Architecture
             Container.BindInterfacesAndSelfTo<PlayerAvatarMovementInputProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerAvatarAttackInputProvider>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<ActivePlayerAvatarControllerContainer>().AsSingle();
-
-            Container.BindInterfacesAndSelfTo<PlayerInteractionSystem>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerAvatarInteractionInputProvider>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<PlayerFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerSpawnExecutor>().AsSingle().NonLazy();

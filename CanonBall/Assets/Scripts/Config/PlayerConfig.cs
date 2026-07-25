@@ -14,5 +14,6 @@ namespace Assets.Scripts.Config
         public float MovementDeceleration = 5f;
         public float MovementAirAcceleration = 5f;
         public float MovementAirDeceleration = 5f;
+        public float MaxInteractionDistance = 1f;
     }
 }

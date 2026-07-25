@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Config;
 using Assets.Scripts.Creations;
 using Assets.Scripts.Creations.Placement;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;

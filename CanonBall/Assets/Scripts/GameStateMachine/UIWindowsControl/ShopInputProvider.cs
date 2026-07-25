@@ -1,6 +1,7 @@
-﻿using Assets.Scripts.Input;
+﻿using Assets.Scripts.GameStateMachine.UIWindowsControl;
+using Assets.Scripts.Input;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.UIControl
 {
     public class ShopInputProvider
     {
