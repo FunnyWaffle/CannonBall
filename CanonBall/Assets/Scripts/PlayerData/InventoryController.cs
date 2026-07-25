@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Curency;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.UIControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Placement;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;

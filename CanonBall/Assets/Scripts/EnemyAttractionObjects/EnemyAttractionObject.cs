@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.Combat;
 using Assets.Scripts.Creations;
 using Assets.Scripts.Creations.Placement;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.UIControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Space;
 using System;

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.GameStateMachine.UIControl;
+using System.Collections.Generic;
 
-namespace Assets.Scripts.GameStateMachine
+namespace Assets.Scripts.GameStateMachine.UIWindowsControl
 {
     public class UIController
     {

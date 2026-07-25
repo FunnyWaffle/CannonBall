@@ -1,4 +1,5 @@
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.UIControl;
+using Assets.Scripts.GameStateMachine.UIWindowsControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

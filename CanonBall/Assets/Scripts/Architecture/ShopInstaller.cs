@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Curency;
-using Assets.Scripts.GameStateMachine;
+using Assets.Scripts.GameStateMachine.UIControl;
 using Assets.Scripts.Input;
 using Assets.Scripts.Shop;
 using Zenject;
