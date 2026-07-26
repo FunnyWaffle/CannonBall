@@ -16,16 +16,16 @@ namespace Assets.Scripts.PlayerData
 
         private AssetLoader _assetLoader;
 
-        private ItemTypes _itemType;
+        private ItemType _itemType;
 
-        public event Action<ItemTypes> PlaceButtonPressed;
+        public event Action<ItemType> PlaceButtonPressed;
 
         public void Initialize(AssetLoader assetLoader)
         {
             _assetLoader = assetLoader;
         }
 
-        public async Task SetItem(ItemTypes itemType)
+        public async Task SetItem(ItemType itemType)
         {
             if (!isActiveAndEnabled)
                 gameObject.SetActive(true);

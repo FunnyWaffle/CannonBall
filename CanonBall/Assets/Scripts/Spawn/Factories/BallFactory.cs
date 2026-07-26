@@ -14,7 +14,7 @@ namespace Assets.Scripts.Spawn.Factories
             _explosionHandler = explosionHandler;
         }
 
-        public ItemTypes CreationType => ItemTypes.Ball;
+        public ItemType CreationType => ItemType.Ball;
 
         public IProjectile Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

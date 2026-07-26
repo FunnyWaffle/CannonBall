@@ -6,7 +6,7 @@ namespace Assets.Scripts.Spawn
 {
     public interface IPoolableObject : IComponent
     {
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
 
         public void Enable();
     }

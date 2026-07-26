@@ -7,7 +7,7 @@ namespace Assets.Scripts.Spawn.Pools
 {
     public class UniversalPool
     {
-        private readonly Dictionary<ItemTypes, Queue<EntityComponents>> _disabledObjects = new();
+        private readonly Dictionary<ItemType, Queue<EntityComponents>> _disabledObjects = new();
         private readonly Dictionary<IPoolableObject, EntityComponents> _registeredObjects = new();
 
         public bool TryRegister(EntityComponents components)
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Spawn.Pools
             return true;
         }
 
-        public bool TryGet(ItemTypes itemType, out EntityComponents components)
+        public bool TryGet(ItemType itemType, out EntityComponents components)
         {
             if (!_disabledObjects.TryGetValue(itemType, out var queue))
             {
@@ -46,7 +46,7 @@ namespace Assets.Scripts.Spawn.Pools
             return true;
         }
 
-        private void OnObjectDisable(object obj, ItemTypes itemType)
+        private void OnObjectDisable(object obj, ItemType itemType)
         {
             if (!_disabledObjects.TryGetValue(itemType, out var queue))
             {

@@ -31,7 +31,7 @@ namespace Assets.Scripts.Destruction
         {
             _spatialGrid.Remove(sender as ISpatialObject);
 
-            var prefab = await _assetLoader.Load(ItemTypes.BrokenCannon);
+            var prefab = await _assetLoader.Load(ItemType.BrokenCannon);
             GameObject.Instantiate(prefab, cannonDeathEventArgs.Position, cannonDeathEventArgs.Rotation);
 
             // Добавлять сломанную пушку в SpatialGrid

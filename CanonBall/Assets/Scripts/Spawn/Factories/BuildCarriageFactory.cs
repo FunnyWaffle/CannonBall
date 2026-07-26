@@ -18,7 +18,7 @@ namespace Assets.Scripts.Spawn.Factories
             _updater = updater;
         }
 
-        public ItemTypes CreationType => ItemTypes.BuildCarriage;
+        public ItemType CreationType => ItemType.BuildCarriage;
 
         public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

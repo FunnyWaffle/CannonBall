@@ -55,7 +55,7 @@ namespace Assets.Scripts.Build
 
         private async void OnCarriagePathCompleteAsync()
         {
-            _constructionComponents = await _spawner.SpawnAsync(ItemTypes.CannonToBuild, _position, _rotation);
+            _constructionComponents = await _spawner.SpawnAsync(ItemType.CannonToBuild, _position, _rotation);
 
             var construction = _constructionComponents.Get<Construction>();
             construction.PartAdded += OnConstructionPartAddition;

@@ -6,7 +6,7 @@ namespace Assets.Scripts.Spawn.Factories
 {
     public interface IUniversalFactory
     {
-        public ItemTypes CreationType { get; }
+        public ItemType CreationType { get; }
 
         public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null);
     }

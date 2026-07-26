@@ -4,7 +4,7 @@ namespace Assets.Scripts.Shop
 {
     public interface IItemStorage
     {
-        public void ApplyPurchasedItems(IEnumerable<ItemTypes> items);
-        public void RemoveItem(ItemTypes item);
+        public void ApplyPurchasedItems(IEnumerable<ItemType> items);
+        public void RemoveItem(ItemType item);
     }
 }

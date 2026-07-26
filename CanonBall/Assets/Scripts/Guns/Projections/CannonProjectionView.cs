@@ -32,7 +32,7 @@ namespace Assets.Scripts.Guns.Projections
 
         public float BuildCarriageOffset => Vector3.Distance(transform.position, _buildCarriageSlot.position);
 
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
 
         private void Start()
         {
@@ -54,7 +54,7 @@ namespace Assets.Scripts.Guns.Projections
         public void Disable()
         {
             gameObject.SetActive(false);
-            Disabled?.Invoke(this, ItemTypes.CannonProjection);
+            Disabled?.Invoke(this, ItemType.CannonProjection);
         }
 
         private void OnTriggerEnter(Collider other)

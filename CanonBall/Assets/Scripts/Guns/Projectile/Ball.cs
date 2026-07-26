@@ -25,7 +25,7 @@ namespace Assets.Scripts.Guns.Projectile
         public float Radius => _colliderRaduis;
         public SphereCollider Collider => _sphereCollider;
 
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
         public event Action<float, Vector3, float> ExplosionPerformed;
 
         public void SetForce(float forceValue)
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Guns.Projectile
 
         private void OnDisable()
         {
-            Disabled?.Invoke(this, ItemTypes.Ball);
+            Disabled?.Invoke(this, ItemType.Ball);
         }
 
         private void OnCollisionEnter(Collision collision)

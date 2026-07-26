@@ -15,9 +15,9 @@ namespace Assets.Scripts.Placement
 {
     public class PlaceObjectSystem : IUpdatable
     {
-        private readonly Dictionary<ItemTypes, ItemTypes> _projections = new()
+        private readonly Dictionary<ItemType, ItemType> _projections = new()
         {
-            [ItemTypes.Cannon] = ItemTypes.CannonProjection
+            [ItemType.Cannon] = ItemType.CannonProjection
         };
 
         //private readonly Dictionary<ConstructionOrder, EntityComponents> _existingProjections = new();
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Placement
         //private readonly BuildSystem _buildSystem;
 
         private EntityComponents _spawnedProjectionComponents;
-        private ItemTypes _itemTipe;
+        private ItemType _itemTipe;
 
         public PlaceObjectSystem(
             CameraSystem cameraSystem,
@@ -48,9 +48,9 @@ namespace Assets.Scripts.Placement
 
         public bool IsPlacingObject { get; private set; }
 
-        public event Action<ItemTypes> ObjectPlaced;
+        public event Action<ItemType> ObjectPlaced;
 
-        public async void ShowProjection(ItemTypes itemType)
+        public async void ShowProjection(ItemType itemType)
         {
             if (!IsPlacingObject)
             {

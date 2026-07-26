@@ -11,7 +11,7 @@ namespace Assets.Scripts.Spawn
 {
     public class UniversalSpawner
     {
-        private readonly Dictionary<ItemTypes, IUniversalFactory> _factories = new();
+        private readonly Dictionary<ItemType, IUniversalFactory> _factories = new();
         private readonly UniversalPool _pool;
         private readonly AssetLoader _assetLoader;
 
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Spawn
             }
         }
 
-        public async Task<EntityComponents> SpawnAsync(ItemTypes itemType, Vector3 position, Quaternion rotation, Transform parent = null)
+        public async Task<EntityComponents> SpawnAsync(ItemType itemType, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             if (_pool.TryGet(itemType, out var components))
             {

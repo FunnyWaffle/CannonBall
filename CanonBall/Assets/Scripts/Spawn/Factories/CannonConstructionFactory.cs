@@ -7,7 +7,7 @@ namespace Assets.Scripts.Spawn.Factories
 {
     public class CannonConstructionFactory : IUniversalFactory
     {
-        public ItemTypes CreationType => ItemTypes.CannonToBuild;
+        public ItemType CreationType => ItemType.CannonToBuild;
 
         public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

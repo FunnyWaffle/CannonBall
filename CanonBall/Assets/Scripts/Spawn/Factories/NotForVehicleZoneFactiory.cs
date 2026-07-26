@@ -7,7 +7,7 @@ namespace Assets.Scripts.Spawn.Factories
 {
     public class NotForVehicleZoneFactiory : IUniversalFactory
     {
-        public ItemTypes CreationType => ItemTypes.NotForVehicleZone;
+        public ItemType CreationType => ItemType.NotForVehicleZone;
 
         public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

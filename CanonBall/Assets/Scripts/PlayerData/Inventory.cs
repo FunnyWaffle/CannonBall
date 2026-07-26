@@ -8,13 +8,13 @@ namespace Assets.Scripts.PlayerData
 {
     public class Inventory
     {
-        private readonly ObservableList<ItemTypes> _items = new();
+        private readonly ObservableList<ItemType> _items = new();
 
         private int _money;
 
         public Inventory()
         {
-            _items.Add(ItemTypes.Cannon);
+            _items.Add(ItemType.Cannon);
         }
 
         public int Money
@@ -26,7 +26,7 @@ namespace Assets.Scripts.PlayerData
                 MoneyCountChanged?.Invoke(value);
             }
         }
-        public IObservableCollection<ItemTypes> Items => _items;
+        public IObservableCollection<ItemType> Items => _items;
 
         public event Action<int> MoneyCountChanged;
 
@@ -40,12 +40,12 @@ namespace Assets.Scripts.PlayerData
             Money += value;
         }
 
-        public void AddItems(IEnumerable<ItemTypes> items)
+        public void AddItems(IEnumerable<ItemType> items)
         {
             _items.AddRange(items);
         }
 
-        public void RemoveItem(ItemTypes item)
+        public void RemoveItem(ItemType item)
         {
             _items.Remove(item);
         }

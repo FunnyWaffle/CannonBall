@@ -10,7 +10,7 @@ namespace Assets.Scripts.Spawn.Projectile
 {
     public class ProjectileSpawner
     {
-        private readonly Dictionary<ItemTypes, IFactory<IProjectile>> _factories = new();
+        private readonly Dictionary<ItemType, IFactory<IProjectile>> _factories = new();
         private readonly ObjectPool<IProjectile> _objectPool;
         private readonly AssetLoader _prefabLoader;
 
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Spawn.Projectile
             }
         }
 
-        public async Task<IProjectile> Spawn(ItemTypes itemType, Vector3 position, Quaternion rotation, Transform parent = null)
+        public async Task<IProjectile> Spawn(ItemType itemType, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             if (_objectPool.TryGet(itemType, out var obj))
             {

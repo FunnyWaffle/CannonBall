@@ -5,6 +5,6 @@ namespace Assets.Scripts.Shop
 {
     public interface IPurchaseMaker
     {
-        public event Action<IItemSeller, IEnumerable<ItemTypes>> PurchasePerformed;
+        public event Action<IItemSeller, IEnumerable<ItemType>> PurchasePerformed;
     }
 }

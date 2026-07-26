@@ -40,7 +40,7 @@ namespace Assets.Scripts.Build
             var direction = Vector3.Normalize(position - spawnPosition);
             var rotationToTarget = Quaternion.LookRotation(direction, Vector3.up);
 
-            var carriageComponents = await _spawner.SpawnAsync(ItemTypes.BuildCarriage, spawnPosition, rotationToTarget);
+            var carriageComponents = await _spawner.SpawnAsync(ItemType.BuildCarriage, spawnPosition, rotationToTarget);
             order.SetCarriage(carriageComponents);
 
             var mover = carriageComponents.Get<IMover>();

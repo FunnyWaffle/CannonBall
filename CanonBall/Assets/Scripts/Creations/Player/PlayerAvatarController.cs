@@ -14,7 +14,7 @@ namespace Assets.Scripts.Creations.Player
         private readonly PlayerAvatarMover _mover;
         private readonly SpatialObject _spatialObject;
 
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
 
         public PlayerAvatarController(PlayerAvatarView view,
             PlayerAvatarMover mover,

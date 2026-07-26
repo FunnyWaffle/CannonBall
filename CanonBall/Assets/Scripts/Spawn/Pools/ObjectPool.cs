@@ -6,14 +6,14 @@ namespace Assets.Scripts.Spawn.Pools
     public class ObjectPool<T>
                 where T : IPoolableObject
     {
-        private readonly Dictionary<ItemTypes, Queue<T>> _objects = new();
+        private readonly Dictionary<ItemType, Queue<T>> _objects = new();
 
         public void Register(T obj)
         {
             obj.Disabled += OnObjectDisable;
         }
 
-        public bool TryGet(ItemTypes itemType, out T obj)
+        public bool TryGet(ItemType itemType, out T obj)
         {
             if (!_objects.TryGetValue(itemType, out var queue))
             {
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Spawn.Pools
             return true;
         }
 
-        private void OnObjectDisable(object obj, ItemTypes itemType)
+        private void OnObjectDisable(object obj, ItemType itemType)
         {
             if (!_objects.TryGetValue(itemType, out var queue))
             {

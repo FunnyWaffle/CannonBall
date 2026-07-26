@@ -22,7 +22,7 @@ namespace Assets.Scripts.Spawn
 
         private async Task Spawn()
         {
-            var playerAvatarController = await _spawner.Spawn(ItemTypes.PlayerAvatar, new Vector3(10, 300, 10), Quaternion.identity);
+            var playerAvatarController = await _spawner.Spawn(ItemType.PlayerAvatar, new Vector3(10, 300, 10), Quaternion.identity);
             _activePlayerAvatarControllerContainer.SetController(playerAvatarController);
         }
     }

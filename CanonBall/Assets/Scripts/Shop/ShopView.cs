@@ -23,7 +23,7 @@ namespace Assets.Scripts.Shop
 
         public UIWindowTypes Type => UIWindowTypes.Shop;
 
-        public event Action<IItemSeller, IEnumerable<ItemTypes>> PurchasePerformed;
+        public event Action<IItemSeller, IEnumerable<ItemType>> PurchasePerformed;
 
         [Inject]
         public void Initialize(AssetLoader assetLoader, InteractionObjectsRepositiory interactionObjectsRepositiory)
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Shop
 
         private void OnBuyButtonClick()
         {
-            var selectedItems = new List<ItemTypes>();
+            var selectedItems = new List<ItemType>();
             foreach (var element in _elements)
             {
                 if (element.IsSelected)

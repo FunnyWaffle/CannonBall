@@ -17,7 +17,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly World _world;
         private readonly PlayerConfig _config;
 
-        public ItemTypes CreationType => ItemTypes.PlayerAvatar;
+        public ItemType CreationType => ItemType.PlayerAvatar;
 
         public PlayerFactory(
             CameraSystem cameraSystem,
