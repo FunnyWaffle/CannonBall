@@ -32,7 +32,7 @@ namespace Assets.Scripts.Spawn
             {
                 Vector3 position = GetSpawnPosition();
 
-                var enemyCore = await _spawner.Spawn(ItemTypes.Zombie, position, Quaternion.identity, _enemiesContainer);
+                var enemyCore = await _spawner.Spawn(ItemType.Zombie, position, Quaternion.identity, _enemiesContainer);
 
                 enemyCore.Died += OnEnemyDied;
 

@@ -17,7 +17,7 @@ namespace Assets.Scripts.Spawn.Factories
         private readonly SpatialGrid _spatialGrid;
         private readonly CannonDestructionHandler _cannonDestructionHandler;
 
-        public ItemTypes CreationType => ItemTypes.Cannon;
+        public ItemType CreationType => ItemType.Cannon;
 
         public CannonFactory(
             DiContainer container,

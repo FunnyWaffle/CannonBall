@@ -9,8 +9,8 @@ namespace Assets.Scripts.Spawn
 {
     public class AssetLoader
     {
-        private readonly Dictionary<ItemTypes, Transform> _loadedPrefabs = new();
-        private readonly Dictionary<ItemTypes, Sprite> _loadedSprites = new();
+        private readonly Dictionary<ItemType, Transform> _loadedPrefabs = new();
+        private readonly Dictionary<ItemType, Sprite> _loadedSprites = new();
 
         private readonly AssetReferences _prefabReferences;
         private readonly AssetReferences _spriteReferences;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Spawn
             _spriteReferences = configRepository.SpriteReferences;
         }
 
-        public async Task<Sprite> LoadSprite(ItemTypes itemType)
+        public async Task<Sprite> LoadSprite(ItemType itemType)
         {
             if (_loadedSprites.TryGetValue(itemType, out var sprite))
                 return sprite;
@@ -34,7 +34,7 @@ namespace Assets.Scripts.Spawn
             return sprite;
         }
 
-        public async Task<Transform> Load(ItemTypes itemType)
+        public async Task<Transform> Load(ItemType itemType)
         {
             if (_loadedPrefabs.TryGetValue(itemType, out var prefab))
                 return prefab;

@@ -7,7 +7,7 @@ namespace Assets.Scripts.Shop
 {
     public class Vendor : MonoBehaviour, IItemSeller
     {
-        public ItemTypes[] ItemsForSale;
+        public ItemType[] ItemsForSale;
         public Collider Collider;
 
         [Inject]
@@ -17,7 +17,7 @@ namespace Assets.Scripts.Shop
             interactionObjectsRepositiory.AddItemSeller(Collider, this);
         }
 
-        public IEnumerable<ItemTypes> GetItems()
+        public IEnumerable<ItemType> GetItems()
         {
             return ItemsForSale;
         }

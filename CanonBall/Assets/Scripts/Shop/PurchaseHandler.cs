@@ -18,7 +18,7 @@ namespace Assets.Scripts.Shop
             _purchaseMaker.PurchasePerformed += OnPerformPurchase;
         }
 
-        private void OnPerformPurchase(IItemSeller itemSeller, IEnumerable<ItemTypes> itemsToBuy)
+        private void OnPerformPurchase(IItemSeller itemSeller, IEnumerable<ItemType> itemsToBuy)
         {
             if (!_currencyStorage.TrySpend(itemsToBuy.Count()))
                 return;

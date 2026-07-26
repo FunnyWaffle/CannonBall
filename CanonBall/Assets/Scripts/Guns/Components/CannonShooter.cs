@@ -36,7 +36,7 @@ namespace Assets.Scripts.Guns.Components
             if (Time.time < _nextPermittedShootingTime)
                 return;
 
-            var projectile = await _spawner.Spawn(Shop.ItemTypes.Ball, shootPosition, shootRotation);
+            var projectile = await _spawner.Spawn(Shop.ItemType.Ball, shootPosition, shootRotation);
 
             foreach (var collider in ignoredColliders)
             {

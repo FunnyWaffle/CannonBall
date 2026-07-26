@@ -11,7 +11,7 @@ namespace Assets.Scripts.Shop
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _price;
 
-        private ItemTypes _itemType;
+        private ItemType _itemType;
 
         public bool IsSelected
         {
@@ -21,9 +21,9 @@ namespace Assets.Scripts.Shop
                 _checkMark.isOn = value;
             }
         }
-        public ItemTypes ItemType => _itemType;
+        public ItemType ItemType => _itemType;
 
-        public void SetItem(ItemTypes itemType, Sprite sprite)
+        public void SetItem(ItemType itemType, Sprite sprite)
         {
             _itemType = itemType;
 

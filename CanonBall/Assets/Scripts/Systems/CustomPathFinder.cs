@@ -107,7 +107,7 @@ namespace Assets.Scripts.Systems
 
                     if (hasObstacleFromRightSide && hasObstacleFromLeftSide)
                     {
-                        var notForVehicleZoneComponents = await _universalSpawner.SpawnAsync(ItemTypes.NotForVehicleZone, corner, currentRotation);
+                        var notForVehicleZoneComponents = await _universalSpawner.SpawnAsync(ItemType.NotForVehicleZone, corner, currentRotation);
 
                         var notForVehicleZone = notForVehicleZoneComponents.Get<NotForVehicleZone>();
                         notForVehicleZone.AdjustSize(sourceHalfExtents * 2);

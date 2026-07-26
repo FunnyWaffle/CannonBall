@@ -10,7 +10,7 @@ namespace Assets.Scripts.Spawn
     public class Spawner<T>
         where T : ISpawnable, IPoolableObject
     {
-        private readonly Dictionary<ItemTypes, IFactory<T>> _factories = new();
+        private readonly Dictionary<ItemType, IFactory<T>> _factories = new();
         private readonly ObjectPool<T> _objectPool;
         private readonly AssetLoader _prefabLoader;
 
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Spawn
             }
         }
 
-        public async Task<T> Spawn(ItemTypes itemType, Vector3 position, Quaternion rotation, Transform parent = null)
+        public async Task<T> Spawn(ItemType itemType, Vector3 position, Quaternion rotation, Transform parent = null)
         {
             if (_objectPool.TryGet(itemType, out var obj))
             {

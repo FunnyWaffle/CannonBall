@@ -43,7 +43,7 @@ namespace Assets.Scripts.Creations.Zombie
         public ZombieHitbox Hitbox => _hitbox;
 
         public event EventHandler Died;
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
 
         public void Enable()
         {
@@ -112,7 +112,7 @@ namespace Assets.Scripts.Creations.Zombie
             _ragdoll.FellAsleep -= OnRagdollFellAsleep;
             _hitbox.ExplosionReceived -= OnExplosion;
 
-            Disabled?.Invoke(this, ItemTypes.Zombie);
+            Disabled?.Invoke(this, ItemType.Zombie);
         }
 
         private void ResetState()

@@ -36,7 +36,7 @@ namespace Assets.Scripts.Spawn.Factories
             _updater = updater;
         }
 
-        public ItemTypes CreationType => ItemTypes.Zombie;
+        public ItemType CreationType => ItemType.Zombie;
 
         public ZombieController Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

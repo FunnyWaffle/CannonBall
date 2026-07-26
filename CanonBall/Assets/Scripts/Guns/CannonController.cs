@@ -36,7 +36,7 @@ namespace Assets.Scripts.Guns
         public Vector3 Position => _view.Position;
 
         public event EventHandler<CannonDeathEventArgs> Died;
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
         public event EventHandler<Vector3> PositionChanged;
 
         public void Enable()
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Guns
         {
             _health.Died -= OnDead;
             _view.Disable();
-            Disabled?.Invoke(this, ItemTypes.Cannon);
+            Disabled?.Invoke(this, ItemType.Cannon);
         }
     }
 }

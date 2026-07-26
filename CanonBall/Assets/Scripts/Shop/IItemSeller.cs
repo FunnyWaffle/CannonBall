@@ -4,6 +4,6 @@ namespace Assets.Scripts.Shop
 {
     public interface IItemSeller
     {
-        public IEnumerable<ItemTypes> GetItems();
+        public IEnumerable<ItemType> GetItems();
     }
 }

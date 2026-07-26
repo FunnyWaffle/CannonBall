@@ -28,7 +28,7 @@ namespace Assets.Scripts.Build.Carriage
         public Vector3 TrunkExit => _trunkExit.position;
         public Vector3 TrunkExitForward => _trunkExit.forward;
 
-        public event EventHandler<ItemTypes> Disabled;
+        public event EventHandler<ItemType> Disabled;
         public event Action Arrived;
 
         public async void SetDestination(Vector3 destination)
@@ -46,7 +46,7 @@ namespace Assets.Scripts.Build.Carriage
         public void Disable()
         {
             gameObject.SetActive(false);
-            Disabled?.Invoke(this, ItemTypes.BuildCarriage);
+            Disabled?.Invoke(this, ItemType.BuildCarriage);
         }
 
         public void Enable()

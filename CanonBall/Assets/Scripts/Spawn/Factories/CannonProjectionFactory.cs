@@ -8,7 +8,7 @@ namespace Assets.Scripts.Spawn.Factories
 {
     public class CannonProjectionFactory : IUniversalFactory
     {
-        public ItemTypes CreationType => ItemTypes.CannonProjection;
+        public ItemType CreationType => ItemType.CannonProjection;
 
         public EntityComponents Create(Transform prefab, Vector3 position, Quaternion rotation, Transform parent = null)
         {

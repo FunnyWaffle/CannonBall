@@ -16,9 +16,9 @@ namespace Assets.Scripts.PlayerData
         public InventorySlotView SlotPrefab => _slotPrefab;
         public GridLayoutGroup Grid => _grid;
 
-        public ISynchronizedView<ItemTypes, InventorySlotView> SlotViews { get; private set; }
+        public ISynchronizedView<ItemType, InventorySlotView> SlotViews { get; private set; }
 
-        public void Initialize(ISynchronizedView<ItemTypes, InventorySlotView> slotViews)
+        public void Initialize(ISynchronizedView<ItemType, InventorySlotView> slotViews)
         {
             SlotViews = slotViews;
         }
