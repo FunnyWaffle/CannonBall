@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Shop
 {
-    public enum ItemTypes
+    public enum ItemType
     {
         None,
         Cannon,
