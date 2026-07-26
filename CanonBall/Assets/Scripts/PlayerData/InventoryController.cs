@@ -1,11 +1,11 @@
 ﻿using Assets.Scripts.Curency;
 using Assets.Scripts.GameStateMachine.UIControl;
 using Assets.Scripts.GameStateMachine.UIWindowsControl;
-using Assets.Scripts.Placement;
 using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using ObservableCollections;
 using R3;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,18 +17,15 @@ namespace Assets.Scripts.PlayerData
         private readonly InventoryView _view;
 
         private readonly AssetLoader _assetLoader;
-        private readonly PlaceObjectSystem _placeObjectSystem;
 
         public InventoryController(
             InventoryView inventoryView,
-            AssetLoader assetLoader,
-            PlaceObjectSystem placeObjectSystem)
+            AssetLoader assetLoader)
         {
             _view = inventoryView;
             _core = new Inventory();
 
             _assetLoader = assetLoader;
-            _placeObjectSystem = placeObjectSystem;
 
             Initialize();
 
@@ -36,6 +33,8 @@ namespace Assets.Scripts.PlayerData
         }
 
         public UIWindowTypes Type => UIWindowTypes.Inventory;
+
+        public event Action<ItemType> PlaceButtonPressed;
 
         public void Open()
         {
@@ -52,12 +51,12 @@ namespace Assets.Scripts.PlayerData
             _core.AddMoney(count);
         }
 
-        public void ApplyPurchasedItems(IEnumerable<ItemTypes> items)
+        public void ApplyPurchasedItems(IEnumerable<ItemType> items)
         {
             _core.AddItems(items);
         }
 
-        public void RemoveItem(ItemTypes item)
+        public void RemoveItem(ItemType item)
         {
             _core.RemoveItem(item);
         }
@@ -93,9 +92,9 @@ namespace Assets.Scripts.PlayerData
             _view.Initialize(slotViews);
         }
 
-        private void OnPlaceButtonPress(ItemTypes type)
+        private void OnPlaceButtonPress(ItemType type)
         {
-            _placeObjectSystem.ShowProjection(type);
+            PlaceButtonPressed?.Invoke(type);
         }
     }
 }
