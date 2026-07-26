@@ -6,26 +6,29 @@ using Assets.Scripts.Shop;
 using Assets.Scripts.Spawn;
 using ObservableCollections;
 using R3;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.PlayerData
 {
-    public class InventoryController : IUIWindow, ICurrencyReceiver<int>, IItemStorage, ICurrencyStorage, IPlacementExecutor
+    public class InventoryController : IUIWindow, ICurrencyReceiver<int>, IItemStorage, ICurrencyStorage
     {
         private readonly Inventory _core;
         private readonly InventoryView _view;
 
         private readonly AssetLoader _assetLoader;
+        private readonly PlaceObjectSystem _placeObjectSystem;
 
-        public InventoryController(InventoryView inventoryView,
-            AssetLoader assetLoader)
+        public InventoryController(
+            InventoryView inventoryView,
+            AssetLoader assetLoader,
+            PlaceObjectSystem placeObjectSystem)
         {
             _view = inventoryView;
             _core = new Inventory();
 
             _assetLoader = assetLoader;
+            _placeObjectSystem = placeObjectSystem;
 
             Initialize();
 
@@ -33,8 +36,6 @@ namespace Assets.Scripts.PlayerData
         }
 
         public UIWindowTypes Type => UIWindowTypes.Inventory;
-
-        public event Action<ItemTypes> PlacementStarted;
 
         public void Open()
         {
@@ -94,7 +95,7 @@ namespace Assets.Scripts.PlayerData
 
         private void OnPlaceButtonPress(ItemTypes type)
         {
-            PlacementStarted?.Invoke(type);
+            _placeObjectSystem.ShowProjection(type);
         }
     }
 }
