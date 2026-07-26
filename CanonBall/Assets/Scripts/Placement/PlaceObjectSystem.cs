@@ -19,7 +19,6 @@ namespace Assets.Scripts.Placement
         {
             [ItemTypes.Cannon] = ItemTypes.CannonProjection
         };
-        private readonly List<IPlacementExecutor> _placementExecuters = new();
 
         //private readonly Dictionary<ConstructionOrder, EntityComponents> _existingProjections = new();
 
@@ -36,26 +35,38 @@ namespace Assets.Scripts.Placement
             CameraSystem cameraSystem,
             UIController uIController,
             InputSystem inputSystem,
-            UniversalSpawner spawner,
-            //BuildSystem buildSystem,
-            params IPlacementExecutor[] placementExecutors)
+            UniversalSpawner spawner
+            //BuildSystem buildSystem
+            )
         {
             _cameraSystem = cameraSystem;
             _uIController = uIController;
             _inputSystem = inputSystem;
             _spawner = spawner;
             //_buildSystem = buildSystem;
-
-            foreach (var executor in placementExecutors)
-            {
-                executor.PlacementStarted += ShowProjection;
-                _placementExecuters.Add(executor);
-            }
         }
 
         public bool IsPlacingObject { get; private set; }
 
         public event Action<ItemTypes> ObjectPlaced;
+
+        public async void ShowProjection(ItemTypes itemType)
+        {
+            if (!IsPlacingObject)
+            {
+                _itemTipe = itemType;
+                var projectionType = _projections[itemType];
+
+                var position = GetCameraFacedPosition();
+
+                _spawnedProjectionComponents = await _spawner.SpawnAsync(projectionType, position, rotation: Quaternion.identity);
+
+                IsPlacingObject = true;
+            }
+
+            _uIController.ClearOpenWindow();
+            _inputSystem.SwitchToLast();
+        }
 
         public async Task Place()
         {
@@ -81,24 +92,6 @@ namespace Assets.Scripts.Placement
             IsPlacingObject = false;
 
             ObjectPlaced?.Invoke(_itemTipe);
-        }
-
-        public async void ShowProjection(ItemTypes itemType)
-        {
-            if (!IsPlacingObject)
-            {
-                _itemTipe = itemType;
-                var projectionType = _projections[itemType];
-
-                var position = GetCameraFacedPosition();
-
-                _spawnedProjectionComponents = await _spawner.SpawnAsync(projectionType, position, rotation: Quaternion.identity);
-
-                IsPlacingObject = true;
-            }
-
-            _uIController.ClearOpenWindow();
-            _inputSystem.SwitchToLast();
         }
 
         public void Update()
