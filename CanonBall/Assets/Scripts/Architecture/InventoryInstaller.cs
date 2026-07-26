@@ -18,6 +18,8 @@ namespace Assets.Scripts.Architecture
             Container.BindInterfacesAndSelfTo<InventoryInputProvider>().AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<InventoryView>().FromComponentInHierarchy().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<InventoryPlaceEventHandler>().AsSingle().NonLazy();
         }
     }
 }
