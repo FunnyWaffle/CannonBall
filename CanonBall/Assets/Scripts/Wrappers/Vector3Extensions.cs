@@ -4,6 +4,11 @@ namespace Assets.Scripts.Wrappers
 {
     public static class Vector3Extensions
     {
+        public static Vector2 ToXZ(this Vector3 vector)
+        {
+            return new Vector2(vector.x, vector.z);
+        }
+
         public static Vector3Int FloorToInt(this Vector3 vector, float cellSize)
         {
             var scaledVector = vector / cellSize;
