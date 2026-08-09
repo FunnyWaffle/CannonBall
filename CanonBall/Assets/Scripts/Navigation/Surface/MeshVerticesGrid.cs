@@ -19,7 +19,7 @@ namespace Assets.Scripts.Navigation.Surface
 
         public bool TryGetTriangles(Vector3 position, out IReadOnlyList<int> triangles)
         {
-            var cell = WorldToCell(position);
+            var cell = position.FloorToInt(_cellSize);
 
             if (_triangleGrid.TryGetValue(cell, out var localTriangles))
             {
@@ -47,22 +47,11 @@ namespace Assets.Scripts.Navigation.Surface
                 var min = Vector3.Min(Vector3.Min(a, b), c);
                 var max = Vector3.Max(Vector3.Max(a, b), c);
 
-                var minCell = WorldToCell(min);
-                var maxCell = WorldToCell(max);
+                var minCell = min.FloorToInt(_cellSize);
+                var maxCell = max.FloorToInt(_cellSize);
 
                 AddTriangle(minCell, maxCell, i);
             }
-        }
-
-        private Vector3Int WorldToCell(Vector3 coords)
-        {
-            var scaledCoords = coords / _cellSize;
-
-            var flatX = Mathf.FloorToInt(scaledCoords.x);
-            var flatY = Mathf.FloorToInt(scaledCoords.y);
-            var flatZ = Mathf.FloorToInt(scaledCoords.z);
-
-            return new Vector3Int(flatX, flatY, flatZ);
         }
 
         private void AddTriangle(Vector3Int min, Vector3Int max, int triangleIndex)
