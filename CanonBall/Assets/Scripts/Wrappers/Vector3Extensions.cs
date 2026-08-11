@@ -9,23 +9,21 @@ namespace Assets.Scripts.Wrappers
             return new Vector2(vector.x, vector.z);
         }
 
-        public static Vector3Int FloorToInt(this Vector3 vector, float cellSize)
+        public static Vector3Int FloorToInt(
+            this Vector3 vector,
+            float cellSize)
         {
-            var scaledVector = vector / cellSize;
-
-            var flatX = Mathf.FloorToInt(scaledVector.x);
-            var flatY = Mathf.FloorToInt(scaledVector.y);
-            var flatZ = Mathf.FloorToInt(scaledVector.z);
+            var flatX = vector.x.FloorToInt(cellSize);
+            var flatY = vector.y.FloorToInt(cellSize);
+            var flatZ = vector.z.FloorToInt(cellSize);
 
             return new Vector3Int(flatX, flatY, flatZ);
         }
 
         public static Vector2Int FloorToIntXZ(this Vector3 vector, float cellSize)
         {
-            var scaledVector = vector / cellSize;
-
-            var flatX = Mathf.FloorToInt(scaledVector.x);
-            var flatZ = Mathf.FloorToInt(scaledVector.z);
+            var flatX = vector.x.FloorToInt(cellSize);
+            var flatZ = vector.z.FloorToInt(cellSize);
 
             return new Vector2Int(flatX, flatZ);
         }
