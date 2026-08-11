@@ -16,10 +16,11 @@ namespace Assets.Scripts.Wrappers
         public bool TryGetValue(TKey key, out TValue value)
             => _dictionary.TryGetValue(key, out value);
 
-        public Dictionary<TKey, TValue> ToDictionary()
-        {
-            return new(_dictionary);
-        }
+        public void Add(TKey key, TValue value)
+           => _dictionary.Add(key, value);
+
+        public void Clear()
+            => _dictionary.Clear();
 
         public void OnAfterDeserialize()
         {
