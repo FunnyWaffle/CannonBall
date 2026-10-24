@@ -33,7 +33,7 @@ namespace Assets.Scripts.Build.Carriage
 
         public async void SetDestination(Vector3 destination)
         {
-            var found = await _customPathFinder.TryFindAlloc(transform.position, _size / 2, destination, 0.2f, _path);
+            var found = await _customPathFinder.TryFindNonAlloc(transform.position, _size / 2, destination, 0.2f, _path);
 
             _hasPath = found;
         }
