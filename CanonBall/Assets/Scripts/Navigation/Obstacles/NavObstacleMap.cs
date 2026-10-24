@@ -38,13 +38,13 @@ namespace Assets.Scripts.Navigation.Obstacles
 
             var cell = position.FloorToInt(_cellSize);
 
-            if (!_navObstacles.TryGetValue(cell, out var localObstacles))
+            if (_navObstacles.TryGetValue(cell, out var localObstacles))
             {
                 obstacles = localObstacles;
-                return false;
+                return true;
             }
 
-            return obstacles != null;
+            return false;
         }
     }
 }
