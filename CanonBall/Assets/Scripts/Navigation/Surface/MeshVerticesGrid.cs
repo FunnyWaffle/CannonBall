@@ -8,9 +8,9 @@ namespace Assets.Scripts.Navigation.Surface
     {
         private readonly Dictionary<Vector3Int, List<int>> _triangleGrid = new();
 
-        private readonly float _cellSize;
+        private readonly Vector3 _cellSize;
 
-        public MeshVerticesGrid(Vector3[] vertices, int[] triangles, float cellSize)
+        public MeshVerticesGrid(Vector3[] vertices, int[] triangles, Vector3 cellSize)
         {
             _cellSize = cellSize;
 
