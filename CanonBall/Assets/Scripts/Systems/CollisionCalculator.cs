@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.Config;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,7 +12,6 @@ namespace Assets.Scripts.Systems
 
         public static bool Intersect(
             Collider[] sourceColliders,
-            Collider[] obstacleColliders,
             Vector3 from, Vector3 to)
         {
             _collidedColliders.Clear();
@@ -43,14 +43,23 @@ namespace Assets.Scripts.Systems
                         direction,
                         _hitedColliders,
                         rotation,
-                        length);
+                        length,
+                        LayerIds.BitNavObstacle,
+                        QueryTriggerInteraction.Ignore);
                 }
                 else if (TryCast(sourceCollider, out SphereCollider sphereCollider))
                 {
                     var center = transform.localPosition + localRotation * sphereCollider.center;
                     var position = from + orientation * center;
 
-                    hitColliderCount = Physics.SphereCastNonAlloc(position, sphereCollider.radius, direction, _hitedColliders, length);
+                    hitColliderCount = Physics.SphereCastNonAlloc(
+                        position,
+                        sphereCollider.radius,
+                        direction,
+                        _hitedColliders,
+                        length,
+                        LayerIds.BitNavObstacle,
+                        QueryTriggerInteraction.Ignore);
                 }
                 else if (TryCast(sourceCollider, out CapsuleCollider capsuleCollider))
                 {
@@ -73,7 +82,15 @@ namespace Assets.Scripts.Systems
                     var point1 = position + capsuleAxis * cylinderHalfHeight;
                     var point2 = position - capsuleAxis * cylinderHalfHeight;
 
-                    hitColliderCount = Physics.CapsuleCastNonAlloc(point1, point2, radius, direction, _hitedColliders, length);
+                    hitColliderCount = Physics.CapsuleCastNonAlloc(
+                        point1,
+                        point2,
+                        radius,
+                        direction,
+                        _hitedColliders,
+                        length,
+                        LayerIds.BitNavObstacle,
+                        QueryTriggerInteraction.Ignore);
                 }
 
                 if (hitColliderCount == 0)
@@ -85,13 +102,20 @@ namespace Assets.Scripts.Systems
                 }
             }
 
+            if (_collidedColliders.Count == 0)
+                return false;
+
+            var foundInteractions = false;
+
             foreach (var collidedCollider in _collidedColliders)
             {
-                if (obstacleColliders.Contains(collidedCollider))
-                    return true;
+                if (sourceColliders.Contains(collidedCollider))
+                    continue;
+
+                foundInteractions = true;
             }
 
-            return false;
+            return foundInteractions;
         }
 
         private static bool TryCast<T>(Collider collider, out T сollider)
