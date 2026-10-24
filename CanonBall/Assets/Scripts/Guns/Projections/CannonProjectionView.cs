@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Assets.Scripts.Guns.Projections
 {
     public class CannonProjectionView : MonoBehaviour, IPoolableObject, IPlaceable, IHasPosition, IHasRotation,
-        IPositionable, IRotateable, IParentable, IEnableable, IDisabler, IConstructionProjection
+        IPositionable, IRotateable, IParentable, IEnableable, IDisabler, IConstructionProjection, IHasSize
     {
         [SerializeField] private Color _normalColor;
         [SerializeField] private Color _failureColor;
@@ -22,6 +22,8 @@ namespace Assets.Scripts.Guns.Projections
 
         [SerializeField] private CollisionNotifier[] _collisionNotifier;
 
+        [SerializeField] private Vector3 _size = Vector3.one;
+
         private List<MeshRenderer> _renderers = new();
 
         public Quaternion Rotation => transform.rotation;
@@ -31,6 +33,7 @@ namespace Assets.Scripts.Guns.Projections
         public Collider[] Colliders => _colliders;
 
         public float BuildCarriageOffset => Vector3.Distance(transform.position, _buildCarriageSlot.position);
+        public Vector3 Size => _size;
 
         public event EventHandler<ItemType> Disabled;
 
