@@ -8,6 +8,7 @@ namespace Assets.Scripts.Config
         private static readonly string _gun = "Gun";
         private static readonly string _player = "Player";
         private static readonly string _ground = "Ground";
+        private static readonly string _navObstacle = "NavObstacle";
 
         public static int All => Physics.AllLayers;
         public static int Projectile { get; } = LayerMask.GetMask(nameof(Projectile));
@@ -19,5 +20,7 @@ namespace Assets.Scripts.Config
         public static int IndexPlayer { get; } = LayerMask.NameToLayer(_player);
         public static int BitMaskGround { get; } = LayerMask.GetMask(_ground);
         public static int IndexGround { get; } = LayerMask.NameToLayer(_ground);
+        public static int BitNavObstacle { get; } = LayerMask.GetMask(_navObstacle);
+        public static int IndexNavObstacle { get; } = LayerMask.NameToLayer(_navObstacle);
     }
 }
